@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CajasController;
+use App\Http\Controllers\VentasController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -16,6 +18,7 @@ Route::middleware([
     })->name('dashboard');
 });
 
-
 // livewire
+Route::get('/reportes/cajas/{request?}', [CajasController::class,'reporte'])->name('reporte.cajas');
+
 include('livewire.php');
