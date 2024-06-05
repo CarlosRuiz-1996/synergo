@@ -2,7 +2,7 @@
     <x-authentication-card>
         <x-slot name="logo">
             {{-- <x-authentication-card-logo /> --}}
-            <h1>Iniciar sesion</h1>
+            <h1 class="text-white text-4xl">Iniciar sesión</h1>
         </x-slot>
 
         <x-validation-errors class="mb-4" />
@@ -13,7 +13,7 @@
             </div>
         @endsession
 
-        <form method="POST" action="{{ route('login') }}">
+        <form method="POST" action="{{ route('login') }}" class="w-full"> <!-- Agregar la clase w-full para que el formulario ocupe todo el ancho -->
             @csrf
 
             <div>
@@ -29,7 +29,7 @@
             <div class="block mt-4">
                 <label for="remember_me" class="flex items-center">
                     <x-checkbox id="remember_me" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600">{{ __('Recordar') }}</span>
+                    <span class="ms-2 text-sm text-white">{{ __('Recordar') }}</span>
                 </label>
             </div>
 
@@ -40,9 +40,11 @@
                     </a>
                 @endif --}}
 
-                <x-button class="">
-                    {{ __('Ingresar') }}
-                </x-button>
+                <div class="w-full"> <!-- Envolver el botón en un div con la misma clase w-full -->
+                    <x-button class="w-full"> <!-- Agregar la clase w-full al botón para que ocupe todo el ancho -->
+                        {{ __('Ingresar') }}
+                    </x-button>
+                </div>
             </div>
         </form>
     </x-authentication-card>
