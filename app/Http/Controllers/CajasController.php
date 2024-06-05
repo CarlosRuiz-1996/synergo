@@ -79,7 +79,7 @@ class CajasController extends Controller
         } else {
             $pagos = $query->with(['cliente', 'conceptoDePago',  'actividadExtra'])
                 ->orderBy('fecha_alta', 'DESC')
-                ->limit(1)
+                ->limit(100)
                 ->get();
         }
 
@@ -123,4 +123,5 @@ class CajasController extends Controller
             ->get();
         return view('reportes.cajas-reporte', compact('pagos', 'groups', 'empresas', 'conceptos', 'actividadesExtras'));
     }
+    
 }
