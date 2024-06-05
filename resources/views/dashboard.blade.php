@@ -1,52 +1,96 @@
 <x-app-layout>
-    {{-- <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                {{-- <x-welcome /> --} }
-            </div>
-        </div>
-    </div> --}}
-    <div class="flex items-center justify-center h-screen bg-blue-800">
-        <div class="">
+  <div class="flex items-center justify-center min-h-screen" style="background-image: url('{{ asset('img/bg.png') }}'); background-size: cover; background-position: center;" >
+      <div class="">
           <!-- Sidebar -->
-          <div class="w-full md:w-4/4 border-r p-4">
-            <div class=" flex flex-col items-center justify-center mb-4">
-              <img class="h-auto max-w-full mb-4" src="{{ asset('img/logo-transparente.png') }}" width="150" alt="logo">
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              <ul class="list-none p-0">
-                <li class="mb-2"><strong>BANCOS</strong></li>
-                <li class="mb-2"><a href="#" class="text-blue-500 hover:underline">SUBIR FACTURA</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-500 hover:underline">CLASIFICAR PAGOS</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-500 hover:underline">PENDIENTE DE PAGO</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-500 hover:underline">PAGO POR AUTORIZAR</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-500 hover:underline">PAGO AUTORIZADO POR DEFINIR</a></li>
-              </ul>
-              <ul class="list-none p-0">
-                <li class="mb-2"><a href="#" class="text-blue-500 hover:underline">PAGOS SIN REGISTRO</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-500 hover:underline">CATALOGO DE PERFILES</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-500 hover:underline">CONSULTA COSTO MAGNA</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-500 hover:underline">ESTABLECER PRESUPUESTO</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-500 hover:underline">PRESUPUESTO DE GASTOS</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-500 hover:underline">CUENTAS POR PAGAR</a></li>
-              </ul>
-              <ul class="list-none p-0">
-                <li class="mb-2"><a href="#" class="text-blue-500 hover:underline">TESORERIA</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-500 hover:underline">ADMINISTRATIVO</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-500 hover:underline">REPORTES</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-500 hover:underline">DASHBOARD</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-500 hover:underline">INVENTARIO</a></li>
-                <li class="mb-2"><a href="#" class="text-blue-500 hover:underline">ESTACIONES</a></li>
-              </ul>
-            </div>
+          <div class="w-full md:w-4/4">
+              <div class="flex flex-col items-center justify-center mb-4">
+                  <img class="h-auto max-w-full mb-4" src="{{ asset('img/logo-transparente.png') }}" width="400" alt="logo" style="filter: brightness(0) invert(1);">
+              </div>
+              <div class="menu-grid text-white">
+                  <div class="menu-column">
+                      <ul class="menu">
+                          <li class="menu-item" data-submenu="submenu-1"><i class="fas fa-book mr-2"></i>CATÁLOGOS</li>
+                          <li class="menu-item" data-submenu="submenu-2"><i class="fas fa-piggy-bank mr-2"></i>BANCOS
+                              <ul class="submenu-items" id="submenu-2">
+                                  <li class="submenu-item"><i class="fas fa-file-invoice mr-2"></i>Subir factura</li>
+                                  <li class="submenu-item"><i class="fas fa-list-alt mr-2"></i>Clasificar pagos</li>
+                                  <li class="submenu-item"><i class="fas fa-clipboard-check mr-2"></i>Pendientes de pagos</li>
+                                  <li class="submenu-item"><i class="fas fa-hand-holding-usd mr-2"></i>Pagos por autorizar</li>
+                                  <li class="submenu-item"><i class="fas fa-file-signature mr-2"></i>Pago autorizado por definir</li>
+                                  <li class="submenu-item"><i class="fas fa-file mr-2"></i>Pago sin registro</li>
+                              </ul>
+                          </li>
+                      </ul>
+                  </div>
+                  <div class="menu-column">
+                      <ul class="menu">
+                          <li class="menu-item" data-submenu="submenu-3"><i class="fas fa-address-card mr-2"></i>CATÁLOGO DE PERFILES</li>
+                          <li class="menu-item" data-submenu="submenu-4"><i class="fas fa-search-dollar mr-2"></i>CONSULTA COSTO MAGNA</li>
+                          <li class="menu-item" data-submenu="submenu-5"><i class="fas fa-wallet mr-2"></i>ESTABLECER PRESUPUESTO</li>
+                          <li class="menu-item" data-submenu="submenu-6"><i class="fas fa-file-invoice-dollar mr-2"></i>PRESUPUESTO DE GASTOS</li>
+                          <li class="menu-item" data-submenu="submenu-7"><i class="fas fa-file-alt mr-2"></i>CUENTAS POR PAGAR</li>
+                          <li class="menu-item" data-submenu="submenu-8"><i class="fas fa-gas-pump mr-2"></i>ESTACIONES</li>
+                      </ul>
+                  </div>
+                  <div class="menu-column">
+                      <ul class="menu">
+                          <li class="menu-item" data-submenu="submenu-9"><i class="fas fa-coins mr-2"></i>TESORERÍA</li>
+                          <li class="menu-item" data-submenu="submenu-10"><i class="fas fa-user-tie mr-2"></i>ADMINISTRATIVO</li>
+                          <li class="menu-item" data-submenu="submenu-11"><i class="fas fa-chart-pie mr-2"></i>REPORTE</li>
+                          <li class="menu-item" data-submenu="submenu-12"><i class="fas fa-tachometer-alt mr-2"></i>DASHBOARD</li>
+                          <li class="menu-item" data-submenu="submenu-13"><i class="fas fa-boxes mr-2"></i>INVENTARIO</li>
+                      </ul>
+                  </div>
+              </div>
           </div>
-         
-        </div>
-    </div>
+      </div>
+  </div>
+  <style>
+      .menu-grid {
+          display: flex;
+      }
+
+      .menu-column {
+          flex: 1;
+          margin-right: 20px;
+      }
+
+      .menu {
+          list-style: none;
+          padding: 0;
+      }
+
+      .menu-item {
+          margin-bottom: 10px;
+          cursor: pointer;
+      }
+
+      .submenu-items {
+          list-style: none;
+          padding-left: 20px;
+          display: none;
+      }
+
+      .submenu-item {
+          margin-bottom: 5px;
+      }
+
+      .show {
+          display: block !important;
+      }
+  </style>
+  <script>
+      document.addEventListener("DOMContentLoaded", function() {
+          const menuItems = document.querySelectorAll('.menu-item');
+          menuItems.forEach(item => {
+              item.addEventListener("click", function() {
+                  const submenuId = item.getAttribute('data-submenu');
+                  const submenu = document.getElementById(submenuId);
+                  if (submenu) {
+                      submenu.classList.toggle('show');
+                  }
+              });
+          });
+      });
+  </script>
 </x-app-layout>
