@@ -12,13 +12,15 @@
                           <li class="menu-item" data-submenu="submenu-1"><i class="fas fa-book mr-2"></i>CATÁLOGOS</li>
                           <li class="menu-item" data-submenu="submenu-2"><i class="fas fa-piggy-bank mr-2"></i>BANCOS
                               <ul class="submenu-items" id="submenu-2">
+                                <a href="{{route('reporte.cajas')}}">
                                   <li class="submenu-item"><i class="fas fa-file-invoice mr-2"></i>Subir factura</li>
                                   <li class="submenu-item"><i class="fas fa-list-alt mr-2"></i>
-                                   <a href="{{route('reporte.cajas')}}"> Clasificar pagos</a></li>
+                                   Clasificar pagos</li>
                                   <li class="submenu-item"><i class="fas fa-clipboard-check mr-2"></i>Pendientes de pagos</li>
                                   <li class="submenu-item"><i class="fas fa-hand-holding-usd mr-2"></i>Pagos por autorizar</li>
                                   <li class="submenu-item"><i class="fas fa-file-signature mr-2"></i>Pago autorizado por definir</li>
                                   <li class="submenu-item"><i class="fas fa-file mr-2"></i>Pago sin registro</li>
+                                </a>
                               </ul>
                           </li>
                       </ul>
