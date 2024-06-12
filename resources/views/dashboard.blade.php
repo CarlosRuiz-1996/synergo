@@ -42,6 +42,7 @@
                           <li class="menu-item" data-submenu="submenu-11"><i class="fas fa-chart-pie mr-2"></i>REPORTE</li>
                           <li class="menu-item" data-submenu="submenu-12"><i class="fas fa-tachometer-alt mr-2"></i>DASHBOARD</li>
                           <li class="menu-item" data-submenu="submenu-13"><i class="fas fa-boxes mr-2"></i>INVENTARIO</li>
+                          <li class="menu-item" data-submenu="submenu-13"><i class="fas fa-boxes mr-2"></i><a href="{{ route('subir-archivo') }}">Ir a la página de subida de archivos</a></li>
                       </ul>
                   </div>
               </div>

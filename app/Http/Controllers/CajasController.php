@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Despachos;
 use App\Models\Pago;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -123,5 +124,16 @@ class CajasController extends Controller
             ->get();
         return view('reportes.cajas-reporte', compact('pagos', 'groups', 'empresas', 'conceptos', 'actividadesExtras'));
     }
+
+
+
+    public function ReporteVentas(){
+        return view('reportes.reporteventas');
+    } 
+    
+    public function reporteComprasConsignas(){
+        return view('reportes.ComprasConsignas');
+    }    
+    
     
 }

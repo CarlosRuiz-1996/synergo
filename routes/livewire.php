@@ -8,7 +8,7 @@ Livewire::setUpdateRoute(function ($handle) {
 });
 
 Livewire::setScriptRoute(function ($handle) {
-    return Route::get('http://localhost/synergo/public/livewire/livewire.js', $handle);
+    return Route::get('/livewire/livewire.js', $handle);
 });
 
 ?>
