@@ -42,7 +42,7 @@ class ProcesarArchivosXml implements ShouldQueue
     public function handle()
 {
     // Ruta completa del archivo ZIP
-    $rutaCompletaArchivoZip = storage_path('app/public/' . $this->rutaArchivoZip);
+    $rutaCompletaArchivoZip = storage_path('app/' . $this->rutaArchivoZip);
 
     // Inicio del manejo del archivo ZIP
     Log::info('Iniciando manejo del archivo ZIP.');

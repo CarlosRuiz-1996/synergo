@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\ProcesarArchivosXml;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class FacturaController extends Controller
 {
@@ -25,6 +26,10 @@ class FacturaController extends Controller
     
         // Verificar si se guardó correctamente el archivo ZIP
         if ($rutaArchivoZip) {
+            $rutaAbsolutaArchivoZip = Storage::disk('local')->path($rutaArchivoZip);
+
+            // Asignar permisos de lectura y escritura al archivo
+            chmod($rutaAbsolutaArchivoZip, 0644);
             // Encolar el trabajo para procesar los archivos XML
             ProcesarArchivosXml::dispatch($rutaArchivoZip);
     
