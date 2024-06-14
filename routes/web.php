@@ -21,6 +21,7 @@ Route::middleware([
 Route::get('/reportes/cajas', [CajasController::class, 'reporte'])->name('reporte.cajas');
 Route::get('/reportes/ventas', [CajasController::class, 'reporteVentas'])->name('reporte.ventas');
 Route::get('/reportes/ComprasConsignas', [CajasController::class, 'reporteComprasConsignas'])->name('reporte.ComprasConsignas');
+Route::get('/reportes/reporteResumenCompras', [CajasController::class, 'reporteResumenCompras'])->name('reporte.reporteResumenCompras');
 
 Route::get('/subir-archivo', [FacturaController::class,'mostrarFormularioSubida'])->name('subir-archivo');
 Route::post('/procesar-archivos', [FacturaController::class,'procesarArchivos'])->name('procesar-archivos');

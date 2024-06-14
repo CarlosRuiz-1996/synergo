@@ -13,6 +13,12 @@
                  <button wire:click="exportarExcel" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                      Exportar a Excel
                  </button>
+                 <button wire:click="exportarTxt" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
+                    Exportar a TXT
+                </button>
+                <button wire:click="insertarBase" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
+                    insertar xml
+                </button>
              </div>
          <div class="overflow-x-auto bg-white rounded-lg shadow-md">
              <table class="min-w-screen divide-y divide-gray-200">

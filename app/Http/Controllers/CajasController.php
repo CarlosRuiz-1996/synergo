@@ -134,6 +134,8 @@ class CajasController extends Controller
     public function reporteComprasConsignas(){
         return view('reportes.ComprasConsignas');
     }    
-    
+    public function reporteResumenCompras(){
+        return view('reportes.resumen-compras');
+    } 
     
 }
