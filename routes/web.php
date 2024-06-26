@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CajasController;
+use App\Http\Controllers\descargarComprobateXmloPDF;
 use App\Http\Controllers\FacturaController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,5 +26,8 @@ Route::get('/reportes/reporteResumenCompras', [CajasController::class, 'reporteR
 
 Route::get('/subir-archivo', [FacturaController::class,'mostrarFormularioSubida'])->name('subir-archivo');
 Route::post('/procesar-archivos', [FacturaController::class,'procesarArchivos'])->name('procesar-archivos');
+
+
+Route::get('/descargaComprobante', [descargarComprobateXmloPDF::class, 'descargarComprobateXmloPDF'])->name('reporte.descargarComprobateXmloPDF');
 // livewire
  include('livewire.php');

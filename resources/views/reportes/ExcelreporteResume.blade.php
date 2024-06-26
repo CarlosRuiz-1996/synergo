@@ -60,7 +60,7 @@
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($dato->valorUnitario, 6, '.', ',') }}</td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($dato->FLETE_SERVICIO, 6, '.', ',') }} </td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format((($dato->valorUnitario + $dato->FLETE_SERVICIO)*$dato->cantidad), 2, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format((($dato->valorUnitario + $dato->FLETE_SERVICIO)*($dato->cantidad+$dato->ComprasCantidad)), 2, '.', ',')}}</td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
