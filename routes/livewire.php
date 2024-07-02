@@ -1,4 +1,6 @@
-<?php 
+<?php
+
+use App\Livewire\CuentasPagar\ControlPagos;
 use Livewire\Livewire;
 use Illuminate\Support\Facades\Route;
 
@@ -11,4 +13,5 @@ Livewire::setScriptRoute(function ($handle) {
     return Route::get('/livewire/livewire.js', $handle);
 });
 
-?>
+
+Route::get('cuentas/pagar', ControlPagos::class)->name('cuentas.pagar');
