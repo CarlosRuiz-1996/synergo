@@ -19,10 +19,15 @@
                 <div class="flex flex-col space-y-4">
                     <!-- Campo de entrada para Estación de servicio -->
                     <div class="flex flex-col space-y-3">
-                        <label for="estacion" class="text-white">Estación de servicio</label>
-                        <input type="text" id="estacion" name="estacion"
-                            class="p-2 border border-gray-300 rounded w-full"
-                            placeholder="Ingrese estación de servicio">
+                        <label for="estacion" class="text-white">Selecciona una estación de servicio</label>
+                        <select wire:model="estacionSeleccionada" id="estacion" name="estacion"
+                                class="p-2 border border-gray-300 rounded w-full"
+                                placeholder="Selecciona una estación">
+                            <option value="">Selecciona una estación...</option>
+                            @foreach($estaciones as $estacion)
+                                <option value="{{ $estacion->IdEstacion }}">{{ $estacion->NombreEstacion }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <!-- Campos de entrada para fecha y botón de búsqueda -->
@@ -93,10 +98,10 @@
             </div>
 
             <!-- Nueva sección: Inventario y Adquisición -->
-            <h1 class="text-white mt-8">Inventario y Adquisición</h1>
+            <h1 class="text-white mt-8">Compras</h1>
             <div class="flex flex-col space-y-3 flex-grow pl-2">
                 <button
-                    class="bg-blue-500 text-white py-2 mt-6 rounded hover:bg-blue-700 w-full" wire:click='exportarExcel'>Buscar</button>
+                    class="bg-blue-500 text-white py-2 mt-6 rounded hover:bg-blue-700 w-full" wire:click='exportarExcel'>Exportar Excel</button>
             </div>
             <div class="mt-2">
                 <div class="overflow-x-auto shadow-md rounded-lg">
@@ -130,19 +135,74 @@
                                     {{ $despacho->descripcion }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $despacho->valorUnitario }}
+                                    {{ number_format($despacho->valorUnitario, 6) }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $despacho->cantidad }}
+                                    {{ number_format($despacho->cantidad, 2) }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $despacho->Fecha }}
+                                    {{ \Carbon\Carbon::parse($despacho->Fecha)->format('Y-m-d') }}
+
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $despacho->FLETE_SERVICIO }}
+                                    {{ number_format($despacho->FLETE_SERVICIO, 6) }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $despacho->TOTAL_CON_FLETE }}
+                                    {{ number_format($despacho->TOTAL_CON_FLETE, 6) }}
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Nueva sección: Inventario y Adquisición -->
+            <h1 class="text-white mt-8">Ventas</h1>
+            <div class="mt-2">
+                <div class="overflow-x-auto shadow-md rounded-lg">
+                    <table class="w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                    Producto
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                    Fecha
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                  Venta
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                    Precio Ventas
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                    Jarras
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                    Jarras/Consigna
+                                </th>
+                            </tr>
+                        </thead>                 
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @foreach($ventas as $venta)
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{ $venta->Descripcion }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ \Carbon\Carbon::parse($venta->Fecha)->format('Y-m-d') }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $venta->Venta }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ number_format($venta->precioventa, 2) }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ number_format($venta->Jarras, 2) }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $venta->JarrasConsigna }}
                                 </td>
                             </tr>
                             @endforeach
