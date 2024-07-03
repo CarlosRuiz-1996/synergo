@@ -21,6 +21,7 @@ class ControlPagos extends Component
     protected $detalles = [];
     public $readyToLoad = false;
     public $monto_pagado;
+    public $estaciond;
     public function render()
     {
         if ($this->readyToLoad) {
@@ -41,7 +42,10 @@ class ControlPagos extends Component
     }
     public function buscar()
     {
-        $this->estacion_detalle = DB::table('EstacionesExcel')->where('IdEstacion', $this->estacionSeleccionada)->first();
+        if ($this->estacionSeleccionada) {
+            $this->estaciond = DB::table('EMISOR')->first();
+            $this->estacion_detalle = DB::table('EstacionesExcel')->where('IdEstacion',$this->estacionSeleccionada)->first();
+        }
         $this->monto();
         $this->detalles = $this->filtrar();
     }
@@ -62,8 +66,9 @@ class ControlPagos extends Component
             ->whereBetween('c.Fecha', [$startDate, $endDate])
             ->where(function ($query) {
                 $query->where('c.TipoDeComprobante', 'LIKE', 'P')
-                    ->orWhere('c.TipoDeComprobante', 'LIKE', 'I');
-            })
+                    ->orWhere('c.TipoDeComprobante', 'LIKE', 'I')
+                    ;
+            })->where('conc.descripcion','LIKE','PEMEX MAGNA')
 
 
             ->select(
@@ -79,7 +84,7 @@ class ControlPagos extends Component
             )->orderBy('c.Fecha', 'DESC')
             ->paginate(10);
     }
-
+    public $total_facturas;
     public function monto()
     {
         $startDate = $this->fechainicio ? Carbon::createFromFormat('Y-m-d', $this->fechainicio)->startOfDay() : Carbon::createFromDate(null, 4, 1)->startOfDay();
@@ -95,6 +100,18 @@ class ControlPagos extends Component
                     ->orWhere('c.TipoDeComprobante', 'LIKE', 'I');
             })
             ->sum('c.Total');
+
+
+        $this->total_facturas =  DB::table('COMPROBANTE as c')
+            ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
+            ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
+            ->join('DOCTO_RELACIONADO as dr', DB::raw('CAST(dr.idDocumento AS NVARCHAR(MAX))'), '=', DB::raw('CAST(t.UUID AS NVARCHAR(MAX))'))
+            ->whereBetween('c.Fecha', [$startDate, $endDate])
+            ->where(function ($query) {
+                $query->where('c.TipoDeComprobante', 'LIKE', 'P')
+                    ->orWhere('c.TipoDeComprobante', 'LIKE', 'I');
+            })
+            ->count();
     }
 
     public $isOpen = false;
@@ -116,14 +133,15 @@ class ControlPagos extends Component
 
     public function descargarXML($id)
     {
+
         $comprobante = DB::table('TIMBRE_FISCAL_DIGITAL')
             ->where('idcomprobante', $id) // Aquí reemplaza 'id' por el campo que quieras filtrar y $id por el valor deseado
             ->first();
 
         $files = [];
 
-
         $filenameXML = strtoupper($comprobante->UUID) . '@1000000000XX0.xml';
+
         $pathXML = storage_path('app/archivos_descomprimidos/' . $filenameXML);
         if (file_exists($pathXML)) {
             $files[] = $pathXML;
@@ -134,5 +152,17 @@ class ControlPagos extends Component
         } else {
             return response()->json(['error' => 'No files selected or files do not exist.'], 404);
         }
+    }
+
+    //detalles
+    public $open = false;
+    public function openModal()
+    {
+        $this->open = true;
+    }
+
+    public function clean()
+    {
+        $this->reset('open');
     }
 }
