@@ -14,7 +14,7 @@ class ComprasConsignas extends Component
 {
 
     use WithPagination;
-    public $fechainicio;
+    public $fechainicio='2024-04-01';
     public $fechafin;
     public $combustible;
     public $valorModal;

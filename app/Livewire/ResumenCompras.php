@@ -12,8 +12,8 @@ use Maatwebsite\Excel\Facades\Excel;
 class ResumenCompras extends Component
 {
 use WithPagination;
-public $fechainicio;
-public $fechafin;
+public $fechainicio='2024-04-01';
+public $fechafin='2024-04-30';
 public $TipoCombustible;
 public $totalesValores;
 public $reportesSeleccion=0;
