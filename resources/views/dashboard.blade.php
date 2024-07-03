@@ -31,7 +31,11 @@
                           <li class="menu-item" data-submenu="submenu-4"><i class="fas fa-search-dollar mr-2"></i>CONSULTA COSTO MAGNA</li>
                           <li class="menu-item" data-submenu="submenu-5"><i class="fas fa-wallet mr-2"></i>ESTABLECER PRESUPUESTO</li>
                           <li class="menu-item" data-submenu="submenu-6"><i class="fas fa-file-invoice-dollar mr-2"></i>PRESUPUESTO DE GASTOS</li>
-                          <li class="menu-item" data-submenu="submenu-7"><i class="fas fa-file-alt mr-2"></i>CUENTAS POR PAGAR</li>
+                          <li class="menu-item" data-submenu="submenu-7">
+                          <a href="{{route('cuentas.pagar')}}">
+                            <i class="fas fa-file-alt mr-2"></i>CUENTAS POR PAGAR
+                          </a>
+                          </li>
                           <li class="menu-item" data-submenu="submenu-8"><i class="fas fa-gas-pump mr-2"></i>ESTACIONES</li>
                       </ul>
                   </div>
