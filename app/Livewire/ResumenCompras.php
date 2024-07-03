@@ -18,6 +18,26 @@ public $TipoCombustible;
 public $totalesValores;
 public $reportesSeleccion=0;
 public $EstacionSeleccionada="";
+public $valorParaPasar=0;
+public $showModal = false;
+public $showModal2 = false;
+public $showModal3 = false;
+
+public function abrirModal($valor)
+{
+    if($valor==1){
+        $this->showModal = true; 
+    }elseif($valor==3){
+        $this->showModal2 = true;  
+    }elseif($valor==2){
+        $this->showModal3 = true; 
+    }else{
+        $this->showModal = false; 
+        $this->showModal2 = false; 
+        $this->showModal3 = false;  
+    }
+   
+}
 
 public function render()
 {
@@ -27,9 +47,9 @@ public function render()
     if($this->TipoCombustible=='PEMEX MAGNA'){
         $this->reportesSeleccion=1;   
     }elseif($this->TipoCombustible=='PEMEX DIESEL'){
-        $this->reportesSeleccion=2;   
-    }elseif($this->TipoCombustible=='PEMEX PREMIUM'){
         $this->reportesSeleccion=3;   
+    }elseif($this->TipoCombustible=='PEMEX PREMIUM'){
+        $this->reportesSeleccion=2;   
     }else{
         $this->reportesSeleccion=0;   
     }
@@ -259,6 +279,7 @@ public function totales()
     // Retorna los resultados
     return $resultados;
 }
+
 
 
 

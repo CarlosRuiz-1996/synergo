@@ -18,17 +18,19 @@
                 <!-- Aumenté el gap a 6 para mayor separación -->
                 <div class="flex flex-col space-y-4">
                     <!-- Campo de entrada para Estación de servicio -->
+                    <div wire:ignore>
                     <div class="flex flex-col space-y-3">
                         <label for="estacion" class="text-white">Selecciona una estación de servicio</label>
-                        <select wire:model="EstacionSeleccionada" id="estacion" name="estacion"
+                        <select wire:model="EstacionSeleccionada" id="EstacionSeleccionada" name="EstacionSeleccionada"
                                 class="p-2 border border-gray-300 rounded w-full"
                                 placeholder="Selecciona una estación">
                             <option value="">Selecciona una estación...</option>
                             @foreach($estaciones as $estacion)
-                                <option value="{{ $estacion->IdEstacion }}">{{ $estacion->NombreEstacion }}</option>
+                                <option value="{{ $estacion->IdEstacion }}">{{ $estacion->estacion }}--{{ $estacion->NombreEstacion }}</option>
                             @endforeach
                         </select>
                     </div>
+                </div>
 
                     <!-- Campos de entrada para fecha y botón de búsqueda -->
                     <div class="flex space-x-4 items-center">
@@ -63,33 +65,33 @@
                 </div>
 
 
-                <!-- Segunda columna -->
-                <div class="flex flex-col space-y-4">
-                    <div class="flex items-center space-x-4">
-                        <div class=" w-full overflow-x-auto shadow-md rounded-lg">
-                            <table class="w-full divide-y divide-gray-200 text-center">
+                <div class="flex flex-col space-y-1">
+                    <div class="flex items-center justify-end space-x-1">
+                        <div class="w-full overflow-x-auto shadow-md rounded-lg">
+                            <table class="w-full divide-y divide-gray-200 text-center text-xs">
                                 <thead class="bg-gray-100">
                                     <tr>
-                                        <th class="border border-gray-200 px-4 py-1">GAS</th>
-                                        <th class="border border-gray-200 px-4 py-1">C/PROMEDIO</th>
-                                        <th class="border border-gray-200 px-4 py-1">VENTAS</th>
-                                        <th class="border border-gray-200 px-4 py-1">COMPRAS</th>
+                                        <th class="border border-gray-200 px-2 py-1">GAS</th>
+                                        <th class="border border-gray-200 px-2 py-1">C/PROMEDIO</th>
+                                        <th class="border border-gray-200 px-2 py-1">VENTAS</th>
+                                        <th class="border border-gray-200 px-2 py-1">COMPRAS</th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white">
                                     @foreach($totalesValores as $resultado)
                                     <tr>
-                                        <td class="border border-gray-200 px-4 py-1">{{ $resultado->descripcion }}</td>
-                                        <td class="border border-gray-200 px-4 py-1">{{ $resultado->PromedioValorUnitario }}</td>
-                                        <td class="border border-gray-200 px-4 py-1">{{ $resultado->TotalCantidad }}</td>
-                                        <td class="border border-gray-200 px-4 py-1">{{ $resultado->SumaEntregueRecibi }}</td>
+                                        <td class="border border-gray-200 px-2 py-1">{{ $resultado->descripcion }}</td>
+                                        <td class="border border-gray-200 px-2 py-1">{{ $resultado->PromedioValorUnitario }}</td>
+                                        <td class="border border-gray-200 px-2 py-1">{{ $resultado->TotalCantidad }}</td>
+                                        <td class="border border-gray-200 px-2 py-1">{{ $resultado->SumaEntregueRecibi }}</td>
                                     </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+                        </div>
                     </div>
                 </div>
-                </div>
+                
             </div>
 
             <!-- Nueva sección: Inventario y Adquisición -->
@@ -252,15 +254,15 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                             <div class="flex items-center justify-center space-x-3">
                                                 @if($reportesSeleccion==1)
-                                                <div class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
-                                                    <i class="fas fa-gas-pump text-xs"></i>
-                                                </div>
-                                                @elseif($reportesSeleccion==2)
-                                                <div class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div wire:click="abrirModal(1)" class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @elseif($reportesSeleccion==3)
-                                                <div class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div wire:click="abrirModal(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                    <i class="fas fa-gas-pump text-xs"></i>
+                                                </div>
+                                                @elseif($reportesSeleccion==2)
+                                                <div wire:click="abrirModal(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @else
@@ -271,15 +273,15 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             <div class="flex items-center justify-center space-x-3">
                                                 @if($reportesSeleccion==1)
-                                                <div class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
-                                                    <i class="fas fa-gas-pump text-xs"></i>
-                                                </div>
-                                                @elseif($reportesSeleccion==2)
-                                                <div class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModal(1)" class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @elseif($reportesSeleccion==3)
-                                                <div class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModal(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                    <i class="fas fa-gas-pump text-xs"></i>
+                                                </div>
+                                                @elseif($reportesSeleccion==2)
+                                                <div  wire:click="abrirModal(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @else
@@ -290,15 +292,15 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                             <div class="flex items-center justify-center space-x-3">
                                                 @if($reportesSeleccion==1)
-                                                <div class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
-                                                    <i class="fas fa-gas-pump text-xs"></i>
-                                                </div>
-                                                @elseif($reportesSeleccion==2)
-                                                <div class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModal(1)" class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @elseif($reportesSeleccion==3)
-                                                <div class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModal(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                    <i class="fas fa-gas-pump text-xs"></i>
+                                                </div>
+                                                @elseif($reportesSeleccion==2)
+                                                <div  wire:click="abrirModal(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @else
@@ -309,15 +311,15 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             <div class="flex items-center justify-center space-x-3">
                                                 @if($reportesSeleccion==1)
-                                                <div class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
-                                                    <i class="fas fa-gas-pump text-xs"></i>
-                                                </div>
-                                                @elseif($reportesSeleccion==2)
-                                                <div class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModal(1)" class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @elseif($reportesSeleccion==3)
-                                                <div class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModal(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                    <i class="fas fa-gas-pump text-xs"></i>
+                                                </div>
+                                                @elseif($reportesSeleccion==2)
+                                                <div  wire:click="abrirModal(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @else
@@ -328,15 +330,15 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                             <div class="flex items-center justify-center space-x-3">
                                                 @if($reportesSeleccion==1)
-                                                <div class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
-                                                    <i class="fas fa-gas-pump text-xs"></i>
-                                                </div>
-                                                @elseif($reportesSeleccion==2)
-                                                <div class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModal(1)" class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @elseif($reportesSeleccion==3)
-                                                <div class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModal(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                    <i class="fas fa-gas-pump text-xs"></i>
+                                                </div>
+                                                @elseif($reportesSeleccion==2)
+                                                <div  wire:click="abrirModal(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @else
@@ -354,4 +356,64 @@
 
         </div>
     </div>
+
+
+    <x-dialog-modal id="modal-compras" maxWidth="2xl" wire:model="showModal">
+        <x-slot name="title" class="bg-gray-500">
+            Reporte Consigna
+        </x-slot>
+    
+        <x-slot name="content">
+            @livewire('compras-consignas', ['valorModal' => 1])
+        </x-slot>
+    
+        <x-slot name="footer">
+            <button x-on:click="show = false" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                Cerrar
+            </button>
+        </x-slot>
+    </x-dialog-modal>
+    <!--modal 2-->
+    <x-dialog-modal id="modal-compras2" maxWidth="2xl" wire:model="showModal2">
+        <x-slot name="title" class="bg-gray-500">
+            Reporte Consigna
+        </x-slot>
+    
+        <x-slot name="content">
+            @livewire('compras-consignas', ['valorModal' => 2])
+        </x-slot>
+    
+        <x-slot name="footer">
+            <button x-on:click="show = false" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                Cerrar
+            </button>
+        </x-slot>
+    </x-dialog-modal>
+    <x-dialog-modal id="modal-compras3" maxWidth="2xl" wire:model="showModal3">
+        <x-slot name="title" class="bg-gray-500">
+            Reporte Consigna
+        </x-slot>
+    
+        <x-slot name="content">
+            @livewire('compras-consignas', ['valorModal' => 3])
+        </x-slot>
+    
+        <x-slot name="footer">
+            <button x-on:click="show = false" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                Cerrar
+            </button>
+        </x-slot>
+    </x-dialog-modal>
+
+    <script>
+        $(document).ready(function(){
+            $('#EstacionSeleccionada').select2();
+        }
+        );
+        $('#EstacionSeleccionada').on('change', function() {
+            var estacionSeleccionada = $(this).val();
+            @this.set('EstacionSeleccionada',this.value)
+            // Aquí puedes hacer lo que necesites con el valor seleccionado, como enviarlo a través de Livewire
+        });
+    </script>
 </div>
