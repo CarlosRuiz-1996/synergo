@@ -66,8 +66,9 @@ class ControlPagos extends Component
             ->whereBetween('c.Fecha', [$startDate, $endDate])
             ->where(function ($query) {
                 $query->where('c.TipoDeComprobante', 'LIKE', 'P')
-                    ->orWhere('c.TipoDeComprobante', 'LIKE', 'I');
-            })
+                    ->orWhere('c.TipoDeComprobante', 'LIKE', 'I')
+                    ;
+            })->where('conc.descripcion','LIKE','PEMEX MAGNA')
 
 
             ->select(
