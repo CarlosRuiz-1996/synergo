@@ -15,12 +15,26 @@ use WithPagination;
 public $fechainicio;
 public $fechafin;
 public $TipoCombustible;
+public $totalesValores;
+public $reportesSeleccion=0;
+public $EstacionSeleccionada="";
+
 public function render()
 {
     $estaciones=DB::table('EstacionesExcel')->get();
     $despachos=$this->buscar();
     $ventas=$this->ventasResumen();
-
+    if($this->TipoCombustible=='PEMEX MAGNA'){
+        $this->reportesSeleccion=1;   
+    }elseif($this->TipoCombustible=='PEMEX DIESEL'){
+        $this->reportesSeleccion=2;   
+    }elseif($this->TipoCombustible=='PEMEX PREMIUM'){
+        $this->reportesSeleccion=3;   
+    }else{
+        $this->reportesSeleccion=0;   
+    }
+    $this->totalesValores=$this->totales();
+    
     //dd($ventas);
      //$inicial=$this->buscarInventarioInicial();
      // Retorna la vista con los resultados de la consulta
@@ -29,10 +43,12 @@ public function render()
     //return view('livewire.resumen-compras');
 }
 public function buscar(){
-
+     
     // Realiza la consulta a la base de datos utilizando los filtros
-   
-// Establece las fechas de inicio y fin
+   if($this->EstacionSeleccionada=="" ||  $this->EstacionSeleccionada != 153){
+    return null;
+   }else{
+    // Establece las fechas de inicio y fin
     // Establece las fechas de inicio y fin
     $combustible = !empty($this->TipoCombustible) ? (array)$this->TipoCombustible : ['PEMEX MAGNA', 'PEMEX DIESEL', 'PEMEX PREMIUM'];  
     $startDate = $this->fechainicio ? Carbon::createFromFormat('Y-m-d', $this->fechainicio)->startOfDay() : Carbon::createFromDate(null, 4, 1)->startOfDay();
@@ -58,7 +74,7 @@ public function buscar(){
     // Retornar la vista o los datos paginados
     return $despachos;
 // Retornar la vista o los datos paginados
-
+    }
 
 }
 
@@ -153,6 +169,9 @@ public function exportarExcel()
 
 
 public function ventasResumen() {
+    if($this->EstacionSeleccionada=="" ||  $this->EstacionSeleccionada != 153){
+        return null;
+    }else{
     // Define combustible types or use provided ones
     $combustible = !empty($this->TipoCombustible) ? (array)$this->TipoCombustible : ['PEMEX MAGNA', 'PEMEX DIESEL', 'PEMEX PREMIUM'];
     
@@ -188,5 +207,62 @@ public function ventasResumen() {
         
     return $results;
 }
+}
+
+public function totales()
+{
+    // Definir las fechas de inicio y fin
+    $startDate = '2024-04-01';
+    $endDate = '2024-04-30';
+
+    // Consulta SQL
+    $query = "DECLARE @startDate DATE = ?;
+              DECLARE @endDate DATE = ?;
+
+              SELECT 
+                  CAST(con.descripcion AS NVARCHAR(MAX)) AS descripcion, 
+                  AVG(con.valorUnitario) AS PromedioValorUnitario,
+                  ISNULL(MAX(comgas.TotalCantidad), 0) AS TotalCantidad,
+                  ISNULL((
+                      SELECT SUM(vta.entregue - vta.recibi)
+                      FROM vtaGasolina vta
+                      INNER JOIN CatMangueras catm ON vta.NuManguera = catm.NuManguera
+                      INNER JOIN CatCombustibles ctcomb ON ctcomb.NuCombustible = catm.NuCombustible
+                      WHERE CAST(ctcomb.Descripcion AS NVARCHAR(MAX)) = CAST(con.descripcion AS NVARCHAR(MAX))
+                        AND CONVERT(DATE, vta.Fecha) BETWEEN @startDate AND @endDate
+                  ), 0) AS SumaEntregueRecibi
+              FROM 
+                  COMPROBANTE com
+              INNER JOIN 
+                  CONCEPTOS con ON con.idcomprobante = com.id
+              LEFT JOIN 
+                  (
+                      SELECT 
+                          SUM(com.Cantidad) AS TotalCantidad,
+                          ctcom.Descripcion 
+                      FROM 
+                          ComGasolina com 
+                      INNER JOIN 
+                          CatTanques ctta ON ctta.NuTanque = com.NuTanque 
+                      INNER JOIN 
+                          CatCombustibles ctcom ON ctcom.NuCombustible = ctta.NuCombustible
+                      GROUP BY 
+                          ctcom.Descripcion
+                  ) comgas ON CAST(con.descripcion AS NVARCHAR(MAX)) = comgas.Descripcion
+              WHERE 
+                  con.claveUnidad LIKE 'LTR'
+                  AND CONVERT(DATE, com.Fecha) BETWEEN @startDate AND @endDate
+              GROUP BY 
+                  CAST(con.descripcion AS NVARCHAR(MAX));";
+
+    // Ejecutar la consulta SQL
+    $resultados = DB::select($query, [$startDate, $endDate]);
+
+    // Retorna los resultados
+    return $resultados;
+}
+
+
+
 
 }

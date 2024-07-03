@@ -20,7 +20,7 @@
                     <!-- Campo de entrada para Estación de servicio -->
                     <div class="flex flex-col space-y-3">
                         <label for="estacion" class="text-white">Selecciona una estación de servicio</label>
-                        <select wire:model="estacionSeleccionada" id="estacion" name="estacion"
+                        <select wire:model="EstacionSeleccionada" id="estacion" name="estacion"
                                 class="p-2 border border-gray-300 rounded w-full"
                                 placeholder="Selecciona una estación">
                             <option value="">Selecciona una estación...</option>
@@ -66,39 +66,35 @@
                 <!-- Segunda columna -->
                 <div class="flex flex-col space-y-4">
                     <div class="flex items-center space-x-4">
-                        <div class="text-center flex flex-col items-center space-y-4 flex-grow">
-                            <div
-                                style="background-color: #34D399; color: #ffffff; display: flex; justify-content: center; align-items: center; width: 4rem; height: 4rem; border-radius: 50%;">
-                                <i class="fas fa-gas-pump text-4xl"></i>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <span class="text-white font-bold">$ 5456146.531651</span>
-                            </div>
-                        </div>
-                        <div class="text-center flex flex-col items-center space-y-4 flex-grow">
-                            <div
-                                style="background-color: #ad456a; color: #ffffff; display: flex; justify-content: center; align-items: center; width: 4rem; height: 4rem; border-radius: 50%;">
-                                <i class="fas fa-gas-pump text-4xl"></i>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <span class="text-white font-bold">$ 5456146.531651</span>
-                            </div>
-                        </div>
-                        <div class="text-center flex flex-col items-center space-y-4 flex-grow">
-                            <div
-                                style="background-color: #000000; color: #ffffff; display: flex; justify-content: center; align-items: center; width: 4rem; height: 4rem; border-radius: 50%;">
-                                <i class="fas fa-gas-pump text-4xl"></i>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <span class="text-white font-bold">$ 5456146.531651</span>
-                            </div>
-                        </div>
+                        <div class=" w-full overflow-x-auto shadow-md rounded-lg">
+                            <table class="w-full divide-y divide-gray-200 text-center">
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th class="border border-gray-200 px-4 py-1">GAS</th>
+                                        <th class="border border-gray-200 px-4 py-1">C/PROMEDIO</th>
+                                        <th class="border border-gray-200 px-4 py-1">VENTAS</th>
+                                        <th class="border border-gray-200 px-4 py-1">COMPRAS</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white">
+                                    @foreach($totalesValores as $resultado)
+                                    <tr>
+                                        <td class="border border-gray-200 px-4 py-1">{{ $resultado->descripcion }}</td>
+                                        <td class="border border-gray-200 px-4 py-1">{{ $resultado->PromedioValorUnitario }}</td>
+                                        <td class="border border-gray-200 px-4 py-1">{{ $resultado->TotalCantidad }}</td>
+                                        <td class="border border-gray-200 px-4 py-1">{{ $resultado->SumaEntregueRecibi }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                     </div>
+                </div>
                 </div>
             </div>
 
             <!-- Nueva sección: Inventario y Adquisición -->
             <h1 class="text-white mt-8">Compras</h1>
+            @if($despachos!=null)
             <div class="flex flex-col space-y-3 flex-grow pl-2">
                 <button
                     class="bg-blue-500 text-white py-2 mt-6 rounded hover:bg-blue-700 w-full" wire:click='exportarExcel'>Exportar Excel</button>
@@ -156,8 +152,14 @@
                     </table>
                 </div>
             </div>
+            @else
+            <div class="overflow-x-auto shadow-md rounded-lg bg-gray-100 text-center py-4">
+                sin datos que mostrar
+                </div>
+            @endif
             <!-- Nueva sección: Inventario y Adquisición -->
             <h1 class="text-white mt-8">Ventas</h1>
+            @if($despachos!=null)
             <div class="mt-2">
                 <div class="overflow-x-auto shadow-md rounded-lg">
                     <table class="w-full divide-y divide-gray-200">
@@ -210,6 +212,11 @@
                     </table>
                 </div>
             </div>
+            @else
+            <div class="overflow-x-auto shadow-md rounded-lg bg-gray-100 text-center  py-4">
+            sin datos que mostrar
+            </div>
+        @endif
             <div>
                 <!-- Aquí va tu contenido anterior, omitido por brevedad -->
 
@@ -224,19 +231,19 @@
                                 <tr>
                                     <th scope="col"
                                         class="px-6 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Detalle 1</th>
+                                        Reporte Consigna</th>
                                     <th scope="col"
                                         class="px-6 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Detalle 2</th>
+                                        Reporte Venta Consigna 2</th>
                                     <th scope="col"
                                         class="px-6 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Detalle 3</th>
+                                        Reporte Inv.Consigna</th>
                                     <th scope="col"
                                         class="px-6 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Detalle 4</th>
+                                        Reporte Venta S/Impuesto</th>
                                     <th scope="col"
                                         class="px-6 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Detalle 5</th>
+                                        Reporte Inv.Combustible</th>
                                 </tr>
                             </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
@@ -244,67 +251,97 @@
                                     <tr class="text-center">
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                             <div class="flex items-center justify-center space-x-3">
+                                                @if($reportesSeleccion==1)
                                                 <div class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
+                                                @elseif($reportesSeleccion==2)
                                                 <div class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
+                                                @elseif($reportesSeleccion==3)
                                                 <div class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
+                                                @else
+                                                  Sin Información para mostrar  
+                                                @endif
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             <div class="flex items-center justify-center space-x-3">
+                                                @if($reportesSeleccion==1)
                                                 <div class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
+                                                @elseif($reportesSeleccion==2)
                                                 <div class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
+                                                @elseif($reportesSeleccion==3)
                                                 <div class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
+                                                @else
+                                                  Sin Información para mostrar  
+                                                @endif
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                             <div class="flex items-center justify-center space-x-3">
+                                                @if($reportesSeleccion==1)
                                                 <div class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
+                                                @elseif($reportesSeleccion==2)
                                                 <div class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
+                                                @elseif($reportesSeleccion==3)
                                                 <div class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
+                                                @else
+                                                  Sin Información para mostrar  
+                                                @endif
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             <div class="flex items-center justify-center space-x-3">
+                                                @if($reportesSeleccion==1)
                                                 <div class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
+                                                @elseif($reportesSeleccion==2)
                                                 <div class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
+                                                @elseif($reportesSeleccion==3)
                                                 <div class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
+                                                @else
+                                                  Sin Información para mostrar  
+                                                @endif
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                             <div class="flex items-center justify-center space-x-3">
+                                                @if($reportesSeleccion==1)
                                                 <div class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
+                                                @elseif($reportesSeleccion==2)
                                                 <div class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
+                                                @elseif($reportesSeleccion==3)
                                                 <div class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
+                                                @else
+                                                  Sin Información para mostrar  
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>
