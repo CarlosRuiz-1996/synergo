@@ -125,16 +125,16 @@
         $valorComercializadora='';
         $sumaAcumulativa = $invInicial->Inv_Inicial;
         $totalcompras=0;
+        $totalventasTotal=0;
          // Inicializa la suma acumulativa con el valor inicial
     @endphp
         @foreach ($datosCompletos as $index => $grupo)
         @foreach ($grupo['datos'] as $dato)
         @php
-            
             $valorComercializadora ='Comercializadora '.$dato->descripcion;
             $totalcompras = (($dato->valorUnitario ?? 0) + ($dato->FLETE_SERVICIO ?? 0)) * (($dato->cantidad ?? 0) + ($dato->ComprasCantidad ?? 0));
             if($totalcompras>0){
-              $costopromedioreal=($valorcotoinicial+$totalcompras)/$sumaAcumulativa;
+              $costopromedioreal=($valorcotoinicial+$totalcompras-$totalventasTotal)/$sumaAcumulativa;
               
             }else{
                 $costopromedioreal=$costopromedioreal;
@@ -172,7 +172,8 @@
             
         </tr>
         @php
-        $sumaAcumulativa += $dato->cantidad;
+        
+        $sumaAcumulativa += $dato->cantidad+$dato->ComprasCantidad;
         @endphp
         @endforeach
         
@@ -181,7 +182,7 @@
         @if(\Carbon\Carbon::parse($index)->format('Y-m-d')==\Carbon\Carbon::parse($venta->Fecha)->format('Y-m-d'))
         @php
         
-        $sumaAcumulativa = $sumaAcumulativa- $venta->Venta;
+        
         $totalcompras=0;
         if($totalcompras>0){
               $costopromedioreal=($valorcotoinicial+$totalcompras)/$sumaAcumulativa;
@@ -221,6 +222,10 @@
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
         </tr>
+        @php
+        $totalventasTotal=$venta->Venta;
+       $sumaAcumulativa = $sumaAcumulativa- $venta->Venta;
+        @endphp
         
        
         @endif
