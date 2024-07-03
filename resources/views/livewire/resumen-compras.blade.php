@@ -380,7 +380,7 @@
         </x-slot>
     
         <x-slot name="content">
-            @livewire('compras-consignas', ['valorModal' => 2])
+            @livewire('compras-consignas', ['valorModal' => 3])
         </x-slot>
     
         <x-slot name="footer">
@@ -395,7 +395,7 @@
         </x-slot>
     
         <x-slot name="content">
-            @livewire('compras-consignas', ['valorModal' => 3])
+            @livewire('compras-consignas', ['valorModal' => 2])
         </x-slot>
     
         <x-slot name="footer">
