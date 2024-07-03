@@ -211,10 +211,8 @@ public function ventasResumen() {
 
 public function totales()
 {
-    // Definir las fechas de inicio y fin
-    $startDate = '2024-04-01';
-    $endDate = '2024-04-30';
-
+    $startDate = $this->fechainicio ? Carbon::createFromFormat('Y-m-d', $this->fechainicio)->startOfDay() : Carbon::createFromDate(null, 4, 1)->startOfDay();
+    $endDate = $this->fechafin ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay() : Carbon::createFromDate(null, 4, 30)->endOfDay();
     // Consulta SQL
     $query = "DECLARE @startDate DATE = ?;
               DECLARE @endDate DATE = ?;
