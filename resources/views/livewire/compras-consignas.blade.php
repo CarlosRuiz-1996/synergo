@@ -11,7 +11,7 @@
                  <input type="date" placeholder="Fecha final" class="mr-2" wire:model="fechafin">
                  <button wire:click='buscar' class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Aplicar Filtro</button>
                  <button wire:click="exportarExcel" style="background-color: #15803d" class="text-white font-bold py-2 px-4 rounded" >
-                     Exportar a Excel {{$valorModal}}
+                     Exportar a Excel
                  </button>
              </div>
          <div class="overflow-x-auto bg-white rounded-lg shadow-md">
