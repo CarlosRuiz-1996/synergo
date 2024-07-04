@@ -18,6 +18,7 @@
                 <!-- Aumenté el gap a 6 para mayor separación -->
                 <div class="flex flex-col space-y-4">
                     <!-- Campo de entrada para Estación de servicio -->
+                    <div wire:ignore>
                     <div class="flex flex-col space-y-3">
                         <label for="estacion" class="text-white">Selecciona una estación de servicio</label>
                         <select wire:model="estacionSeleccionada" id="estacion" name="estacion"
@@ -30,6 +31,7 @@
                             @endforeach
                         </select>
                     </div>
+                </div>
 
                     <!-- Campos de entrada para fecha y botón de búsqueda -->
                     <div class="flex space-x-1 items-center">
@@ -167,7 +169,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             @if ($detalle->TipoDeComprobante != 'P')
                                                 <button
-                                                    wire:click="mostrarPdf('{{ asset('storage/archivos_descomprimidos/' . $detalle->estatus . '@1000000000XX0.pdf') }}')"
+                                                    wire:click="mostrarPdf('{{ asset('storage/archivos_descomprimidos/' . $detalle->estatus . '@1000000000xx0.pdf') }}')"
                                                     class="text-blue-500 hover:text-blue-700"><span class="mr-1">
                                                         <i class="fas fa-file-pdf text-red-500"></i>
                                                         <!-- Icono de PDF -->
@@ -374,5 +376,15 @@
                
         @endslot
     </x-dialog-modal>
-
+    <script>
+        $(document).ready(function(){
+            $('#estacion').select2();
+        }
+        );
+        $('#estacion').on('change', function() {
+            var estacionSeleccionada = $(this).val();
+            @this.set('estacionSeleccionada',this.value)
+            // Aquí puedes hacer lo que necesites con el valor seleccionado, como enviarlo a través de Livewire
+        });
+    </script>
 </div>
