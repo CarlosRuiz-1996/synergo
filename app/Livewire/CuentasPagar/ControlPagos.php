@@ -31,7 +31,7 @@ class ControlPagos extends Component
 
             $this->monto();
         } else {
-            $estaciones = [];
+            $estaciones = DB::table('EstacionesExcel')->orderBy('NombreEstacion', 'ASC')->get();
             $detalles = [];
         }
         return view('livewire.cuentas-pagar.control-pagos', compact('estaciones', 'detalles'));
