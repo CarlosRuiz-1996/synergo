@@ -27,7 +27,7 @@
                             <option value="">Selecciona una estación...</option>
                             @foreach ($estaciones as $estacion)
                                 {{-- @if ($estacion->IdEstacion == 153) --}}
-                                <option value="{{ $estacion->IdEstacion }}">{{ $estacion->NombreEstacion }}</option>
+                                <option value="{{ $estacion->IdEstacion }}">{{ $estacion->IdEstacion . ' - ' .$estacion->NombreEstacion }}</option>
                                 {{-- @endif --}}
                             @endforeach
                         </select>
