@@ -236,7 +236,7 @@
                                         Reporte Consigna</th>
                                     <th scope="col"
                                         class="px-6 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Reporte Venta Consigna 2</th>
+                                        Reporte Venta Consigna</th>
                                     <th scope="col"
                                         class="px-6 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider">
                                         Reporte Inv.Consigna</th>
@@ -273,15 +273,15 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             <div class="flex items-center justify-center space-x-3">
                                                 @if($reportesSeleccion==1)
-                                                <div  wire:click="abrirModal(1)" class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModalVentasConsignas(1)" class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @elseif($reportesSeleccion==3)
-                                                <div  wire:click="abrirModal(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModalVentasConsignas(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @elseif($reportesSeleccion==2)
-                                                <div  wire:click="abrirModal(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModalVentasConsignas(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @else
@@ -405,6 +405,54 @@
         </x-slot>
     </x-dialog-modal>
 
+<!--vntas consignas-->
+
+<x-dialog-modal id="modal-compras" maxWidth="2xl" wire:model="showModalventaConsigna">
+    <x-slot name="title" class="bg-gray-500">
+        Reporte Ventas Consigna
+    </x-slot>
+
+    <x-slot name="content">
+        @livewire('reportes.ventas-consignas', ['valorModal' => 1])
+    </x-slot>
+
+    <x-slot name="footer">
+        <button x-on:click="show = false" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+            Cerrar
+        </button>
+    </x-slot>
+</x-dialog-modal>
+<!--modal 2-->
+<x-dialog-modal id="modal-compras2" maxWidth="2xl" wire:model="showModalventaConsigna2">
+    <x-slot name="title" class="bg-gray-500">
+        Reporte Ventas Consigna
+    </x-slot>
+
+    <x-slot name="content">
+        @livewire('reportes.ventas-consignas', ['valorModal' => 3])
+    </x-slot>
+
+    <x-slot name="footer">
+        <button x-on:click="show = false" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+            Cerrar
+        </button>
+    </x-slot>
+</x-dialog-modal>
+<x-dialog-modal id="modal-compras3" maxWidth="2xl" wire:model="showModalventaConsigna3">
+    <x-slot name="title" class="bg-gray-500">
+        Reporte Ventas Consigna
+    </x-slot>
+
+    <x-slot name="content">
+        @livewire('reportes.ventas-consignas', ['valorModal' => 2])
+    </x-slot>
+
+    <x-slot name="footer">
+        <button x-on:click="show = false" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+            Cerrar
+        </button>
+    </x-slot>
+</x-dialog-modal>
     <script>
         $(document).ready(function(){
             $('#EstacionSeleccionada').select2();

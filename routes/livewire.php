@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\CuentasPagar\ControlPagos;
+use App\Livewire\Reportes\VentasConsignas;
 use Livewire\Livewire;
 use Illuminate\Support\Facades\Route;
 
@@ -19,5 +20,8 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('cuentas/pagar', ControlPagos::class)->name('cuentas.pagar');
+    Route::get('reportes/reporteventasconsigna', VentasConsignas::class)->name('reportes.ventasconsignas');
+
+    
 
 });

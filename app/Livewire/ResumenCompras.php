@@ -22,6 +22,10 @@ public $valorParaPasar=0;
 public $showModal = false;
 public $showModal2 = false;
 public $showModal3 = false;
+public $showModalventaConsigna= false;
+public $showModalventaConsigna2= false;
+public $showModalventaConsigna3= false;
+
 
 public function abrirModal($valor)
 {
@@ -35,6 +39,21 @@ public function abrirModal($valor)
         $this->showModal = false; 
         $this->showModal2 = false; 
         $this->showModal3 = false;  
+    }
+   
+}
+public function abrirModalVentasConsignas($valor)
+{
+    if($valor==1){
+        $this->showModalventaConsigna = true; 
+    }elseif($valor==3){
+        $this->showModalventaConsigna2 = true;  
+    }elseif($valor==2){
+        $this->showModalventaConsigna3 = true; 
+    }else{
+        $this->showModalventaConsigna = false; 
+        $this->showModalventaConsigna2 = false; 
+        $this->showModalventaConsigna3 = false;  
     }
    
 }
@@ -183,6 +202,12 @@ public function exportarExcel()
         ->whereIn('NuCombustible', $nuCombustibles)
         ->whereBetween('Fecha', [$startDate->toDateTimeString(), $endDate->toDateTimeString()])
         ->first();
+        if (is_null($results)) {
+            $results = (object) [
+                'Inv_Inicial' => 1,
+                // agrega aquí otras columnas que necesites con valores por defecto
+            ];
+        }
         $nombredoc = 'Resumen_' . $startDate->format('Y-m-d') . '_to_' . $endDate->format('Y-m-d') . '.xlsx';
     return Excel::download(new ExportResumenCompras($despachos, $startDate->toDateString(), $endDate->toDateString(), $results,$ventas,$CostoPromedio), $nombredoc);
 }
