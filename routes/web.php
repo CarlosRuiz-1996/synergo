@@ -17,7 +17,6 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-});
 
 Route::get('/reportes/cajas', [CajasController::class, 'reporte'])->name('reporte.cajas');
 Route::get('/reportes/ventas', [CajasController::class, 'reporteVentas'])->name('reporte.ventas');
@@ -29,5 +28,8 @@ Route::post('/procesar-archivos', [FacturaController::class,'procesarArchivos'])
 
 
 Route::get('/descargaComprobante', [descargarComprobateXmloPDF::class, 'descargarComprobateXmloPDF'])->name('reporte.descargarComprobateXmloPDF');
+
+});
+
 // livewire
  include('livewire.php');

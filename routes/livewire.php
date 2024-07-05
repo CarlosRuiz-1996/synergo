@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Catalogos\Estaciones;
 use App\Livewire\CuentasPagar\ControlPagos;
 use Livewire\Livewire;
 use Illuminate\Support\Facades\Route;
@@ -19,5 +20,6 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('cuentas/pagar', ControlPagos::class)->name('cuentas.pagar');
+    Route::get('catalogos/estaciones', Estaciones::class)->name('catalogos.estaciones');
 
 });

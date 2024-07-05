@@ -1,4 +1,5 @@
 <div>
+ 
     <div class="flex justify-center min-h-screen bg-cover bg-center"
         style="background-image: url('{{ asset('img/bg.png') }}');">
         <div class="w-full max-w-lg"
@@ -18,18 +19,18 @@
                 <!-- Aumenté el gap a 6 para mayor separación -->
                 <div class="flex flex-col space-y-4">
                     <!-- Campo de entrada para Estación de servicio -->
-                    <div class="flex flex-col space-y-3">
-                        <label for="estacion" class="text-white">Selecciona una estación de servicio</label>
-                        <select wire:model="estacionSeleccionada" id="estacion" name="estacion"
-                            class="p-2 border border-gray-300 rounded w-full" placeholder="Selecciona una estación">
-                            <option value="">Selecciona una estación...</option>
-                            @foreach ($estaciones as $estacion)
-                                {{-- @if ($estacion->IdEstacion == 153) --}}
-                                <option value="{{ $estacion->IdEstacion }}">{{ $estacion->NombreEstacion }}</option>
-                                {{-- @endif --}}
-                            @endforeach
-                        </select>
-                    </div>
+                        <div class="flex flex-col space-y-3">
+                            <label for="estacion" class="text-white">Selecciona una estación de servicio</label>
+                            <select wire:model="EstacionSeleccionada" id="EstacionSeleccionada"
+                                name="EstacionSeleccionada" class="p-2 border border-gray-300 rounded w-full"
+                                placeholder="Selecciona una estación">
+                                <option value="">Selecciona una estación...</option>
+                                @foreach ($estaciones as $estacion)
+                                    <option value="{{ $estacion->IdEstacion }}">
+                                        {{ $estacion->estacion }}--{{ $estacion->NombreEstacion }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
                     <!-- Campos de entrada para fecha y botón de búsqueda -->
                     <div class="flex space-x-1 items-center">
@@ -178,7 +179,6 @@
                                             <button wire:click='descargarXML({{ $detalle->id }})'>
                                                 <span class="mr-1">
                                                     <i class="fas fa-file-code text-green-500"></i>
-                                                    <!-- Icono de XML -->
                                                 </span>
                                             </button>
                                         </td>
@@ -255,124 +255,126 @@
     <x-dialog-modal wire:model.live="open">
         @slot('title')
             <div class="px-6 py-4 items-center  bg-gray-100 overflow-x-auto shadow-md sm:rounded-lg">
-                <h1>Detalles de estación 
+                <h1>Detalles de estación
                 </h1>
             </div>
         @endslot
         @slot('content')
 
-        @if ($estacion_detalle)
-        <div class="grid grid-cols-2 gap-6">
-            <div class="col-span-1">
-                <div class="relative z-0 w-full group">
-                    <h2><b>Estación:{{ $estacion_detalle->estacion }}</b></h2>
-                </div>
-            </div>
-            <div class="col-span-1">
-                <div class="relative z-0 w-full group">
-                    <h2><b>Numero Destino:{{ $estacion_detalle->NumeroDestino }}</b></h2>
+            @if ($estacion_detalle)
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="col-span-1">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>Estación:{{ $estacion_detalle->estacion }}</b></h2>
+                        </div>
+                    </div>
+                    <div class="col-span-1">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>Numero Destino:{{ $estacion_detalle->NumeroDestino }}</b></h2>
 
-                </div>
-            </div>
-            <div class="col-span-2">
-                <div class="relative z-0 w-full group">
-                    <h2><b>PermisoCRE:{{ $estacion_detalle->PermisoCRE }}</b></h2>
+                        </div>
+                    </div>
+                    <div class="col-span-2">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>PermisoCRE:{{ $estacion_detalle->PermisoCRE }}</b></h2>
 
-                </div>
-            </div>
-            <div class="col-span-2">
-                <div class="relative z-0 w-full group">
-                    <h2><b>SIIC:{{ $estacion_detalle->SIIC }}</b></h2>
+                        </div>
+                    </div>
+                    <div class="col-span-2">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>SIIC:{{ $estacion_detalle->SIIC }}</b></h2>
 
-                </div>
-            </div>
-            <div class="col-span-2">
-                <div class="relative z-0 w-full group">
-                    <h2><b>Nombre Estacion:{{ $estacion_detalle->NombreEstacion }}</b></h2>
+                        </div>
+                    </div>
+                    <div class="col-span-2">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>Nombre Estacion:{{ $estacion_detalle->NombreEstacion }}</b></h2>
 
-                </div>
-            </div>
-            <div class="col-span-2">
-                <div class="relative z-0 w-full group">
-                    <h2><b>RFC:{{ $estacion_detalle->RFC }}</b></h2>
+                        </div>
+                    </div>
+                    <div class="col-span-2">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>RFC:{{ $estacion_detalle->RFC }}</b></h2>
 
-                </div>
-            </div>
-            <div class="col-span-2">
-                <div class="relative z-0 w-full group">
-                    <h2><b>Direccion Fiscal:{{ $estacion_detalle->DireccionFiscal }}</b></h2>
+                        </div>
+                    </div>
+                    <div class="col-span-2">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>Direccion Fiscal:{{ $estacion_detalle->DireccionFiscal }}</b></h2>
 
-                </div>
-            </div>
-            <div class="col-span-2">
-                <div class="relative z-0 w-full group">
-                    <h2><b>Correo Analista JR:{{ $estacion_detalle->CorreoAnalistaJR }}</b></h2>
+                        </div>
+                    </div>
+                    <div class="col-span-2">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>Correo Analista JR:{{ $estacion_detalle->CorreoAnalistaJR }}</b></h2>
 
-                </div>
-            </div>
-            <div class="col-span-2">
-                <div class="relative z-0 w-full group">
-                    <h2><b>Contador:{{ $estacion_detalle->Contador }}</b></h2>
+                        </div>
+                    </div>
+                    <div class="col-span-2">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>Contador:{{ $estacion_detalle->Contador }}</b></h2>
 
-                </div>
-            </div>
-            <div class="col-span-2">
-                <div class="relative z-0 w-full group">
-                    <h2><b>Correo Contador:{{ $estacion_detalle->CorreoContador }}</b></h2>
+                        </div>
+                    </div>
+                    <div class="col-span-2">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>Correo Contador:{{ $estacion_detalle->CorreoContador }}</b></h2>
 
-                </div>
-            </div>
-            <div class="col-span-2">
-                <div class="relative z-0 w-full group">
-                    <h2><b>Analista CtaX Pagar:{{ $estacion_detalle->AnalistaCtaXPagar }}</b></h2>
+                        </div>
+                    </div>
+                    <div class="col-span-2">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>Analista CtaX Pagar:{{ $estacion_detalle->AnalistaCtaXPagar }}</b></h2>
 
-                </div>
-            </div>
-            <div class="col-span-2">
-                <div class="relative z-0 w-full group">
-                    <h2><b>Correo CXP:{{ $estacion_detalle->CorreoCXP }}</b></h2>
+                        </div>
+                    </div>
+                    <div class="col-span-2">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>Correo CXP:{{ $estacion_detalle->CorreoCXP }}</b></h2>
 
-                </div>
-            </div>
-            <div class="col-span-2">
-                <div class="relative z-0 w-full group">
-                    <h2><b>Analista CtaX Cobrar:{{ $estacion_detalle->AnalistaCtaXCobrar }}</b></h2>
+                        </div>
+                    </div>
+                    <div class="col-span-2">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>Analista CtaX Cobrar:{{ $estacion_detalle->AnalistaCtaXCobrar }}</b></h2>
 
-                </div>
-            </div>
-            <div class="col-span-2">
-                <div class="relative z-0 w-full group">
-                    <h2><b>Correo CXC:{{ $estacion_detalle->CorreoCXC }}</b></h2>
+                        </div>
+                    </div>
+                    <div class="col-span-2">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>Correo CXC:{{ $estacion_detalle->CorreoCXC }}</b></h2>
 
-                </div>
-            </div>
-            <div class="col-span-2">
-                <div class="relative z-0 w-full group">
-                    <h2><b>Secretaria:{{ $estacion_detalle->Secretaria }}</b></h2>
+                        </div>
+                    </div>
+                    <div class="col-span-2">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>Secretaria:{{ $estacion_detalle->Secretaria }}</b></h2>
 
-                </div>
-            </div>
-            <div class="col-span-2">
-                <div class="relative z-0 w-full group">
-                    <h2><b>Correo SCA:{{ $estacion_detalle->CorreoSCA }}</b></h2>
+                        </div>
+                    </div>
+                    <div class="col-span-2">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>Correo SCA:{{ $estacion_detalle->CorreoSCA }}</b></h2>
 
-                </div>
-            </div>
-            <div class="col-span-2">
-                <div class="relative z-0 w-full group">
-                    <h2><b>Descarga Contra cargos:{{ $estacion_detalle->DescargaContracargos }}</b></h2>
+                        </div>
+                    </div>
+                    <div class="col-span-2">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>Descarga Contra cargos:{{ $estacion_detalle->DescargaContracargos }}</b></h2>
 
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        @endif
-            
+            @endif
+
 
         @endslot
         @slot('footer')
             <x-secondary-button wire:click="clean">Cerrar</x-secondary-button>
-               
         @endslot
     </x-dialog-modal>
 
+
 </div>
+
+

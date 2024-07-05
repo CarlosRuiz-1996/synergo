@@ -2,7 +2,7 @@
     <div class="flex justify-center min-h-screen bg-cover bg-center"
         style="background-image: url('{{ asset('img/bg.png') }}');">
         <div class="w-full max-w-lg"
-        style="width: 100%; 
+            style="width: 100%; 
                max-width: 100%; 
                background-color: rgba(157, 175, 191, 0.483); 
                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
@@ -19,18 +19,19 @@
                 <div class="flex flex-col space-y-4">
                     <!-- Campo de entrada para Estación de servicio -->
                     <div wire:ignore>
-                    <div class="flex flex-col space-y-3">
-                        <label for="estacion" class="text-white">Selecciona una estación de servicio</label>
-                        <select wire:model="EstacionSeleccionada" id="EstacionSeleccionada" name="EstacionSeleccionada"
-                                class="p-2 border border-gray-300 rounded w-full"
+                        <div class="flex flex-col space-y-3">
+                            <label for="estacion" class="text-white">Selecciona una estación de servicio</label>
+                            <select wire:model="EstacionSeleccionada" id="EstacionSeleccionada"
+                                name="EstacionSeleccionada" class="p-2 border border-gray-300 rounded w-full"
                                 placeholder="Selecciona una estación">
-                            <option value="">Selecciona una estación...</option>
-                            @foreach($estaciones as $estacion)
-                                <option value="{{ $estacion->IdEstacion }}">{{ $estacion->estacion }}--{{ $estacion->NombreEstacion }}</option>
-                            @endforeach
-                        </select>
+                                <option value="">Selecciona una estación...</option>
+                                @foreach ($estaciones as $estacion)
+                                    <option value="{{ $estacion->IdEstacion }}">
+                                        {{ $estacion->estacion }}--{{ $estacion->NombreEstacion }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                </div>
 
                     <!-- Campos de entrada para fecha y botón de búsqueda -->
                     <div class="flex space-x-4 items-center">
@@ -49,7 +50,8 @@
                         </div>
                         <div class="flex flex-col space-y-3 flex-grow px-3">
                             <label for="TipoCombustible" class="text-white">Tipo de combustible</label>
-                            <select id="TipoCombustible" wire:model='TipoCombustible' class="p-2 border border-gray-300 rounded w-full">
+                            <select id="TipoCombustible" wire:model='TipoCombustible'
+                                class="p-2 border border-gray-300 rounded w-full">
                                 <option value="">Seleccione</option>
                                 <option value="PEMEX DIESEL">Pemex Diesel</option>
                                 <option value="PEMEX MAGNA">Pemex Magna</option>
@@ -58,8 +60,8 @@
                         </div>
                         <!-- Botón de búsqueda -->
                         <div class="flex flex-col space-y-3 flex-grow pl-2">
-                            <button
-                                class="bg-blue-500 text-white py-2 mt-6 rounded hover:bg-blue-700 w-full" wire:click='buscar'>Buscar</button>
+                            <button class="bg-blue-500 text-white py-2 mt-6 rounded hover:bg-blue-700 w-full"
+                                wire:click='buscar'>Buscar</button>
                         </div>
                     </div>
                 </div>
@@ -78,147 +80,163 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white">
-                                    @foreach($totalesValores as $resultado)
-                                    <tr>
-                                        <td class="border border-gray-200 px-2 py-1">{{ $resultado->descripcion }}</td>
-                                        <td class="border border-gray-200 px-2 py-1">{{ $resultado->PromedioValorUnitario }}</td>
-                                        <td class="border border-gray-200 px-2 py-1">{{ $resultado->TotalCantidad }}</td>
-                                        <td class="border border-gray-200 px-2 py-1">{{ $resultado->SumaEntregueRecibi }}</td>
-                                    </tr>
+                                    @foreach ($totalesValores as $resultado)
+                                        <tr>
+                                            <td class="border border-gray-200 px-2 py-1">{{ $resultado->descripcion }}
+                                            </td>
+                                            <td class="border border-gray-200 px-2 py-1">
+                                                {{ $resultado->PromedioValorUnitario }}</td>
+                                            <td class="border border-gray-200 px-2 py-1">{{ $resultado->TotalCantidad }}
+                                            </td>
+                                            <td class="border border-gray-200 px-2 py-1">
+                                                {{ $resultado->SumaEntregueRecibi }}</td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-                
+
             </div>
 
             <!-- Nueva sección: Inventario y Adquisición -->
             <h1 class="text-white mt-8">Compras</h1>
-            @if($despachos!=null)
-            <div class="flex flex-col space-y-3 flex-grow pl-2">
-                <button
-                    class="bg-blue-500 text-white py-2 mt-6 rounded hover:bg-blue-700 w-full" wire:click='exportarExcel'>Exportar Excel</button>
-            </div>
-            <div class="mt-2">
-                <div class="overflow-x-auto shadow-md rounded-lg">
-                    <table class="w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-100">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                    Producto
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                    Precio
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                    Cantidad
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                    Fecha
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                    Flete/Servicio
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                    Total con Flete
-                                </th>
-                            </tr>
-                        </thead>                 
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach($despachos as $despacho)
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {{ $despacho->descripcion }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ number_format($despacho->valorUnitario, 6) }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ number_format($despacho->cantidad, 2) }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ \Carbon\Carbon::parse($despacho->Fecha)->format('Y-m-d') }}
-
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ number_format($despacho->FLETE_SERVICIO, 6) }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ number_format($despacho->TOTAL_CON_FLETE, 6) }}
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+            @if ($despachos != null)
+                <div class="flex flex-col space-y-3 flex-grow pl-2">
+                    <button class="bg-blue-500 text-white py-2 mt-6 rounded hover:bg-blue-700 w-full"
+                        wire:click='exportarExcel'>Exportar Excel</button>
                 </div>
-            </div>
+                <div class="mt-2">
+                    <div class="overflow-x-auto shadow-md rounded-lg">
+                        <table class="w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                        Producto
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                        Precio
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                        Cantidad
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                        Fecha
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                        Flete/Servicio
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                        Total con Flete
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                @foreach ($despachos as $despacho)
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                            {{ $despacho->descripcion }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {{ number_format($despacho->valorUnitario, 6) }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {{ number_format($despacho->cantidad, 2) }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {{ \Carbon\Carbon::parse($despacho->Fecha)->format('Y-m-d') }}
+
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {{ number_format($despacho->FLETE_SERVICIO, 6) }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {{ number_format($despacho->TOTAL_CON_FLETE, 6) }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             @else
-            <div class="overflow-x-auto shadow-md rounded-lg bg-gray-100 text-center py-4">
-                sin datos que mostrar
+                <div class="overflow-x-auto shadow-md rounded-lg bg-gray-100 text-center py-4">
+                    sin datos que mostrar
                 </div>
             @endif
             <!-- Nueva sección: Inventario y Adquisición -->
             <h1 class="text-white mt-8">Ventas</h1>
-            @if($despachos!=null)
-            <div class="mt-2">
-                <div class="overflow-x-auto shadow-md rounded-lg">
-                    <table class="w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-100">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                    Producto
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                    Fecha
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                  Venta
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                    Precio Ventas
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                    Jarras
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                    Jarras/Consigna
-                                </th>
-                            </tr>
-                        </thead>                 
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach($ventas as $venta)
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {{ $venta->Descripcion }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ \Carbon\Carbon::parse($venta->Fecha)->format('Y-m-d') }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $venta->Venta }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ number_format($venta->precioventa, 2) }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ number_format($venta->Jarras, 2) }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $venta->JarrasConsigna }}
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+            @if ($despachos != null)
+                <div class="mt-2">
+                    <div class="overflow-x-auto shadow-md rounded-lg">
+                        <table class="w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                        Producto
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                        Fecha
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                        Venta
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                        Precio Ventas
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                        Jarras
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                        Jarras/Consigna
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                @foreach ($ventas as $venta)
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                            {{ $venta->Descripcion }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {{ \Carbon\Carbon::parse($venta->Fecha)->format('Y-m-d') }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {{ $venta->Venta }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {{ number_format($venta->precioventa, 2) }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {{ number_format($venta->Jarras, 2) }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {{ $venta->JarrasConsigna }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
             @else
-            <div class="overflow-x-auto shadow-md rounded-lg bg-gray-100 text-center  py-4">
-            sin datos que mostrar
-            </div>
-        @endif
+                <div class="overflow-x-auto shadow-md rounded-lg bg-gray-100 text-center  py-4">
+                    sin datos que mostrar
+                </div>
+            @endif
             <div>
                 <!-- Aquí va tu contenido anterior, omitido por brevedad -->
 
@@ -248,107 +266,122 @@
                                         Reporte Inv.Combustible</th>
                                 </tr>
                             </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    <!-- Ejemplo de una fila de datos -->
-                                    <tr class="text-center">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            <div class="flex items-center justify-center space-x-3">
-                                                @if($reportesSeleccion==1)
-                                                <div wire:click="abrirModal(1)" class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <!-- Ejemplo de una fila de datos -->
+                                <tr class="text-center">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        <div class="flex items-center justify-center space-x-3">
+                                            @if ($reportesSeleccion == 1)
+                                                <div wire:click="abrirModal(1)" class="ml-2"
+                                                    style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
-                                                @elseif($reportesSeleccion==3)
-                                                <div wire:click="abrirModal(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                            @elseif($reportesSeleccion == 3)
+                                                <div wire:click="abrirModal(3)" class="ml-2"
+                                                    style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
-                                                @elseif($reportesSeleccion==2)
-                                                <div wire:click="abrirModal(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                            @elseif($reportesSeleccion == 2)
+                                                <div wire:click="abrirModal(2)" class="ml-2"
+                                                    style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
-                                                @else
-                                                  Sin Información para mostrar  
-                                                @endif
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            <div class="flex items-center justify-center space-x-3">
-                                                @if($reportesSeleccion==1)
-                                                <div  wire:click="abrirModal(1)" class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                            @else
+                                                Sin Información para mostrar
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <div class="flex items-center justify-center space-x-3">
+                                            @if ($reportesSeleccion == 1)
+                                                <div wire:click="abrirModal(1)" class="ml-2"
+                                                    style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
-                                                @elseif($reportesSeleccion==3)
-                                                <div  wire:click="abrirModal(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                            @elseif($reportesSeleccion == 3)
+                                                <div wire:click="abrirModal(3)" class="ml-2"
+                                                    style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
-                                                @elseif($reportesSeleccion==2)
-                                                <div  wire:click="abrirModal(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                            @elseif($reportesSeleccion == 2)
+                                                <div wire:click="abrirModal(2)" class="ml-2"
+                                                    style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
-                                                @else
-                                                  Sin Información para mostrar  
-                                                @endif
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            <div class="flex items-center justify-center space-x-3">
-                                                @if($reportesSeleccion==1)
-                                                <div  wire:click="abrirModal(1)" class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                            @else
+                                                Sin Información para mostrar
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        <div class="flex items-center justify-center space-x-3">
+                                            @if ($reportesSeleccion == 1)
+                                                <div wire:click="abrirModal(1)" class="ml-2"
+                                                    style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
-                                                @elseif($reportesSeleccion==3)
-                                                <div  wire:click="abrirModal(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                            @elseif($reportesSeleccion == 3)
+                                                <div wire:click="abrirModal(3)" class="ml-2"
+                                                    style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
-                                                @elseif($reportesSeleccion==2)
-                                                <div  wire:click="abrirModal(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                            @elseif($reportesSeleccion == 2)
+                                                <div wire:click="abrirModal(2)" class="ml-2"
+                                                    style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
-                                                @else
-                                                  Sin Información para mostrar  
-                                                @endif
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            <div class="flex items-center justify-center space-x-3">
-                                                @if($reportesSeleccion==1)
-                                                <div  wire:click="abrirModal(1)" class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                            @else
+                                                Sin Información para mostrar
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <div class="flex items-center justify-center space-x-3">
+                                            @if ($reportesSeleccion == 1)
+                                                <div wire:click="abrirModal(1)" class="ml-2"
+                                                    style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
-                                                @elseif($reportesSeleccion==3)
-                                                <div  wire:click="abrirModal(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                            @elseif($reportesSeleccion == 3)
+                                                <div wire:click="abrirModal(3)" class="ml-2"
+                                                    style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
-                                                @elseif($reportesSeleccion==2)
-                                                <div  wire:click="abrirModal(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                            @elseif($reportesSeleccion == 2)
+                                                <div wire:click="abrirModal(2)" class="ml-2"
+                                                    style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
-                                                @else
-                                                  Sin Información para mostrar  
-                                                @endif
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            <div class="flex items-center justify-center space-x-3">
-                                                @if($reportesSeleccion==1)
-                                                <div  wire:click="abrirModal(1)" class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                            @else
+                                                Sin Información para mostrar
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        <div class="flex items-center justify-center space-x-3">
+                                            @if ($reportesSeleccion == 1)
+                                                <div wire:click="abrirModal(1)" class="ml-2"
+                                                    style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
-                                                @elseif($reportesSeleccion==3)
-                                                <div  wire:click="abrirModal(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                            @elseif($reportesSeleccion == 3)
+                                                <div wire:click="abrirModal(3)" class="ml-2"
+                                                    style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
-                                                @elseif($reportesSeleccion==2)
-                                                <div  wire:click="abrirModal(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                            @elseif($reportesSeleccion == 2)
+                                                <div wire:click="abrirModal(2)" class="ml-2"
+                                                    style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
-                                                @else
-                                                  Sin Información para mostrar  
-                                                @endif
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <!-- Puedes agregar más filas de datos según sea necesario -->
-                                </tbody>                        
+                                            @else
+                                                Sin Información para mostrar
+                                            @endif
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Puedes agregar más filas de datos según sea necesario -->
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -362,13 +395,14 @@
         <x-slot name="title" class="bg-gray-500">
             Reporte Consigna
         </x-slot>
-    
+
         <x-slot name="content">
             @livewire('compras-consignas', ['valorModal' => 1])
         </x-slot>
-    
+
         <x-slot name="footer">
-            <button x-on:click="show = false" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+            <button x-on:click="show = false"
+                class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                 Cerrar
             </button>
         </x-slot>
@@ -378,13 +412,14 @@
         <x-slot name="title" class="bg-gray-500">
             Reporte Consigna
         </x-slot>
-    
+
         <x-slot name="content">
             @livewire('compras-consignas', ['valorModal' => 3])
         </x-slot>
-    
+
         <x-slot name="footer">
-            <button x-on:click="show = false" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+            <button x-on:click="show = false"
+                class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                 Cerrar
             </button>
         </x-slot>
@@ -393,26 +428,26 @@
         <x-slot name="title" class="bg-gray-500">
             Reporte Consigna
         </x-slot>
-    
+
         <x-slot name="content">
             @livewire('compras-consignas', ['valorModal' => 2])
         </x-slot>
-    
+
         <x-slot name="footer">
-            <button x-on:click="show = false" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+            <button x-on:click="show = false"
+                class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                 Cerrar
             </button>
         </x-slot>
     </x-dialog-modal>
 
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
             $('#EstacionSeleccionada').select2();
-        }
-        );
+        });
         $('#EstacionSeleccionada').on('change', function() {
             var estacionSeleccionada = $(this).val();
-            @this.set('EstacionSeleccionada',this.value)
+            @this.set('EstacionSeleccionada', this.value)
             // Aquí puedes hacer lo que necesites con el valor seleccionado, como enviarlo a través de Livewire
         });
     </script>
