@@ -61,7 +61,7 @@
                         </div>
                         <!-- Botón de búsqueda -->
                         <div class="flex flex-col space-y-3 flex-grow pl-2">
-                            <x-button class="mt-6" wire:click='buscar'>Buscar</x-button>
+                            <x-button class="mt-6" wire:click='buscar' class="mt-8">Buscar</x-button>
                         </div>
                     </div>
                     @if ($estaciond)
@@ -78,8 +78,8 @@
                                     <h2><b>Domicilio: XXXXXXXXXXXXXXXXXX</b></h2>
                                 </div>
 
-                                <div>
-                                    <x-button wire:click='openModal'>Detalles</x-button>
+                                <div >
+                                    <x-button wire:click='openModal' >Detalles</x-button>
                                 </div>
                             </div>
                         </div>
@@ -386,6 +386,7 @@
             // Aquí puedes hacer lo que necesites con el valor seleccionado, como enviarlo a través de Livewire
         });
     </script>
+    
 </div>
 
 

@@ -61,23 +61,27 @@ class Estaciones extends Component
 
     public function create()
     {
+        $this->clean();
         $this->open = true;
     }
 
     public $estacion_detalle;
-    public $estacion_id=0;
+    public $estacion_id = 0;
     public function edit($id)
     {
 
         $this->estacion_id = $id;
         $this->estacion_detalle = $this->catalogos->getEstacionById($id);
         $this->catalogos->estacion = $this->estacion_detalle->estacion;
+        $this->catalogos->NumeroSistemaContable = $this->estacion_detalle->NumeroSistemaContable;
         $this->catalogos->NumeroDestino = $this->estacion_detalle->NumeroDestino;
+        $this->catalogos->FechaInicioOperaciones = $this->estacion_detalle->FechaInicioOperaciones;
         $this->catalogos->PermisoCRE = $this->estacion_detalle->PermisoCRE;
         $this->catalogos->SIIC = $this->estacion_detalle->SIIC;
         $this->catalogos->NombreEstacion = $this->estacion_detalle->NombreEstacion;
         $this->catalogos->RFC = $this->estacion_detalle->RFC;
         $this->catalogos->DireccionFiscal = $this->estacion_detalle->DireccionFiscal;
+        $this->catalogos->AnalistaJR = $this->estacion_detalle->AnalistaJR;
         $this->catalogos->CorreoAnalistaJR = $this->estacion_detalle->CorreoAnalistaJR;
         $this->catalogos->Contador = $this->estacion_detalle->Contador;
         $this->catalogos->CorreoContador = $this->estacion_detalle->CorreoContador;
@@ -95,19 +99,43 @@ class Estaciones extends Component
     public function save()
     {
         $res = $this->catalogos->store($this->estacion_id);
+        $msg = "La estación se " . $this->estacion_id != 0 ? "actualizo" : "creo" . " exitosamente!";
 
-        if($res ==1){
-            $this->dispatch('alert', ["La estación se ".$this->estacion_id!=0?"actualizo":"creo"." exitosamente!", "success"]);
-        }else{
-            $this->dispatch('alert', ["Ocurrio un error, intenta mas tarde.","error"]);
+        if ($res == 1) {
+
+            $this->dispatch('alert', [$msg, "success"]);
+
+            $this->render();
+            $this->clean();
+        } else {
+            $this->dispatch('alert', ["Ocurrio un error, intenta mas tarde.", "error"]);
         }
-        $this->render();
-        $this->reset(['open']);
-
     }
 
-    public function clean(){
-        $this->reset(['open','estacion_id','estacion_detalle']);
-
+    public function clean()
+    {
+        $this->reset([
+            'open', 'estacion_id', 'estacion_detalle',
+            'catalogos.estacion',
+            'catalogos.NumeroSistemaContable',
+            'catalogos.NumeroDestino',
+            'catalogos.FechaInicioOperacione',
+            'catalogos.PermisoCRE',
+            'catalogos.SIIC',
+            'catalogos.NombreEstacion',
+            'catalogos.RFC',
+            'catalogos.DireccionFiscal',
+            'catalogos.AnalistaJR',
+            'catalogos.CorreoAnalistaJR',
+            'catalogos.Contador',
+            'catalogos.CorreoContador',
+            'catalogos.AnalistaCtaXPagar',
+            'catalogos.CorreoCXP',
+            'catalogos.AnalistaCtaXCobrar',
+            'catalogos.CorreoCXC',
+            'catalogos.Secretaria',
+            'catalogos.CorreoSCA',
+            'catalogos.DescargaContracargos'
+        ]);
     }
 }

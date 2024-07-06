@@ -28,6 +28,7 @@ Route::middleware([
 
 
     Route::get('/descargaComprobante', [descargarComprobateXmloPDF::class, 'descargarComprobateXmloPDF'])->name('reporte.descargarComprobateXmloPDF');
+    
 });
 
 // livewire

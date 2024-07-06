@@ -206,7 +206,7 @@
         </div>
     </div>
     {{-- MODAL --}}
-    <x-dialog-modal-xl wire:model.live="open">
+    <x-dialog-modal-xl wire:model.live="open" id="">
         @slot('title')
             <div class="px-6 py-4 items-center  bg-gray-100 overflow-x-auto shadow-md sm:rounded-lg">
                 <h1> {{ $estacion_id ? 'EDITAR ESTACIÓN' : 'AGREGAR ESTACIÓN' }}</h1>
@@ -220,9 +220,19 @@
                         <x-input-error for="catalogos.estacion" />
                 </div>
                 <div>
+                    <x-label-modal>Numero Sistema Contable</x-label>
+                        <x-input-modal type="text" class="w-full" wire:model="catalogos.NumeroSistemaContable" />
+                        <x-input-error for="catalogos.NumeroSistemaContable" />
+                </div>
+                <div>
                     <x-label-modal>Número Destino</x-label>
                         <x-input-modal type="text" class="w-full" wire:model="catalogos.NumeroDestino" />
                         <x-input-error for="catalogos.NumeroDestino" />
+                </div>
+                <div>
+                    <x-label-modal>Fecha Inicio Operaciones</x-label>
+                        <x-input-modal type="date" class="w-full" wire:model="catalogos.FechaInicioOperaciones" />
+                        <x-input-error for="catalogos.FechaInicioOperaciones" />
                 </div>
                 <div>
                     <x-label-modal>PermisoCRE</x-label>
@@ -248,6 +258,11 @@
                     <x-label-modal>Dirección Fiscal</x-label>
                         <x-input-modal type="text" class="w-full" wire:model="catalogos.DireccionFiscal" />
                         <x-input-error for="catalogos.DireccionFiscal" />
+                </div>
+                <div>
+                    <x-label-modal>Analista JR</x-label>
+                        <x-input-modal type="text" class="w-full" wire:model="catalogos.AnalistaJR" />
+                        <x-input-error for="catalogos.AnalistaJR" />
                 </div>
                 <div>
                     <x-label-modal>Correo Analista JR</x-label>
@@ -308,8 +323,9 @@
         @endslot
     </x-dialog-modal-xl>
 
-
-    @push('js')
+   
+    @once('js')
+        
         <script>
             document.addEventListener('livewire:initialized', () => {
 
@@ -362,7 +378,6 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
 
-                            Livewire.on('alert', function() {
                                 Swal.fire({
                                     // position: 'top-end',
                                     icon: 'success',
@@ -372,15 +387,15 @@
                                 })
 
 
-                            });
-
                         }
                     })
                 });
+
+
+                
             });
         </script>
-    @endpush
+    @endonce
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </div>
