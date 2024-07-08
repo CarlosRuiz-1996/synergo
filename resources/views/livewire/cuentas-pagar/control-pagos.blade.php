@@ -1,5 +1,5 @@
 <div>
- 
+
     <div class="flex justify-center min-h-screen bg-cover bg-center"
         style="background-image: url('{{ asset('img/bg.png') }}');">
         <div class="w-full max-w-lg"
@@ -14,81 +14,92 @@
                margin-left: 1.25rem; 
                margin-right: 1.25rem; 
                backdrop-filter: blur(5px);">
-            <h2 class="text-2xl font-bold text-white mb-4">Control de pagos</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Aumenté el gap a 6 para mayor separación -->
-                <div class="flex flex-col space-y-4">
-                    <!-- Campo de entrada para Estación de servicio -->
+            <h2 class="text-2xl font-bold text-white mb-4">
+                <a href="{{ route('dashboard') }}" title="ATRAS" class="me-2">
+                    <i class="fa fa-arrow-left"></i>
+                </a>
+                Control de pagos
+            </h2>
+
+            <div class="grid grid-cols-6 gap-6">
+                <div class="col-span-4 ">
                     <div wire:ignore>
-                    <div class="flex flex-col space-y-3">
-                        <label for="estacion" class="text-white">Selecciona una estación de servicio</label>
-                        <select wire:model="estacionSeleccionada" id="estacion" name="estacion"
-                            class="p-2 border border-gray-300 rounded w-full" placeholder="Selecciona una estación">
-                            <option value="">Selecciona una estación...</option>
-                            @foreach ($estaciones as $estacion)
-                                {{-- @if ($estacion->IdEstacion == 153) --}}
-                                <option value="{{ $estacion->IdEstacion }}">{{ $estacion->IdEstacion . ' - ' .$estacion->NombreEstacion }}</option>
-                                {{-- @endif --}}
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
-                    <!-- Campos de entrada para fecha y botón de búsqueda -->
-                    <div class="flex space-x-1 items-center">
-                        <!-- Primer campo de fecha -->
-                        <div class="flex flex-col space-y-3 flex-grow px-1">
-                            <label for="fechaInicio" class="text-white">Fecha de inicio</label>
-                            <input type="date" wire:model='fechainicio'
-                                class="p-2 border border-gray-300 rounded w-full">
-                        </div>
-
-                        <!-- Segundo campo de fecha -->
-                        <div class="flex flex-col space-y-3 flex-grow px-3">
-                            <label for="fechaFin" class="text-white">Fecha de fin</label>
-                            <input type="date" wire:model='fechafin'
-                                class="p-2 border border-gray-300 rounded w-full">
-                        </div>
-                        <div class="flex flex-col space-y-3 flex-grow px-3">
-                            <label for="TipoCombustible" class="text-white">Estado de pago</label>
-                            <select id="TipoCombustible" wire:model='TipoCombustible'
-                                class="p-2 border border-gray-300 rounded w-full">
-                                <option value="0">Seleccione</option>
-                                <option value="Pagada">Pagada</option>
-                                <option value="Pendiente">Pendiente</option>
-                                <option value="Vencida">Vencida</option>
+                        <div class="flex flex-col ">
+                            <label for="estacion" class="text-white">Selecciona una estación de servicio</label>
+                            <select wire:model="estacionSeleccionada" id="estacion" name="estacion"
+                                class="p-2 border border-gray-300 rounded " placeholder="Selecciona una estación">
+                                <option value="">Selecciona una estación...</option>
+                                @foreach ($estaciones as $estacion)
+                                    <option value="{{ $estacion->IdEstacion }}">
+                                        {{ $estacion->IdEstacion . ' - ' . $estacion->NombreEstacion }}</option>
+                                @endforeach
                             </select>
                         </div>
-                        <!-- Botón de búsqueda -->
-                        <div class="flex flex-col space-y-3 flex-grow pl-2">
-                            <x-button class="mt-6" wire:click='buscar' class="mt-8">Buscar</x-button>
-                        </div>
                     </div>
+                </div>
+                <div class="col-span-2 "></div>
+                <div class="col-span-1">
+                    <label for="fechaInicio" class="text-white">Fecha de inicio</label>
+                    <input type="date" wire:model='fechainicio' min="2024-04-01" max="2024-04-30"
+                        class="p-2 rounded w-full @error('fechainicio') border-red-500 text-red-900   focus:border-red-500 @enderror">
+                    <x-input-error for="fechainicio" />
+
+
+                </div>
+                <div class="col-span-1">
+                    <label for="fechaFin" class="text-white">Fecha de fin</label>
+                    <input type="date" wire:model='fechafin' min="2024-04-01" max="2024-04-30"
+                        class="p-2 rounded w-full @error('fechafin') border-red-500 text-red-900   focus:border-red-500 @enderror">
+                    <x-input-error for="fechafin" />
+
+                </div>
+                <div class="col-span-1">
+                    <label for="TipoCombustible" class="text-white">Estado de pago</label>
+                    <select id="TipoCombustible" wire:model='TipoCombustible'
+                        class="p-2 border border-gray-300 rounded w-full">
+                        <option value="0">Seleccione</option>
+                        <option value="Pagada">Pagada</option>
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="Vencida">Vencida</option>
+                    </select>
+                </div>
+                <div class="col-span-1">
+                    <x-button wire:click='buscar' class="mt-6">Buscar</x-button>
+
+                </div>
+                <div class="col-span-2 "></div>
+
+                <div class="col-span-3">
                     @if ($estaciond)
                         <div class="flex space-x-1 items-center mt-5">
                             <div
                                 class="flex-grow p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                                <div>
-                                    <h2><b>Nombre:{{ $estaciond->nombre_emisor }}</b></h2>
-                                </div>
-                                <div>
-                                    <h2><b>RFC: {{ $estaciond->rfc_emisor }}</b></h2>
-                                </div>
-                                <div>
-                                    <h2><b>Domicilio: XXXXXXXXXXXXXXXXXX</b></h2>
+
+                                <div class="grid grid-cols-3 gap-6">
+                                    <div class="col-span-2">
+
+                                        <h2><b>Nombre:{{ $estaciond->nombre_emisor }}</b></h2>
+
+                                        <h2><b>RFC: {{ $estaciond->rfc_emisor }}</b></h2>
+
+                                        <h2><b>Domicilio: XXXXXXXXXXXXXXXXXX</b></h2>
+
+                                    </div>
+                                    <div class="col-span-1 mt-5">
+                                        <x-button wire:click='openModal'>Detalles</x-button>
+
+                                    </div>
                                 </div>
 
-                                <div >
-                                    <x-button wire:click='openModal' >Detalles</x-button>
-                                </div>
                             </div>
                         </div>
                     @endif
                 </div>
 
-
             </div>
 
+
+            <br> <br>
             <div class="grid grid-cols-3 md:grid-cols-3 gap-6 mt-3 mb-3">
                 <h1 class="text-white text-2xl">Detalle</h1>
                 <h1 class="text-white text-2xl ">Monto pagado: $ {{ number_format($monto_pagado, 3) }}</h1>
@@ -99,7 +110,7 @@
             <div class="mt-2">
                 <div class="overflow-x-auto shadow-md rounded-lg" wire:init='loadEstaciones'>
 
-                    @if ($detalles)
+                    @if (count($detalles) > 0)
 
                         <table class="w-full divide-y divide-gray-200">
                             <thead class="bg-gray-100">
@@ -198,7 +209,7 @@
                         @endif
                     @else
                         @if ($readyToLoad)
-                            <h1 class="px-6 py-3 text-gray-500 ">No hay datos disponibles</h1>
+                            <h1 class="px-6 py-3 text-white ">No hay datos disponibles</h1>
                         @else
                             <!-- Muestra un spinner mientras los datos se cargan -->
                             <div class="flex justify-center items-center h-40">
@@ -257,112 +268,136 @@
     <x-dialog-modal wire:model.live="open">
         @slot('title')
             <div class="px-6 py-4 items-center  bg-gray-100 overflow-x-auto shadow-md sm:rounded-lg">
-                <h1>Detalles de estación
-                </h1>
+                <div class="grid grid-cols-4 gap-6">
+                    <div class="col-span-2 ">
+                        <h1>Detalles de estación
+                        </h1>
+                    </div>
+                    <div class="col-span-2 ">
+                        <img src="{{ asset('img/logo-transparente.png') }}" alt="Footer Image" class="mx-auto max-h-10">
+                    </div>
+                </div>
+
             </div>
         @endslot
         @slot('content')
 
             @if ($estacion_detalle)
-                <div class="grid grid-cols-2 gap-6">
+                <div class="grid grid-cols-3 gap-6">
                     <div class="col-span-1">
                         <div class="relative z-0 w-full group">
-                            <h2><b>Estación:{{ $estacion_detalle->estacion }}</b></h2>
+                            <h2><b>Estación: </b>{{ $estacion_detalle->estacion }}</h2>
                         </div>
                     </div>
                     <div class="col-span-1">
                         <div class="relative z-0 w-full group">
-                            <h2><b>Numero Destino:{{ $estacion_detalle->NumeroDestino }}</b></h2>
+                            <h2><b>Numero Destino: </b>{{ $estacion_detalle->NumeroDestino }}</h2>
+
+                        </div>
+                    </div>
+                    <div class="col-span-1">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>PermisoCRE: </b>{{ $estacion_detalle->PermisoCRE }}</h2>
+
+                        </div>
+                    </div>
+
+                    <div class="col-span-2">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>Nombre Estacion: </b>{{ $estacion_detalle->NombreEstacion }}</h2>
+
+                        </div>
+                    </div>
+                    <div class="col-span-1">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>SIIC:</b> {{ $estacion_detalle->SIIC }}</h2>
+
+                        </div>
+                    </div>
+                    <div class="col-span-3">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>RFC:</b> {{ $estacion_detalle->RFC }}</h2>
+
+                        </div>
+                    </div>
+                    <div class="col-span-3">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>Direccion Fiscal: </b>{{ $estacion_detalle->DireccionFiscal }}</h2>
+
+                        </div>
+                    </div>
+
+                    <div class="col-span-3">
+                        <hr>
+                    </div>
+                    {{-- ************************************************* --}}
+                </div>
+                <div class="grid grid-cols-4 gap-6 mt-5">
+
+
+                    <div class="col-span-2">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>Contador:</b> {{ $estacion_detalle->Contador }}</h2>
+
+                        </div>
+                    </div>
+                    <div class="col-span-2 text-end">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>Correo Contador: </b>{{ $estacion_detalle->CorreoContador }}</h2>
 
                         </div>
                     </div>
                     <div class="col-span-2">
                         <div class="relative z-0 w-full group">
-                            <h2><b>PermisoCRE:{{ $estacion_detalle->PermisoCRE }}</b></h2>
+                            <h2><b>Analista JR:</b> {{ $estacion_detalle->AnalistaJR }}</h2>
+
+                        </div>
+                    </div>
+                    <div class="col-span-2 text-end">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>Correo Analista JR: </b>{{ $estacion_detalle->CorreoAnalistaJR }}</h2>
 
                         </div>
                     </div>
                     <div class="col-span-2">
                         <div class="relative z-0 w-full group">
-                            <h2><b>SIIC:{{ $estacion_detalle->SIIC }}</b></h2>
+                            <h2><b>Analista CtaX Pagar:</b> {{ $estacion_detalle->AnalistaCtaXPagar }}</h2>
+
+                        </div>
+                    </div>
+                    <div class="col-span-2 text-end">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>Correo CXP: </b>{{ $estacion_detalle->CorreoCXP }}</h2>
 
                         </div>
                     </div>
                     <div class="col-span-2">
                         <div class="relative z-0 w-full group">
-                            <h2><b>Nombre Estacion:{{ $estacion_detalle->NombreEstacion }}</b></h2>
+                            <h2><b>Analista CtaX Cobrar: </b>{{ $estacion_detalle->AnalistaCtaXCobrar }}</h2>
+
+                        </div>
+                    </div>
+                    <div class="col-span-2 text-end">
+                        <div class="relative z-0 w-full group">
+                            <h2><b>Correo CXC: </b>{{ $estacion_detalle->CorreoCXC }}</h2>
 
                         </div>
                     </div>
                     <div class="col-span-2">
                         <div class="relative z-0 w-full group">
-                            <h2><b>RFC:{{ $estacion_detalle->RFC }}</b></h2>
+                            <h2><b>Secretaria:</b> {{ $estacion_detalle->Secretaria }}</h2>
 
                         </div>
                     </div>
-                    <div class="col-span-2">
+                    <div class="col-span-2 text-end">
                         <div class="relative z-0 w-full group">
-                            <h2><b>Direccion Fiscal:{{ $estacion_detalle->DireccionFiscal }}</b></h2>
+                            <h2><b>Correo SCA:</b> {{ $estacion_detalle->CorreoSCA }}</h2>
 
                         </div>
                     </div>
-                    <div class="col-span-2">
+                    <div class="col-span-3">
                         <div class="relative z-0 w-full group">
-                            <h2><b>Correo Analista JR:{{ $estacion_detalle->CorreoAnalistaJR }}</b></h2>
-
-                        </div>
-                    </div>
-                    <div class="col-span-2">
-                        <div class="relative z-0 w-full group">
-                            <h2><b>Contador:{{ $estacion_detalle->Contador }}</b></h2>
-
-                        </div>
-                    </div>
-                    <div class="col-span-2">
-                        <div class="relative z-0 w-full group">
-                            <h2><b>Correo Contador:{{ $estacion_detalle->CorreoContador }}</b></h2>
-
-                        </div>
-                    </div>
-                    <div class="col-span-2">
-                        <div class="relative z-0 w-full group">
-                            <h2><b>Analista CtaX Pagar:{{ $estacion_detalle->AnalistaCtaXPagar }}</b></h2>
-
-                        </div>
-                    </div>
-                    <div class="col-span-2">
-                        <div class="relative z-0 w-full group">
-                            <h2><b>Correo CXP:{{ $estacion_detalle->CorreoCXP }}</b></h2>
-
-                        </div>
-                    </div>
-                    <div class="col-span-2">
-                        <div class="relative z-0 w-full group">
-                            <h2><b>Analista CtaX Cobrar:{{ $estacion_detalle->AnalistaCtaXCobrar }}</b></h2>
-
-                        </div>
-                    </div>
-                    <div class="col-span-2">
-                        <div class="relative z-0 w-full group">
-                            <h2><b>Correo CXC:{{ $estacion_detalle->CorreoCXC }}</b></h2>
-
-                        </div>
-                    </div>
-                    <div class="col-span-2">
-                        <div class="relative z-0 w-full group">
-                            <h2><b>Secretaria:{{ $estacion_detalle->Secretaria }}</b></h2>
-
-                        </div>
-                    </div>
-                    <div class="col-span-2">
-                        <div class="relative z-0 w-full group">
-                            <h2><b>Correo SCA:{{ $estacion_detalle->CorreoSCA }}</b></h2>
-
-                        </div>
-                    </div>
-                    <div class="col-span-2">
-                        <div class="relative z-0 w-full group">
-                            <h2><b>Descarga Contra cargos:{{ $estacion_detalle->DescargaContracargos }}</b></h2>
+                            <h2><b>Descarga Contra cargos: </b>{{ $estacion_detalle->DescargaContracargos }}</h2>
 
                         </div>
                     </div>
@@ -376,17 +411,14 @@
         @endslot
     </x-dialog-modal>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
             $('#estacion').select2();
-        }
-        );
+        });
         $('#estacion').on('change', function() {
             var estacionSeleccionada = $(this).val();
-            @this.set('estacionSeleccionada',this.value)
+            @this.set('estacionSeleccionada', this.value)
             // Aquí puedes hacer lo que necesites con el valor seleccionado, como enviarlo a través de Livewire
         });
     </script>
-    
+
 </div>
-
-

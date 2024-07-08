@@ -13,7 +13,13 @@
                margin-left: 1.25rem; 
                margin-right: 1.25rem; 
                backdrop-filter: blur(5px);">
-            <h2 class="text-2xl font-bold text-white mb-4">Catalogos de estaciones</h2>
+
+            <h2 class="text-2xl font-bold text-white mb-4">
+                <a href="{{ route('dashboard') }}" title="ATRAS" class="me-2">
+                    <i class="fa fa-arrow-left"></i>
+                </a>
+                Catalogos de estaciones
+            </h2>
 
 
             <div class=" py-6 px-4 bg-gray-200 flex">
@@ -51,12 +57,28 @@
                         <table class="w-full divide-y divide-gray-200">
                             <thead class="bg-gray-100">
                                 <tr>
-                                    <th scope="col"
+                                    {{-- <th scope="col"
                                         class="w-24 px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider
                                         cursor-pointer"
                                         wire:click="order('IdEstacion')">
                                         ID
                                         @if ($sort == 'IdEstacion')
+                                            @if ($orderBy == 'asc')
+                                                <i class="fas fa-sort-alpha-up-alt mt-1"></i>
+                                            @else
+                                                <i class="fas fa-sort-alpha-down-alt mt-1"></i>
+                                            @endif
+                                        @else
+                                            <i class="fas fa-sort float-right hover:float-left mt-1"></i>
+
+                                        @endif
+                                    </th> --}}
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider
+                                        cursor-pointer"
+                                        wire:click="order('NumeroSistemaContable')">
+                                        Numero Sistema Contable
+                                        @if ($sort == 'NumeroSistemaContable')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -100,22 +122,7 @@
 
                                         @endif
                                     </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider
-                                        cursor-pointer"
-                                        wire:click="order('NumeroSistemaContable')">
-                                        Numero Sistema Contable
-                                        @if ($sort == 'NumeroSistemaContable')
-                                            @if ($orderBy == 'asc')
-                                                <i class="fas fa-sort-alpha-up-alt mt-1"></i>
-                                            @else
-                                                <i class="fas fa-sort-alpha-down-alt mt-1"></i>
-                                            @endif
-                                        @else
-                                            <i class="fas fa-sort float-right hover:float-left mt-1"></i>
 
-                                        @endif
-                                    </th>
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider
                                         cursor-pointer"
@@ -144,9 +151,12 @@
 
                                 @foreach ($estaciones as $estacion)
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        {{-- <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                             {{ $estacion->IdEstacion }}
 
+                                        </td> --}}
+                                        <td class="px-6 py-4 w-72 whitespace-nowrap text-sm text-gray-500">
+                                            {{ $estacion->NumeroSistemaContable }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ $estacion->estacion }}
@@ -155,9 +165,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ $estacion->NombreEstacion }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $estacion->NumeroSistemaContable }}
-                                        </td>
+
                                         <td class="px-6 py-4 text-sm text-gray-500">
                                             {{ $estacion->DireccionFiscal }}
 
@@ -166,14 +174,19 @@
 
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
 
-                                            <x-button wire:click='edit({{ $estacion->IdEstacion }})'><i
+                                            <x-button title="Detalles"
+                                                wire:click='detalles({{ $estacion->IdEstacion }})'>
+                                                <i class="fa fa-info-circle" aria-hidden="true"></i>
+
+                                            </x-button>
+                                            <x-button title="Editar" wire:click='edit({{ $estacion->IdEstacion }})'><i
                                                     class="fa fa-pencil" aria-hidden="true"></i>
                                             </x-button>
-                                            <x-button wire:click="$dispatch('delete')"><i class="fa fa-trash"
-                                                    aria-hidden="true"></i>
+                                            <x-danger-button title="Eliminar" wire:click="$dispatch('delete')"><i
+                                                    class="fa fa-trash" aria-hidden="true"></i>
 
 
-                                            </x-button>
+                                            </x-danger-button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -205,11 +218,20 @@
 
         </div>
     </div>
-    {{-- MODAL --}}
+    {{-- MODAL crud --}}
     <x-dialog-modal-xl wire:model.live="open" id="">
         @slot('title')
             <div class="px-6 py-4 items-center  bg-gray-100 overflow-x-auto shadow-md sm:rounded-lg">
-                <h1> {{ $estacion_id ? 'EDITAR ESTACIÓN' : 'AGREGAR ESTACIÓN' }}</h1>
+
+                <div class="grid grid-cols-4 gap-6">
+                    <div class="col-span-2 ">
+                        <h1> {{ $estacion_id ? 'EDITAR ESTACIÓN' : 'AGREGAR ESTACIÓN' }}</h1>
+
+                    </div>
+                    <div class="col-span-2 ">
+                        <img src="{{ asset('img/logo-transparente.png') }}" alt="Footer Image" class="mx-auto max-h-10">
+                    </div>
+                </div>
             </div>
         @endslot
         @slot('content')
@@ -323,9 +345,148 @@
         @endslot
     </x-dialog-modal-xl>
 
-   
+    {{-- modal detalle --}}
+    <x-dialog-modal wire:model.live="info" id="">
+        @slot('title')
+            <div class="px-6 py-4 items-center  bg-gray-100 overflow-x-auto shadow-md sm:rounded-lg">
+                <div class="grid grid-cols-4 gap-6">
+                    <div class="col-span-2 ">
+                        <h1>Detalles de estación
+                        </h1>
+                    </div>
+                    <div class="col-span-2 ">
+                        <img src="{{ asset('img/logo-transparente.png') }}" alt="Footer Image" class="mx-auto max-h-10">
+                    </div>
+                </div>
+            </div>
+        @endslot
+        @slot('content')
+            <div class="grid grid-cols-3 gap-6">
+                <div class="col-span-1">
+                    <div class="relative z-0 w-full group">
+                        <h2><b>Estación: </b>{{ $catalogos->estacion }}</h2>
+                    </div>
+                </div>
+                <div class="col-span-1">
+                    <div class="relative z-0 w-full group">
+                        <h2><b>Numero Destino: </b>{{ $catalogos->NumeroDestino }}</h2>
+
+                    </div>
+                </div>
+                <div class="col-span-1">
+                    <div class="relative z-0 w-full group">
+                        <h2><b>PermisoCRE: </b>{{ $catalogos->PermisoCRE }}</h2>
+
+                    </div>
+                </div>
+
+                <div class="col-span-2">
+                    <div class="relative z-0 w-full group">
+                        <h2><b>Nombre Estacion: </b>{{ $catalogos->NombreEstacion }}</h2>
+
+                    </div>
+                </div>
+                <div class="col-span-1">
+                    <div class="relative z-0 w-full group">
+                        <h2><b>SIIC:</b> {{ $catalogos->SIIC }}</h2>
+
+                    </div>
+                </div>
+                <div class="col-span-3">
+                    <div class="relative z-0 w-full group">
+                        <h2><b>RFC:</b> {{ $catalogos->RFC }}</h2>
+
+                    </div>
+                </div>
+                <div class="col-span-3">
+                    <div class="relative z-0 w-full group">
+                        <h2><b>Direccion Fiscal: </b>{{ $catalogos->DireccionFiscal }}</h2>
+
+                    </div>
+                </div>
+
+                <div class="col-span-3">
+                    <hr>
+                </div>
+                {{-- ************************************************* --}}
+            </div>
+            <div class="grid grid-cols-4 gap-6 mt-5">
+
+
+                <div class="col-span-2">
+                    <div class="relative z-0 w-full group">
+                        <h2><b>Contador:</b> {{ $catalogos->Contador }}</h2>
+
+                    </div>
+                </div>
+                <div class="col-span-2 text-end">
+                    <div class="relative z-0 w-full group">
+                        <h2><b>Correo Contador: </b>{{ $catalogos->CorreoContador }}</h2>
+
+                    </div>
+                </div>
+                <div class="col-span-2">
+                    <div class="relative z-0 w-full group">
+                        <h2><b>Analista JR:</b> {{ $catalogos->AnalistaJR }}</h2>
+
+                    </div>
+                </div>
+                <div class="col-span-2 text-end">
+                    <div class="relative z-0 w-full group">
+                        <h2><b>Correo Analista JR: </b>{{ $catalogos->CorreoAnalistaJR }}</h2>
+
+                    </div>
+                </div>
+                <div class="col-span-2">
+                    <div class="relative z-0 w-full group">
+                        <h2><b>Analista CtaX Pagar:</b> {{ $catalogos->AnalistaCtaXPagar }}</h2>
+
+                    </div>
+                </div>
+                <div class="col-span-2 text-end">
+                    <div class="relative z-0 w-full group">
+                        <h2><b>Correo CXP: </b>{{ $catalogos->CorreoCXP }}</h2>
+
+                    </div>
+                </div>
+                <div class="col-span-2">
+                    <div class="relative z-0 w-full group">
+                        <h2><b>Analista CtaX Cobrar: </b>{{ $catalogos->AnalistaCtaXCobrar }}</h2>
+
+                    </div>
+                </div>
+                <div class="col-span-2 text-end">
+                    <div class="relative z-0 w-full group">
+                        <h2><b>Correo CXC: </b>{{ $catalogos->CorreoCXC }}</h2>
+
+                    </div>
+                </div>
+                <div class="col-span-2">
+                    <div class="relative z-0 w-full group">
+                        <h2><b>Secretaria:</b> {{ $catalogos->Secretaria }}</h2>
+
+                    </div>
+                </div>
+                <div class="col-span-2 text-end">
+                    <div class="relative z-0 w-full group">
+                        <h2><b>Correo SCA:</b> {{ $catalogos->CorreoSCA }}</h2>
+
+                    </div>
+                </div>
+                <div class="col-span-3">
+                    <div class="relative z-0 w-full group">
+                        <h2><b>Descarga Contra cargos: </b>{{ $catalogos->DescargaContracargos }}</h2>
+
+                    </div>
+                </div>
+            </div>
+        @endslot
+        @slot('footer')
+            <x-secondary-button wire:click="clean">CERRAR</x-secondary-button>
+        @endslot
+    </x-dialog-modal>
+
     @once('js')
-        
         <script>
             document.addEventListener('livewire:initialized', () => {
 
@@ -378,13 +539,13 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
 
-                                Swal.fire({
-                                    // position: 'top-end',
-                                    icon: 'success',
-                                    title: 'Estación eliminada',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                })
+                            Swal.fire({
+                                // position: 'top-end',
+                                icon: 'success',
+                                title: 'Estación eliminada',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
 
 
                         }
@@ -392,7 +553,7 @@
                 });
 
 
-                
+
             });
         </script>
     @endonce
