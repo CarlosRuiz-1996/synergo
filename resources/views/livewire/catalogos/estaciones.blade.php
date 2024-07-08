@@ -43,7 +43,7 @@
                     <span style="font-size: 12px;">Entradas</span>
                 </div>
 
-                <x-input type="text" placeholder="Busca una estación" class="w-full ml-4"
+                <x-input-filtro type="text" placeholder="Busca una estación" class="w-full ml-4 "
                     wire:model.live='catalogos.search' />
 
                 <x-button class="ml-4" wire:click="create">Nuevo</x-button>
