@@ -17,29 +17,37 @@
                 <table class="w-full table-auto divide-y divide-gray-200">
                     <thead class="bg-gray-100">
                         <tr>
-                            <th scope="col" class="py-3 px-4 text-left text-xs font-medium uppercase tracking-wider">Gas</th>
+                            <th scope="col" class="py-3 px-4 text-left text-xs font-medium uppercase tracking-wider">Clave Producto</th>
+                            <th scope="col" class="py-3 px-4 text-left text-xs font-medium uppercase tracking-wider">Descripción</th>
                             <th scope="col" class="py-3 px-4 text-left text-xs font-medium uppercase tracking-wider">Fecha</th>
-                            <th scope="col" class="py-3 px-4 text-left text-xs font-medium uppercase tracking-wider">Precio</th>
-                            <th scope="col" class="py-3 px-4 text-left text-xs font-medium uppercase tracking-wider">Cantidad</th>
+                            <th scope="col" class="py-3 px-4 text-left text-xs font-medium uppercase tracking-wider">Importe</th>
+                            <th scope="col" class="py-3 px-4 text-left text-xs font-medium uppercase tracking-wider">Litros</th>
+                            <th scope="col" class="py-3 px-4 text-left text-xs font-medium uppercase tracking-wider">Autorización</th>
+                            <th scope="col" class="py-3 px-4 text-left text-xs font-medium uppercase tracking-wider">Precio Venta</th>
+                            <th scope="col" class="py-3 px-4 text-left text-xs font-medium uppercase tracking-wider">No. Turno</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach($consignasventas as $despacho)
-                            <tr class="border-b">
-                                <td class="py-2 px-4 whitespace-nowrap">{{ $despacho->NuCombustible ?? '' }}</td>
-                                <td class="py-2 px-4 whitespace-nowrap">{{ \Carbon\Carbon::parse($despacho->Fecha)->format('Y-m-d') }}</td>
-                                <td class="py-2 px-4 whitespace-nowrap">{{ $despacho->precioventa }}</td>
-                                <td class="py-2 px-4 whitespace-nowrap">{{ $despacho->JarrasConsigna }}</td>
-                            </tr>
-                        @endforeach
+                        @foreach($despachos as $despacho)
+                        <tr class="border-b">
+                            <td class="py-2 px-4 whitespace-nowrap">{{ $despacho->NuCombustible ?? '' }}</td>
+                            <td class="py-2 px-4 whitespace-nowrap">{{ $despacho->Descripcion ?? '' }}</td>
+                            <td class="py-2 px-4 whitespace-nowrap">{{ $despacho->FecIni }}</td>
+                            <td class="py-2 px-4 whitespace-nowrap">{{ $despacho->Importe }}</td>
+                            <td class="py-2 px-4 whitespace-nowrap">{{ $despacho->Litros }}</td>
+                            <td class="py-2 px-4 whitespace-nowrap">{{ $despacho->Autorizacion }}</td>
+                            <td class="py-2 px-4 whitespace-nowrap">{{ $despacho->Precio }}</td>
+                            <td class="py-2 px-4 whitespace-nowrap">{{ $despacho->Turno }}</td>
+                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>
             
-         <div class="mt-4">
-             <!-- Renderiza los enlaces de paginación -->
-             {{ $consignasventas->links() }}
-         </div>
+            <div class="mt-4">
+                <!-- Renderiza los enlaces de paginación -->
+                {{ $despachos->links() }}
+            </div>
      </div>
  </div>
  </div>

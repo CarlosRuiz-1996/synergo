@@ -1,13 +1,14 @@
 <table style="border-collapse: collapse; width: 100%;">
     <thead>
         <tr>
-            <th colspan="8" style="background-color: #f0f0f0; font-weight: bold;">Texto de la primera fila de encabezado</th>
+            <th colspan="8" style="background-color: #f0f0f0; font-weight: bold;">Determinacion de costo promedio por producto 'variable'
+            </th>
         </tr>
         <tr>
             <th colspan="8" style="background-color: #f0f0f0; font-weight: bold;">Reporte de {{$fechaInicio}} al {{$fechaFin}}</th>
         </tr>
         <tr>
-            <th colspan="8" style="background-color: #f0f0f0; font-weight: bold;">Texto de la tercera fila de encabezado</th>
+            <th colspan="8" style="background-color: #f0f0f0; font-weight: bold;">E.S 14159 FUTURO</th>
         </tr>
         <tr>
                 <!--compras-->

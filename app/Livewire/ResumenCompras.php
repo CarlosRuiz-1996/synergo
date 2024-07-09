@@ -25,6 +25,9 @@ public $showModal3 = false;
 public $showModalventaConsigna= false;
 public $showModalventaConsigna2= false;
 public $showModalventaConsigna3= false;
+public $showModalInventarioCombustible=false;
+public $showModalInventarioCombustibletotal = false; 
+public $showModalInventarioCombustibleconsigna = false; 
 
 
 public function abrirModal($valor)
@@ -57,6 +60,19 @@ public function abrirModalVentasConsignas($valor)
     }
    
 }
+
+public function abrirmodalInventarioCom($valor){
+    $this->showModalInventarioCombustible = true;  
+}
+public function abrirModaltotal($valor){
+    $this->showModalInventarioCombustibletotal = true;  
+}
+public function abrirModaltotalCon($valor){
+    $this->showModalInventarioCombustibleconsigna = true;  
+}
+
+
+
 
 public function render()
 {

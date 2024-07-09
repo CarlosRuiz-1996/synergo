@@ -239,13 +239,13 @@
                                         Reporte Venta Consigna</th>
                                     <th scope="col"
                                         class="px-6 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Reporte Inv.Consigna</th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Reporte Venta S/Impuesto</th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider">
                                         Reporte Inv.Combustible</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                        Reporte Inv.Combustible Total</th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                        Reporte Inv.Consigna</th>
                                 </tr>
                             </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
@@ -292,15 +292,15 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                             <div class="flex items-center justify-center space-x-3">
                                                 @if($reportesSeleccion==1)
-                                                <div  wire:click="abrirModal(1)" class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirmodalInventarioCom(1)" class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @elseif($reportesSeleccion==3)
-                                                <div  wire:click="abrirModal(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirmodalInventarioCom(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @elseif($reportesSeleccion==2)
-                                                <div  wire:click="abrirModal(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirmodalInventarioCom(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @else
@@ -311,15 +311,15 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             <div class="flex items-center justify-center space-x-3">
                                                 @if($reportesSeleccion==1)
-                                                <div  wire:click="abrirModal(1)" class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModaltotal(1)" class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @elseif($reportesSeleccion==3)
-                                                <div  wire:click="abrirModal(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModaltotal(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @elseif($reportesSeleccion==2)
-                                                <div  wire:click="abrirModal(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModaltotal(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @else
@@ -330,15 +330,15 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                             <div class="flex items-center justify-center space-x-3">
                                                 @if($reportesSeleccion==1)
-                                                <div  wire:click="abrirModal(1)" class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModaltotalCon(1)" class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @elseif($reportesSeleccion==3)
-                                                <div  wire:click="abrirModal(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModaltotalCon(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @elseif($reportesSeleccion==2)
-                                                <div  wire:click="abrirModal(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModaltotalCon(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @else
@@ -445,6 +445,53 @@
 
     <x-slot name="content">
         @livewire('reportes.ventas-consignas', ['valorModal' => 2])
+    </x-slot>
+
+    <x-slot name="footer">
+        <button x-on:click="show = false" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+            Cerrar
+        </button>
+    </x-slot>
+</x-dialog-modal>
+
+
+<x-dialog-modal id="modal-compras3" maxWidth="2xl" wire:model="showModalInventarioCombustible">
+    <x-slot name="title" class="bg-gray-500">
+        Inventario Combustible
+    </x-slot>
+
+    <x-slot name="content">
+        @livewire('reportes.inventario-combustible')
+    </x-slot>
+
+    <x-slot name="footer">
+        <button x-on:click="show = false" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+            Cerrar
+        </button>
+    </x-slot>
+</x-dialog-modal>
+<x-dialog-modal id="modal-compras3" maxWidth="2xl" wire:model="showModalInventarioCombustibletotal">
+    <x-slot name="title" class="bg-gray-500">
+        Inventario Combustible Total
+    </x-slot>
+
+    <x-slot name="content">
+        @livewire('reportes.inventario-combustibletotal')
+    </x-slot>
+
+    <x-slot name="footer">
+        <button x-on:click="show = false" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+            Cerrar
+        </button>
+    </x-slot>
+</x-dialog-modal>
+<x-dialog-modal id="modal-compras3" maxWidth="2xl" wire:model="showModalInventarioCombustibleconsigna">
+    <x-slot name="title" class="bg-gray-500">
+        Inventario Combustible Consigna
+    </x-slot>
+
+    <x-slot name="content">
+        @livewire('reportes.inventario-combustibleconsigna')
     </x-slot>
 
     <x-slot name="footer">
