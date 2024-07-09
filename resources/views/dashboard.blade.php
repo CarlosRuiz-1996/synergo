@@ -36,7 +36,10 @@
                             <i class="fas fa-file-alt mr-2"></i>CUENTAS POR PAGAR
                           </a>
                           </li>
-                          <li class="menu-item" data-submenu="submenu-8"><i class="fas fa-gas-pump mr-2"></i>ESTACIONES</li>
+                          <li class="menu-item" data-submenu="submenu-8">
+                            <a href="{{route('catalogos.estaciones')}}">
+                                <i class="fas fa-gas-pump mr-2"></i>ESTACIONES</li>
+                            </a>
                       </ul>
                   </div>
                   <div class="menu-column">
@@ -100,5 +103,7 @@
               });
           });
       });
+
+
   </script>
 </x-app-layout>

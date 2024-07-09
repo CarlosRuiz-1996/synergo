@@ -14,22 +14,42 @@ class ControlPagos extends Component
     public DescargarComprobateXmloPDF $export;
     use WithPagination;
     public $estacionSeleccionada;
-    public $fechainicio;
-    public $fechafin;
+    public $fechainicio = '2024-04-01';
+    public $fechafin = '2024-04-30';
     public $TipoCombustible;
     public $estacion_detalle;
     protected $detalles = [];
     public $readyToLoad = false;
     public $monto_pagado;
     public $estaciond;
+
+    protected $rules = [
+        'fechainicio' => 'date|before_or_equal:fechafin',
+        'fechafin' => 'date|after_or_equal:fechainicio',
+    ];
+
+    protected $messages = [
+        'fechainicio.before_or_equal' => 'Fecha incorrecta.',
+        'fechafin.after_or_equal' => 'Fecha incorrecta.',
+    ];
     public function render()
     {
         if ($this->readyToLoad) {
 
             $estaciones = DB::table('EstacionesExcel')->orderBy('NombreEstacion', 'ASC')->get();
-            $detalles = $this->filtrar();
+            // $detalles = $this->filtrar();
+            // $this->monto();
+            if ($this->TipoCombustible == 'Pagada' || $this->TipoCombustible == 0) {
 
-            $this->monto();
+                $this->monto();
+                $detalles = $this->filtrar();
+            }else{
+                $detalles = [];
+                $this->monto_pagado=0;
+                $this->total_facturas = 0;
+    
+            }
+
         } else {
             $estaciones = DB::table('EstacionesExcel')->orderBy('NombreEstacion', 'ASC')->get();
             $detalles = [];
@@ -42,12 +62,14 @@ class ControlPagos extends Component
     }
     public function buscar()
     {
+
+        $this->validate();
         if ($this->estacionSeleccionada) {
             $this->estaciond = DB::table('EMISOR')->first();
-            $this->estacion_detalle = DB::table('EstacionesExcel')->where('IdEstacion',$this->estacionSeleccionada)->first();
+            $this->estacion_detalle = DB::table('EstacionesExcel')->where('IdEstacion', $this->estacionSeleccionada)->first();
         }
-        $this->monto();
-        $this->detalles = $this->filtrar();
+
+        
     }
 
 
@@ -66,9 +88,8 @@ class ControlPagos extends Component
             ->whereBetween('c.Fecha', [$startDate, $endDate])
             ->where(function ($query) {
                 $query->where('c.TipoDeComprobante', 'LIKE', 'P')
-                    ->orWhere('c.TipoDeComprobante', 'LIKE', 'I')
-                    ;
-            })->where('conc.descripcion','LIKE','PEMEX MAGNA')
+                    ->orWhere('c.TipoDeComprobante', 'LIKE', 'I');
+            })->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
 
 
             ->select(

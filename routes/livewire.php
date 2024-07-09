@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Catalogos\Estaciones;
 use App\Livewire\CuentasPagar\ControlPagos;
 use App\Livewire\Reportes\InventarioCombustible;
 use App\Livewire\Reportes\InventarioCombustibleConsigna;
@@ -23,6 +24,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('cuentas/pagar', ControlPagos::class)->name('cuentas.pagar');
+    Route::get('catalogos/estaciones', Estaciones::class)->name('catalogos.estaciones');
     Route::get('reportes/reporteventasconsigna', VentasConsignas::class)->name('reportes.ventasconsignas');
     Route::get('reportes/inventarioCombustible', InventarioCombustible::class)->name('reportes.inventarioCombustible');
     Route::get('reportes/inventarioCombustibletotal', InventarioCombustibletotal::class)->name('reportes.inventarioCombustibletotal');
