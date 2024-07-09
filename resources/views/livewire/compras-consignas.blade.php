@@ -15,7 +15,7 @@
                  </button>
              </div>
          <div class="overflow-x-auto bg-white rounded-lg shadow-md">
-             <table class="min-w-screen divide-y divide-gray-200">
+             <table class="w-full divide-y divide-gray-200">
                  <thead class="bg-gray-100">
                      <tr>
                          <th scope="col" class="py-3 px-4 text-left text-xs font-medium uppercase tracking-wider">Numero Recepción</th>

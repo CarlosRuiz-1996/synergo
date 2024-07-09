@@ -1,5 +1,5 @@
 <x-app-layout>
-  <div class="flex items-center justify-center min-h-screen" style="background-image: url('{{ asset('img/bg.png') }}'); background-size: cover; background-position: center;" >
+  <div class="flex items-center justify-center min-h-screen font-bold" style="background-image: url('{{ asset('img/bg.png') }}'); background-size: cover; background-position: center;" >
       <div class="">
           <!-- Sidebar -->
           <div class="w-full md:w-4/4">

@@ -379,7 +379,7 @@
     </div>
 
 
-    <x-dialog-modal id="modal-compras" maxWidth="2xl" wire:model="showModal">
+    <x-dialog-modal id="modal-compras" maxWidth="4xl" wire:model="showModal">
         <x-slot name="title" class="bg-gray-500">
             Reporte Consigna
         </x-slot>
@@ -396,7 +396,7 @@
         </x-slot>
     </x-dialog-modal>
     <!--modal 2-->
-    <x-dialog-modal id="modal-compras2" maxWidth="2xl" wire:model="showModal2">
+    <x-dialog-modal id="modal-compras2" maxWidth="4xl" wire:model="showModal2">
         <x-slot name="title" class="bg-gray-500">
             Reporte Consigna
         </x-slot>
@@ -412,7 +412,7 @@
             </button>
         </x-slot>
     </x-dialog-modal>
-    <x-dialog-modal id="modal-compras3" maxWidth="2xl" wire:model="showModal3">
+    <x-dialog-modal id="modal-compras3" maxWidth="4xl" wire:model="showModal3">
         <x-slot name="title" class="bg-gray-500">
             Reporte Consigna
         </x-slot>
@@ -431,7 +431,7 @@
 
 <!--vntas consignas-->
 
-<x-dialog-modal id="modal-compras" maxWidth="2xl" wire:model="showModalventaConsigna">
+<x-dialog-modal id="modal-compras" maxWidth="4xl" wire:model="showModalventaConsigna">
     <x-slot name="title" class="bg-gray-500">
         Reporte Ventas Consigna
     </x-slot>
@@ -447,7 +447,7 @@
     </x-slot>
 </x-dialog-modal>
 <!--modal 2-->
-<x-dialog-modal id="modal-compras2" maxWidth="2xl" wire:model="showModalventaConsigna2">
+<x-dialog-modal id="modal-compras2" maxWidth="4xl" wire:model="showModalventaConsigna2">
     <x-slot name="title" class="bg-gray-500">
         Reporte Ventas Consigna
     </x-slot>
@@ -462,7 +462,7 @@
         </button>
     </x-slot>
 </x-dialog-modal>
-<x-dialog-modal id="modal-compras3" maxWidth="2xl" wire:model="showModalventaConsigna3">
+<x-dialog-modal id="modal-compras3" maxWidth="4xl" wire:model="showModalventaConsigna3">
     <x-slot name="title" class="bg-gray-500">
         Reporte Ventas Consigna
     </x-slot>
@@ -479,7 +479,7 @@
 </x-dialog-modal>
 
 
-<x-dialog-modal id="modal-compras3" maxWidth="2xl" wire:model="showModalInventarioCombustible">
+<x-dialog-modal id="modal-compras3" maxWidth="4xl" wire:model="showModalInventarioCombustible">
     <x-slot name="title" class="bg-gray-500">
         Inventario Combustible
     </x-slot>
@@ -494,7 +494,7 @@
         </button>
     </x-slot>
 </x-dialog-modal>
-<x-dialog-modal id="modal-compras3" maxWidth="2xl" wire:model="showModalInventarioCombustibletotal">
+<x-dialog-modal id="modal-compras3" maxWidth="4xl" wire:model="showModalInventarioCombustibletotal">
     <x-slot name="title" class="bg-gray-500">
         Inventario Combustible Total
     </x-slot>
@@ -509,7 +509,7 @@
         </button>
     </x-slot>
 </x-dialog-modal>
-<x-dialog-modal id="modal-compras3" maxWidth="2xl" wire:model="showModalInventarioCombustibleconsigna">
+<x-dialog-modal id="modal-compras3" maxWidth="4xl" wire:model="showModalInventarioCombustibleconsigna">
     <x-slot name="title" class="bg-gray-500">
         Inventario Combustible Consigna
     </x-slot>
