@@ -196,7 +196,7 @@ public function exportarExcel()
                                 Fecha,
                                 SUM(cantidad) AS ComprasCantidad
                             FROM ComGasolina
-                            WHERE Fecha >= '{$startDate}' AND Fecha <= '{$endDate}'
+                            WHERE Fecha BETWEEN '{$startDate}' AND '{$endDate}'
                               AND NuCamion = '1111'
                               AND NuTanque IN (" . implode(',', $nuCombustibles) . ")
                             GROUP BY Fecha) AS cp"), 'cp.Fecha', '=', DB::raw("CAST(comp.Fecha AS DATE)"))
