@@ -146,19 +146,22 @@ public function exportarExcel()
     $endDate = $this->fechafin ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay() : Carbon::createFromDate(null, 4, 30)->endOfDay();
     $nuCombustibles = [];
     $CostoPromedio =0.0;
+    $nombreProducto ="";
     foreach ($combustible as $tipo) {
         switch ($tipo) {
             case 'PEMEX MAGNA':
                 $nuCombustibles[] = 1;
                 $CostoPromedio =16.8019;
+                $nombreProducto ='PEMEX MAGNA';
                 break;
             case 'PEMEX PREMIUM':
                 $nuCombustibles[] = 2;
-                $CostoPromedio =19.9203;
+                $nombreProducto ='PEMEX PREMIUM';
                 break;
             case 'PEMEX DIESEL':
                 $nuCombustibles[] = 3;
                 $CostoPromedio =18.4120;
+                $nombreProducto='PEMEX DIESEL';
                 break;
             // Agregar más casos según sea necesario
         }
@@ -225,7 +228,7 @@ public function exportarExcel()
             ];
         }
         $nombredoc = 'Resumen_' . $startDate->format('Y-m-d') . '_to_' . $endDate->format('Y-m-d') . '.xlsx';
-    return Excel::download(new ExportResumenCompras($despachos, $startDate->toDateString(), $endDate->toDateString(), $results,$ventas,$CostoPromedio), $nombredoc);
+    return Excel::download(new ExportResumenCompras($despachos, $startDate->toDateString(), $endDate->toDateString(), $results,$ventas,$CostoPromedio,$nombreProducto), $nombredoc);
 }
 
 

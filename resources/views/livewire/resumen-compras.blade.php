@@ -13,7 +13,11 @@
                margin-left: 1.25rem; 
                margin-right: 1.25rem; 
                backdrop-filter: blur(5px);">
-            <h2 class="text-2xl font-bold text-white mb-4">Determinacion de costo promedio</h2>
+            <h2 class="text-2xl font-bold text-white mb-4">
+                <a href="{{ route('dashboard') }}" title="ATRAS" class="me-2">
+                    <i class="fa fa-arrow-left"></i>
+                </a>
+                Determinacion de costo promedio</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Aumenté el gap a 6 para mayor separación -->
                 <div class="flex flex-col space-y-4">
@@ -111,11 +115,16 @@
                     <div class="overflow-x-auto shadow-md rounded-lg">
                         <table class="w-full divide-y divide-gray-200">
                             <thead class="bg-gray-100">
+                                
                                 <tr>
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                                         Producto
                                     </th>
+                                    <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                    Fecha
+                                </th>
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                                         Precio
@@ -123,10 +132,6 @@
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                                         Cantidad
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Fecha
                                     </th>
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
@@ -145,14 +150,14 @@
                                             {{ $despacho->descripcion }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {{ \Carbon\Carbon::parse($despacho->Fecha)->format('Y-m-d') }}
+
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ number_format($despacho->valorUnitario, 6) }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ number_format($despacho->cantidad, 2) }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ \Carbon\Carbon::parse($despacho->Fecha)->format('Y-m-d') }}
-
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ number_format($despacho->FLETE_SERVICIO, 6) }}

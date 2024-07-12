@@ -1,7 +1,7 @@
 <table style="border-collapse: collapse; width: 100%;">
     <thead>
         <tr>
-            <th colspan="8" style="background-color: #f0f0f0; font-weight: bold;">Determinacion de costo promedio por producto 'variable'
+            <th colspan="8" style="background-color: #f0f0f0; font-weight: bold;">Determinacion de costo promedio por producto {{$nombreProducto}}
             </th>
         </tr>
         <tr>
@@ -49,7 +49,7 @@
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$invInicial->Inv_Inicial}}</td>
-            <th style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></th>
+            <th style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$invInicial->Inv_Inicial * $CostoPromedio}}</th>
             <th style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></th>
             <th style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></th>
             <th style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></th>
@@ -159,7 +159,7 @@
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">Comercializadora {{$dato->descripcion}}</td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{\Carbon\Carbon::parse($dato->Fecha)->format('Y-m-d')}}</td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($sumaAcumulativa, 2, '.', ',') }}</td> <!-- Muestra la suma acumulativa -->
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$dato->cantidad*$costopromedioreal}}</td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($dato->cantidad, 2, '.', ',')}}</td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($dato->ComprasCantidad, 2, '.', ',')}}</td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($dato->cantidad+$dato->ComprasCantidad, 2, '.', ',') }}</td>

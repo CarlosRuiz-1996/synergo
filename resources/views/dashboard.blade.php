@@ -1,5 +1,5 @@
 <x-app-layout>
-  <div class="flex items-center justify-center min-h-screen font-bold" style="background-image: url('{{ asset('img/bg.png') }}'); background-size: cover; background-position: center;" >
+  <div class="flex items-center justify-center min-h-screen " style="background-image: url('{{ asset('img/bg.png') }}'); background-size: cover; background-position: center;" >
       <div class="">
           <!-- Sidebar -->
           <div class="w-full md:w-4/4">
@@ -9,17 +9,17 @@
               <div class="menu-grid text-white">
                   <div class="menu-column">
                       <ul class="menu">
-                          <li class="menu-item" data-submenu="submenu-1"><i class="fas fa-book mr-2"></i>CATÁLOGOS</li>
-                          <li class="menu-item" data-submenu="submenu-2"><i class="fas fa-piggy-bank mr-2"></i>BANCOS
+                          <li class="menu-item text-2xl  " data-submenu="submenu-1"><i class="fas fa-book mr-2"></i>Catálogos</li>
+                          <li class="menu-item text-2xl  " data-submenu="submenu-2"><i class="fas fa-piggy-bank mr-2"></i>Bancos
                               <ul class="submenu-items" id="submenu-2">
                                 <a href="{{route('reporte.cajas')}}">
-                                  <li class="submenu-item"><i class="fas fa-file-invoice mr-2"></i>Subir factura</li>
-                                  <li class="submenu-item"><i class="fas fa-list-alt mr-2"></i>
+                                  <li class="submenu-i text-2xl  tem"><i class="fas fa-file-invoice mr-2"></i><a href="{{ route('subir-archivo') }}">Subir factura</a></li>
+                                  <li class="submenu-i text-2xl  tem"><i class="fas fa-list-alt mr-2"></i>
                                    Clasificar pagos</li>
-                                  <li class="submenu-item"><i class="fas fa-clipboard-check mr-2"></i>Pendientes de pagos</li>
-                                  <li class="submenu-item"><i class="fas fa-hand-holding-usd mr-2"></i>Pagos por autorizar</li>
-                                  <li class="submenu-item"><i class="fas fa-file-signature mr-2"></i>Pago autorizado por definir</li>
-                                  <li class="submenu-item"><i class="fas fa-file mr-2"></i>Pago sin registro</li>
+                                  <li class="submenu-i text-2xl  tem"><i class="fas fa-clipboard-check mr-2"></i>Pendientes de pagos</li>
+                                  <li class="submenu-i text-2xl  tem"><i class="fas fa-hand-holding-usd mr-2"></i>Pagos por autorizar</li>
+                                  <li class="submenu-i text-2xl  tem"><i class="fas fa-file-signature mr-2"></i>Pago autorizado por definir</li>
+                                  <li class="submenu-i text-2xl  tem"><i class="fas fa-file mr-2"></i>Pago sin registro</li>
                                 </a>
                               </ul>
                           </li>
@@ -27,29 +27,28 @@
                   </div>
                   <div class="menu-column">
                       <ul class="menu">
-                          <li class="menu-item" data-submenu="submenu-3"><i class="fas fa-address-card mr-2"></i>CATÁLOGO DE PERFILES</li>
-                          <li class="menu-item" data-submenu="submenu-4"><i class="fas fa-search-dollar mr-2"></i>CONSULTA COSTO MAGNA</li>
-                          <li class="menu-item" data-submenu="submenu-5"><i class="fas fa-wallet mr-2"></i>ESTABLECER PRESUPUESTO</li>
-                          <li class="menu-item" data-submenu="submenu-6"><i class="fas fa-file-invoice-dollar mr-2"></i>PRESUPUESTO DE GASTOS</li>
-                          <li class="menu-item" data-submenu="submenu-7">
+                          <li class="menu-item text-2xl  " data-submenu="submenu-3"><i class="fas fa-address-card mr-2"></i><a href="{{route('usuarios')}}">Catálogo de Perfiles</a></li>
+                          <li class="menu-item text-2xl  " data-submenu="submenu-4"><i class="fas fa-search-dollar mr-2"></i><a href="{{ route('reporte.reporteResumenCompras') }}">Consulta Costo Magnaa</a></li>
+                          <li class="menu-item text-2xl  " data-submenu="submenu-5"><i class="fas fa-wallet mr-2"></i>Establecer Presupuesto</li>
+                          <li class="menu-item text-2xl  " data-submenu="submenu-6"><i class="fas fa-file-invoice-dollar mr-2"></i>Presupuesto de Gastos</li>
+                          <li class="menu-item text-2xl  " data-submenu="submenu-7">
                           <a href="{{route('cuentas.pagar')}}">
-                            <i class="fas fa-file-alt mr-2"></i>CUENTAS POR PAGAR
+                            <i class="fas fa-file-alt mr-2"></i>Cuentas Por Pagar
                           </a>
                           </li>
-                          <li class="menu-item" data-submenu="submenu-8">
+                          <li class="menu-item text-2xl  " data-submenu="submenu-8">
                             <a href="{{route('catalogos.estaciones')}}">
-                                <i class="fas fa-gas-pump mr-2"></i>ESTACIONES</li>
+                                <i class="fas fa-gas-pump mr-2"></i>Estaciones</li>
                             </a>
                       </ul>
                   </div>
                   <div class="menu-column">
                       <ul class="menu">
-                          <li class="menu-item" data-submenu="submenu-9"><i class="fas fa-coins mr-2"></i>TESORERÍA</li>
-                          <li class="menu-item" data-submenu="submenu-10"><i class="fas fa-user-tie mr-2"></i>ADMINISTRATIVO</li>
-                          <li class="menu-item" data-submenu="submenu-11"><a href="{{ route('reporte.reporteResumenCompras') }}"><i class="fas fa-chart-pie mr-2"></i>REPORTE</a></li>
-                          <li class="menu-item" data-submenu="submenu-12"><i class="fas fa-tachometer-alt mr-2"></i>DASHBOARD</li>
-                          <li class="menu-item" data-submenu="submenu-13"><i class="fas fa-boxes mr-2"></i>INVENTARIO</li>
-                          <li class="menu-item" data-submenu="submenu-13"><i class="fas fa-boxes mr-2"></i><a href="{{ route('subir-archivo') }}">Ir a la página de subida de archivos</a></li>
+                          <li class="menu-item text-2xl  " data-submenu="submenu-9"><i class="fas fa-coins mr-2"></i>Tesorería</li>
+                          <li class="menu-item text-2xl  " data-submenu="submenu-10"><i class="fas fa-user-tie mr-2"></i>Administrativo</li>
+                          <li class="menu-item text-2xl  " data-submenu="submenu-11"><i class="fas fa-chart-pie mr-2"></i>Reporte</li>
+                          <li class="menu-item text-2xl  " data-submenu="submenu-12"><i class="fas fa-tachometer-alt mr-2"></i>Dashboard</li>
+                          <li class="menu-item text-2xl  " data-submenu="submenu-13"><i class="fas fa-boxes mr-2"></i>Inventario</li>
                       </ul>
                   </div>
               </div>

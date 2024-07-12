@@ -18,8 +18,9 @@ class ExportResumenCompras implements FromView
         protected $invInicial;
         protected $ventas;
         protected $CostoPromedio;
+        protected $nombreProducto;
     
-        public function __construct(Collection $data, $fechaInicio, $fechaFin,$invInicial,$ventas,$CostoPromedio)
+        public function __construct(Collection $data, $fechaInicio, $fechaFin,$invInicial,$ventas,$CostoPromedio,$nombreProducto)
         {
             $this->data = $data;
             $this->fechaInicio = date('Y-m-d', strtotime($fechaInicio));
@@ -27,6 +28,7 @@ class ExportResumenCompras implements FromView
             $this->invInicial=$invInicial;
             $this->ventas=$ventas;
             $this->CostoPromedio=$CostoPromedio;
+            $this->nombreProducto=$nombreProducto;
             
             
         }
@@ -40,6 +42,7 @@ class ExportResumenCompras implements FromView
             'invInicial' =>$this->invInicial,
             'ventas' =>$this->ventas,
             'CostoPromedio' =>$this->CostoPromedio,
+            'nombreProducto'=>$this->nombreProducto,
         ]);
     }
 }
