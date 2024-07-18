@@ -46,38 +46,55 @@
         $fechaInicio2 = \Carbon\Carbon::parse($fechaInicio);
         $fechaFin2 = \Carbon\Carbon::parse($fechaFin);
         $rangoFechas = collect();
-        $costopromedioreal=$CostoPromedio;
+        $costopromedioreal = $CostoPromedio;
+        
         // Crea un rango de fechas
         while ($fechaInicio2->lte($fechaFin2)) {
             $rangoFechas->push($fechaInicio2->copy());
             $fechaInicio2->addDay();
         }
-    
+        
         // Agrupa los datos por fecha
         $groupedDatos = $datos->groupBy(function ($item) {
             return \Carbon\Carbon::parse($item->Fecha)->format('Y-m-d');
         });
-    
+        
         // Obtener un valor común de descripcion si está disponible
         $defaultDescripcion = $datos->first() ? $datos->first()->descripcion : 'N/A';
-    
+        $defaultFecha = $datos->first() ? $datos->first()->Fecha : 'N/A';
+        
         // Combina los datos con el rango de fechas para asegurar que todas las fechas están presentes
         $datosCompletos = $rangoFechas->mapWithKeys(function ($fecha) use ($groupedDatos, $defaultDescripcion) {
             $fechaStr = $fecha->format('Y-m-d');
             $datos = $groupedDatos->get($fechaStr, collect());
-    
-            // Si la colección de datos está vacía, añade un objeto con valores predeterminados
-           
-    
+        
             return [
-                $fechaStr => [
+                $fechaStr => (object) [
                     'fecha' => $fechaStr,
-                    'datos' => $datos,
+                    'datos' => $datos->map(function ($item) {
+                        return is_array($item) ? (object) $item : $item;
+                    }),
                 ],
             ];
         });
-
-    //dd($datosCompletos);
+        
+        // Verificar si el primer día del rango no tiene datos y agregar un registro vacío
+        $firstDate = $rangoFechas->first()->format('Y-m-d');
+        if ($datosCompletos[$firstDate]->datos->isNotEmpty()) {
+            $datosCompletos[$firstDate]->datos->prepend((object) [
+                "comp_id" => "",
+                "Fecha" => $defaultFecha,
+                "idcomprobante" => 0,
+                "valorUnitario" => 0,
+                "cantidad" => 0,
+                "descripcion" => $defaultDescripcion,
+                "FLETE_SERVICIO" => 0,
+                "TOTAL_CON_FLETE" => 0,
+                "ComprasCantidad" => 0,
+                "NuFactura" => ""
+            ]);
+        }
+        
         $valorComercializadora='';
         $sumaAcumulativa = $invInicial->Inv_Inicial;
         $totalcompras=0;
@@ -95,14 +112,23 @@
         $sumtotalventas=0;
         $sumacumulativafinal=0;
         $costofinal=0;
+        $totalcomprassinconsignas=0;
+
+        //ultimas 4 columnas
+        $ininicialfinal= $invInicial->Inv_Inicial;
+        $infinalfinal=0;
+        $costofinalpromfinal=$CostoPromedio;
+        $costofinalcostofinalpromfinal=0;
+        $importefinalpromfinal=0;
          // Inicializa la suma acumulativa con el valor inicial
-    @endphp
+         @endphp
         @foreach ($datosCompletos as $index => $grupo)
-        @foreach ($grupo['datos'] as $dato)
+        @foreach ($grupo->datos as $dato)
         @php
             $sumacumulativafinal=$sumaAcumulativa+(($dato->cantidad ?? 0) + ($dato->ComprasCantidad ?? 0));
             $valorComercializadora ='Comercializadora '.$dato->descripcion;
             $totalcompras = (($dato->valorUnitario ?? 0) + ($dato->FLETE_SERVICIO ?? 0)) * (($dato->cantidad ?? 0) + ($dato->ComprasCantidad ?? 0));
+            $totalcomprassinconsignas=(($dato->valorUnitario ?? 0) + ($dato->FLETE_SERVICIO ?? 0)) * ($dato->cantidad ?? 0);
             if($totalcompras>0){
               $costopromedioreal=($costofinal+$totalcompras)/$sumacumulativafinal;
               
@@ -112,6 +138,15 @@
             }
             $costofinal=$sumacumulativafinal*$costopromedioreal;
             $sumaCantidadescostosinconsigna += (($dato->valorUnitario ?? 0) + ($dato->FLETE_SERVICIO ?? 0)) * ($dato->cantidad ?? 0);
+            $ininicialfinal=$ininicialfinal;
+            $infinalfinal=(($ininicialfinal)+($dato->cantidad ?? 0))-(0-0);
+            if($totalcomprassinconsignas>0){
+              $costofinalpromfinal=($costofinalcostofinalpromfinal+$totalcomprassinconsignas)/$infinalfinal;
+            }else{
+                $costofinalpromfinal=$costofinalpromfinal;
+                //dd($costopromedioreal);
+            }
+            $costofinalcostofinalpromfinal=$costofinalpromfinal*$infinalfinal;
         @endphp
         <tr>
              <!--compras-->
@@ -136,11 +171,11 @@
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($sumacumulativafinal, 2, '.', ',') }}</td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($costopromedioreal, 4, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$costofinal}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td> 
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td> 
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($costofinal, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($ininicialfinal,2,'.',',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($infinalfinal,2,'.',',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($costofinalpromfinal, 4, '.', ',')}}</td> 
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($costofinalcostofinalpromfinal, 2, '.', ',')}}</td> 
             
         </tr>
         @php
@@ -151,6 +186,7 @@
             
             $totalcomprasFinal+=$totalcompras ?? 0;
         $sumaAcumulativa += $dato->cantidad+$dato->ComprasCantidad;
+        $ininicialfinal=$infinalfinal;
         @endphp
         @endforeach
         
@@ -162,6 +198,7 @@
        
         $sumventastotales=$venta->Venta ?? 0;
         $sumacumulativafinal=$sumaAcumulativa- $sumventastotales;
+        $totalcons=0;
         $totalcompras=0;
         if($totalcompras>0){
               $costopromedioreal=($valorcotoinicial+$totalcompras)/$sumacumulativafinal;
@@ -171,6 +208,18 @@
             }
             $totalventas=$venta->Venta*$costopromedioreal;
             $costofinal=$sumacumulativafinal*$costopromedioreal;
+            if($valorComercializadora==""){
+                $valorComercializadora='Comercializadora '.$nombreProducto;
+            }
+            $ininicialfinal=$ininicialfinal;
+            $infinalfinal=(($ininicialfinal)+(0))-((($venta->Venta ?? 0)-($venta->Jarras ?? 0) - ($venta->JarrasConsigna ?? 0)-($venta->Jarras ?? 0)));
+            if($totalcons>0){
+              $costofinalpromfinal=($costofinalcostofinalpromfinal+$totalcons)/$infinalfinal;
+            }else{
+                $costofinalpromfinal=$costofinalpromfinal;
+                //dd($costopromedioreal);
+            }
+            $costofinalcostofinalpromfinal=$costofinalpromfinal*$infinalfinal;
         @endphp
         <tr>
              <!--compras-->
@@ -196,10 +245,10 @@
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($sumacumulativafinal, 2, '.', ',') }}</td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($costopromedioreal, 4, '.', ',')}}</td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$costofinal}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($ininicialfinal,2,'.',',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($infinalfinal,2,'.',',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($costofinalpromfinal, 4, '.', ',')}}</td> 
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($costofinalcostofinalpromfinal, 2, '.', ',')}}</td> 
         </tr>
         @php
          $sumventaslitro+=($venta->Venta ?? 0) -($venta->Jarras ?? 0 ) -($venta->JarrasConsigna ?? 0);
@@ -208,13 +257,14 @@
         $sumtotalventas+=$totalventas ?? 0;
         $totalventasTotal+=$venta->Venta;
         $sumaAcumulativa = $sumacumulativafinal;
+        $ininicialfinal=$infinalfinal;
         @endphp
         
        
         @endif
         @php
 
-    $valorcotoinicial=$sumaAcumulativa*$costopromedioreal;     
+        $valorcotoinicial=$sumaAcumulativa*$costopromedioreal;     
         @endphp
         @endforeach
         @endforeach
@@ -225,6 +275,13 @@
             $invfinalajuste=$ajustesinv+$sumaAcumulativa;
             $costofinalpro=$costofinal/$invfinalajuste;
             $costofinalventsa=$invfinalajuste*$costofinalpro;
+
+            //ultimos 4 datos
+            $dato1=$ininicialfinal;
+            $dato2=$dato1+$ajustesinv;
+            $dato3=$costofinalcostofinalpromfinal/$dato2;
+            $dato4=$dato2*$dato3;
+            
             @endphp
             <!--totales-->
            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
@@ -249,11 +306,38 @@
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$invfinalajuste}}</td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($costofinalpro, 4, '.', ',')}}</td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$costofinalventsa}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($dato1, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($dato2, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($dato3, 4, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($dato4, 2, '.', ',')}}</td>
            
+       </tr>
+       <tr>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
        </tr>
 
         <tr>
@@ -283,10 +367,10 @@
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$invfinalajuste}}</td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($costofinalpro, 4, '.', ',')}}</td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$costofinalventsa}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($dato1, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($dato2, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($dato3, 4, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($dato4, 2, '.', ',')}}</td>
            
        </tr>
        
