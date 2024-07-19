@@ -28,7 +28,7 @@
                   <div class="menu-column">
                       <ul class="menu">
                           <li class="menu-item text-2xl  " data-submenu="submenu-3"><i class="fas fa-address-card mr-2"></i><a href="{{route('usuarios')}}">Catálogo de Perfiles</a></li>
-                          <li class="menu-item text-2xl  " data-submenu="submenu-4"><i class="fas fa-search-dollar mr-2"></i><a href="{{ route('reporte.reporteResumenCompras') }}">Consulta Costo Magnaa</a></li>
+                          <li class="menu-item text-2xl  " data-submenu="submenu-4"><i class="fas fa-search-dollar mr-2"></i><a href="{{ route('reporte.reporteResumenCompras') }}">Consulta Determinacion de costo promedio</a></li>
                           <li class="menu-item text-2xl  " data-submenu="submenu-5"><i class="fas fa-wallet mr-2"></i>Establecer Presupuesto</li>
                           <li class="menu-item text-2xl  " data-submenu="submenu-6"><i class="fas fa-file-invoice-dollar mr-2"></i>Presupuesto de Gastos</li>
                           <li class="menu-item text-2xl  " data-submenu="submenu-7">

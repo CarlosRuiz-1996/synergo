@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Exports\ExportResumenCompras;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -256,13 +257,14 @@ public function exportarExcel()
         ->whereIn('NuCombustible', $nuCombustibles)
         ->whereBetween('Fecha', ['2024-04-01', $endDate->toDateTimeString()])
         ->first();
-        if (is_null($results)) {
-            $results = (object) [
-                'Inv_Inicial' => 1,
-                // agrega aquí otras columnas que necesites con valores por defecto
-            ];
+
+         // Verificar si alguna de las variables es null
+        if ($despachos->isEmpty() || $ventas->isEmpty() || is_null($results)) {
+            Session::flash('error', 'Ingrese el Primer dia y el ultimo dia del mes.');
+            return redirect()->back();
         }
-        $nombredoc = 'Resumen_' . $startDate->format('Y-m-d') . '_to_' . $endDate->format('Y-m-d') . '.xlsx';
+
+        $nombredoc = 'Resumen_del_' . $startDate->format('d-m-Y') . '_a_' . $endDate->format('d-m-Y') .'_'. $nombreProducto.''. '.xlsx';
     return Excel::download(new ExportResumenCompras($despachos, $fechareal, $endDate->toDateString(), $results,$ventas,$CostoPromedio,$nombreProducto), $nombredoc);
 }
 

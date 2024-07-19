@@ -12,32 +12,33 @@
         </tr>
         <tr>
                 <!--compras-->
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Producto</th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Fecha</th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Inv. Inicial Lts</th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Importe Inv. Inicial</th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Compras Lts</th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Compras Consigna</th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Total Compras</th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Importe Compras</th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Flete</th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Total Compras s/Consigna</th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Total Compras</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:150%">Producto</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Fecha</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Inv. Inicial Lts</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Importe Inv. Inicial</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Compras Lts</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Compras Consigna</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Total Compras</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Importe Compras</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Flete</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Total Compras s/Consigna</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Total Compras</th>
                 <!--ventas-->
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Venta Litros</th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Jarras </th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Venta Lts Consigna </th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Ventas Netas Lts</th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Importe Ventas</th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Ajuste Inv. Final</th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Costo Ajuste</th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Inv. Final Lts</th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Costo Promedio</th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Importe Inv. Final</th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Inv. Inicial Lts</th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Inv. Final Lts</th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Costo Promedio</th>
-                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: left;width:150%">Importe Inv. Final</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Venta Litros</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Jarras </th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Venta Lts Consigna </th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Ventas Netas Lts</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Importe Ventas</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Ajuste Inv. Final</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Costo Ajuste</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Inv. Final Lts</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Costo Promedio</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Importe Inv. Final</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%"></th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Inv. Inicial Lts</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Inv. Final Lts</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Costo Promedio</th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:100%">Importe Inv. Final</th>
         </tr>
     </thead>
     <tbody>
@@ -47,7 +48,7 @@
         $fechaFin2 = \Carbon\Carbon::parse($fechaFin);
         $rangoFechas = collect();
         $costopromedioreal = $CostoPromedio;
-        
+        $totalprimero='$'.number_format($costopromedioreal*$invInicial->Inv_Inicial, 2, '.', ',');
         // Crea un rango de fechas
         while ($fechaInicio2->lte($fechaFin2)) {
             $rangoFechas->push($fechaInicio2->copy());
@@ -91,7 +92,7 @@
                 "FLETE_SERVICIO" => 0,
                 "TOTAL_CON_FLETE" => 0,
                 "ComprasCantidad" => 0,
-                "NuFactura" => ""
+                "NuFactura" => $totalprimero,
             ]);
         }
         
@@ -113,7 +114,6 @@
         $sumacumulativafinal=0;
         $costofinal=0;
         $totalcomprassinconsignas=0;
-
         //ultimas 4 columnas
         $ininicialfinal= $invInicial->Inv_Inicial;
         $infinalfinal=0;
@@ -150,32 +150,39 @@
         @endphp
         <tr>
              <!--compras-->
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">Comercializadora {{$dato->descripcion}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{\Carbon\Carbon::parse($dato->Fecha)->format('Y-m-d')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($sumaAcumulativa, 2, '.', ',') }}</td> <!-- Muestra la suma acumulativa -->
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$dato->NuFactura}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($dato->cantidad, 2, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($dato->ComprasCantidad, 2, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($dato->cantidad+$dato->ComprasCantidad, 2, '.', ',') }}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($dato->valorUnitario, 6, '.', ',') }}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($dato->FLETE_SERVICIO, 6, '.', ',') }} </td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format((($dato->valorUnitario + $dato->FLETE_SERVICIO)*$dato->cantidad), 2, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($totalcompras, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;text-align: right;">Comercializadora {{$dato->descripcion}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{\Carbon\Carbon::parse($dato->Fecha)->format('d-m-Y')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{ number_format($sumaAcumulativa, 2, '.', ',') }}</td> <!-- Muestra la suma acumulativa -->
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{$dato->NuFactura}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{ number_format($dato->cantidad, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: right; width: 100px;">
+                {{ $dato->ComprasCantidad != 0 ? number_format($dato->ComprasCantidad, 2, '.', ',') : '' }}
+            </td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{ number_format($dato->cantidad+$dato->ComprasCantidad, 2, '.', ',') }}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($dato->valorUnitario, 6, '.', ',') }}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{ number_format($dato->FLETE_SERVICIO, 6, '.', ',') }} </td>
+            <td style="border: 1px solid black; padding: 8px; text-align: right; width: 100px;">
+                {{ (($dato->valorUnitario + $dato->FLETE_SERVICIO) * $dato->cantidad) != 0 ? '$' . number_format((($dato->valorUnitario + $dato->FLETE_SERVICIO) * $dato->cantidad), 2, '.', ',') : '' }}
+            </td>
+            <td style="border: 1px solid black; padding: 8px; text-align: right; width: 100px;">
+                {{ $totalcompras != 0 ? '$' . number_format($totalcompras, 2, '.', ',') : '' }}
+            </td>
             <!--ventas-->
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($sumacumulativafinal, 2, '.', ',') }}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($costopromedioreal, 4, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($costofinal, 2, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($ininicialfinal,2,'.',',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($infinalfinal,2,'.',',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($costofinalpromfinal, 4, '.', ',')}}</td> 
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($costofinalcostofinalpromfinal, 2, '.', ',')}}</td> 
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{ number_format(0, 2, '.', ',') }}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{ number_format($sumacumulativafinal, 2, '.', ',') }}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($costopromedioreal, 4, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{number_format($costofinal, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($ininicialfinal,2,'.',',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($infinalfinal,2,'.',',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($costofinalpromfinal, 4, '.', ',')}}</td> 
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{number_format($costofinalcostofinalpromfinal, 2, '.', ',')}}</td> 
             
         </tr>
         @php
@@ -187,6 +194,7 @@
             $totalcomprasFinal+=$totalcompras ?? 0;
         $sumaAcumulativa += $dato->cantidad+$dato->ComprasCantidad;
         $ininicialfinal=$infinalfinal;
+        $totalprimero='';
         @endphp
         @endforeach
         
@@ -194,7 +202,7 @@
         
         @if(\Carbon\Carbon::parse($index)->format('Y-m-d')==\Carbon\Carbon::parse($venta->Fecha)->format('Y-m-d'))
         @php
-        
+    
        
         $sumventastotales=$venta->Venta ?? 0;
         $sumacumulativafinal=$sumaAcumulativa- $sumventastotales;
@@ -220,35 +228,39 @@
                 //dd($costopromedioreal);
             }
             $costofinalcostofinalpromfinal=$costofinalpromfinal*$infinalfinal;
+            $valorinicalprecio=$totalprimero;
         @endphp
         <tr>
              <!--compras-->
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$valorComercializadora}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$index}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($sumaAcumulativa, 2, '.', ',') }}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($totalcompras, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;text-align: right;">{{$valorComercializadora}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{\Carbon\Carbon::parse($index)->format('d-m-Y')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{ number_format($sumaAcumulativa, 2, '.', ',') }}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{$valorinicalprecio}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: right; width: 100px;">
+                {{ $totalcompras != 0 ? '$' . number_format($totalcompras, 2, '.', ',') : '' }}
+            </td>
              <!--ventas-->
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($venta->Venta-$venta->Jarras-$venta->JarrasConsigna, 2, '.', ',')}}</td> 
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$venta->Jarras}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$venta->JarrasConsigna}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($sumventastotales, 2, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($totalventas, 2, '.', ',') }}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($sumacumulativafinal, 2, '.', ',') }}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($costopromedioreal, 4, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$costofinal}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($ininicialfinal,2,'.',',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($infinalfinal,2,'.',',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($costofinalpromfinal, 4, '.', ',')}}</td> 
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($costofinalcostofinalpromfinal, 2, '.', ',')}}</td> 
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($venta->Venta-$venta->Jarras-$venta->JarrasConsigna, 2, '.', ',')}}</td> 
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($venta->Jarras, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{$venta->JarrasConsigna}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{number_format($sumventastotales, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{ number_format($totalventas, 2, '.', ',') }}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{ number_format($sumacumulativafinal, 2, '.', ',') }}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($costopromedioreal, 4, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{number_format($costofinal, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($ininicialfinal,2,'.',',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($infinalfinal,2,'.',',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($costofinalpromfinal, 4, '.', ',')}}</td> 
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{number_format($costofinalcostofinalpromfinal, 2, '.', ',')}}</td> 
         </tr>
         @php
          $sumventaslitro+=($venta->Venta ?? 0) -($venta->Jarras ?? 0 ) -($venta->JarrasConsigna ?? 0);
@@ -258,6 +270,7 @@
         $totalventasTotal+=$venta->Venta;
         $sumaAcumulativa = $sumacumulativafinal;
         $ininicialfinal=$infinalfinal;
+        $totalprimero='';
         @endphp
         
        
@@ -281,63 +294,65 @@
             $dato2=$dato1+$ajustesinv;
             $dato3=$costofinalcostofinalpromfinal/$dato2;
             $dato4=$dato2*$dato3;
-            
+           
             @endphp
             <!--totales-->
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($sumaAcumulativa, 2, '.', ',') }}</td> <!-- Muestra la suma acumulativa -->
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;text-align: right;">{{$valorComercializadora}}</td>
+           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{\Carbon\Carbon::parse($fechaFin2)->format('d-m-Y')}}</td>
+           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{ number_format($sumaAcumulativa, 2, '.', ',') }}</td> <!-- Muestra la suma acumulativa -->
+           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
             <!--ventas-->
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td> 
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$ajustesinv}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$invfinalajuste}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($costofinalpro, 4, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$costofinalventsa}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($dato1, 2, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($dato2, 2, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($dato3, 4, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($dato4, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td> 
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($ajustesinv, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($invfinalajuste, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($costofinalpro, 4, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($costofinalventsa, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($dato1, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($dato2, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($dato3, 4, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($dato4, 2, '.', ',')}}</td>
            
        </tr>
        <tr>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
        </tr>
 
         <tr>
@@ -345,32 +360,33 @@
             $invfinal=(($invInicial->Inv_Inicial)+($sumaCantidadesCompras+$sumaCantidadesComprasConsigna))-($totalventas);
             @endphp
             <!--totales-->
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td> <!-- Muestra la suma acumulativa -->
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">TOTALES</td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($sumaCantidadesCompras, 2, '.', ',')}}</td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($sumaCantidadesComprasConsigna, 2, '.', ',')}}</td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($sumaCantidadesCompras+$sumaCantidadesComprasConsigna, 2, '.', ',') }}</td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($sumaCantidadescostocompra, 6, '.', ',') }}</td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($sumaCantidadescostoflete, 6, '.', ',') }} </td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($sumaCantidadescostosinconsigna, 2, '.', ',')}}</td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($totalcomprasFinal, 2, '.', ',')}}</td>
+           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;text-align: right;"></td>
+           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td> <!-- Muestra la suma acumulativa -->
+           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">TOTALES</td>
+           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{ number_format($sumaCantidadesCompras, 2, '.', ',')}}</td>
+           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{ number_format($sumaCantidadesComprasConsigna, 2, '.', ',')}}</td>
+           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{ number_format($sumaCantidadesCompras+$sumaCantidadesComprasConsigna, 2, '.', ',') }}</td>
+           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($sumaCantidadescostocompra, 6, '.', ',') }}</td>
+           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{ number_format($sumaCantidadescostoflete, 6, '.', ',') }} </td>
+           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{ number_format($sumaCantidadescostosinconsigna, 2, '.', ',')}}</td>
+           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{number_format($totalcomprasFinal, 2, '.', ',')}}</td>
             <!--ventas-->
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($sumventaslitro, 2, '.', ',')}}</td> 
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$sumjarras}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$sumjarrasconsigna}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($totalventasTotal, 2, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{ number_format($sumtotalventas, 2, '.', ',') }}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$ajustesinv}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$invfinalajuste}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($costofinalpro, 4, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{$costofinalventsa}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($dato1, 2, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($dato2, 2, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($dato3, 4, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;">{{number_format($dato4, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($sumventaslitro, 2, '.', ',')}}</td> 
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{$sumjarras}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{$sumjarrasconsigna}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{number_format($totalventasTotal, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{ number_format($sumtotalventas, 2, '.', ',') }}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{ number_format($ajustesinv, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($invfinalajuste, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($costofinalpro, 4, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{number_format($costofinalventsa, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($dato2, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($dato3, 4, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{number_format($dato4, 2, '.', ',')}}</td>
            
        </tr>
        

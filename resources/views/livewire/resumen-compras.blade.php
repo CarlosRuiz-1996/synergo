@@ -107,6 +107,15 @@
             <!-- Nueva sección: Inventario y Adquisición -->
             <h1 class="text-white mt-8">Compras</h1>
             @if ($despachos != null)
+            @if (session('error'))
+            <div class="flex justify-center">
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-1/2" role="alert">
+                   <p> <strong class="font-bold">Error:</strong>
+                    <span class="block sm:inline">{{ session('error') }}</span></p>
+                </div>
+            </div>
+        @endif
+        
                 <div class="flex flex-col space-y-3 flex-grow pl-2">
                     <button class="bg-blue-500 text-white py-2 mt-6 rounded hover:bg-blue-700 w-full"
                         wire:click='exportarExcel'>Exportar Excel</button>
