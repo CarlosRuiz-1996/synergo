@@ -318,12 +318,12 @@
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($invfinalajuste, 2, '.', ',')}}</td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($costofinalpro, 4, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($costofinalventsa, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{number_format($costofinalventsa, 2, '.', ',')}}</td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($dato1, 2, '.', ',')}}</td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($dato2, 2, '.', ',')}}</td>
             <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($dato3, 4, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($dato4, 2, '.', ',')}}</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{number_format($dato4, 2, '.', ',')}}</td>
            
        </tr>
        <tr>

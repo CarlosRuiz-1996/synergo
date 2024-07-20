@@ -8,7 +8,7 @@
              <div class="flex mb-4">
                  <input type="date" placeholder="Fecha inicial" class="mr-2" wire:model="fechainicio">
                  <input type="date" placeholder="Fecha final" class="mr-2" wire:model="fechafin">
-                 <button wire:click='ventasConsignas' class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Aplicar Filtro</button>
+                 <button wire:click='buscar' class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Aplicar Filtro</button>
                  <button wire:click="exportarExcel" style="background-color: #15803d" class="text-white font-bold py-2 px-4 rounded" >
                      Exportar a Excel
                  </button>
@@ -34,7 +34,7 @@
                             <td class="py-2 px-4 whitespace-nowrap">{{ $despacho->Descripcion ?? '' }}</td>
                             <td class="py-2 px-4 whitespace-nowrap">{{ $despacho->FecIni }}</td>
                             <td class="py-2 px-4 whitespace-nowrap">{{ $despacho->Importe }}</td>
-                            <td class="py-2 px-4 whitespace-nowrap">{{ $despacho->Litros }}</td>
+                            <td class="py-2 px-4 whitespace-nowrap">{{ number_format($despacho->Litros,2,'.','.') }}</td>
                             <td class="py-2 px-4 whitespace-nowrap">{{ $despacho->Autorizacion }}</td>
                             <td class="py-2 px-4 whitespace-nowrap">{{ $despacho->Precio }}</td>
                             <td class="py-2 px-4 whitespace-nowrap">{{ $despacho->Turno }}</td>

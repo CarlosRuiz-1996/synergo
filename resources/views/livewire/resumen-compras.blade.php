@@ -40,18 +40,6 @@
                     <!-- Campos de entrada para fecha y botón de búsqueda -->
                     <div class="flex space-x-4 items-center">
                         <!-- Primer campo de fecha -->
-                        <div class="flex flex-col space-y-3 flex-grow px-1">
-                            <label for="fechaInicio" class="text-white">Fecha de inicio</label>
-                            <input type="date" wire:model='fechainicio'
-                                class="p-2 border border-gray-300 rounded w-full">
-                        </div>
-
-                        <!-- Segundo campo de fecha -->
-                        <div class="flex flex-col space-y-3 flex-grow px-3">
-                            <label for="fechaFin" class="text-white">Fecha de fin</label>
-                            <input type="date" wire:model='fechafin'
-                                class="p-2 border border-gray-300 rounded w-full">
-                        </div>
                         <div class="flex flex-col space-y-3 flex-grow px-3">
                             <label for="TipoCombustible" class="text-white">Tipo de combustible</label>
                             <select id="TipoCombustible" wire:model='TipoCombustible'
@@ -63,6 +51,7 @@
                             </select>
                         </div>
                         <!-- Botón de búsqueda -->
+                        
                         <div class="flex flex-col space-y-3 flex-grow pl-2">
                             <button class="bg-blue-500 text-white py-2 mt-6 rounded hover:bg-blue-700 w-full"
                                 wire:click='buscar'>Buscar</button>
@@ -103,154 +92,7 @@
                 </div>
 
             </div>
-
-            <!-- Nueva sección: Inventario y Adquisición -->
-            <h1 class="text-white mt-8">Compras</h1>
-            @if ($despachos != null)
-            @if (session('error'))
-            <div class="flex justify-center">
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-1/2" role="alert">
-                   <p> <strong class="font-bold">Error:</strong>
-                    <span class="block sm:inline">{{ session('error') }}</span></p>
-                </div>
-            </div>
-        @endif
-        
-                <div class="flex flex-col space-y-3 flex-grow pl-2">
-                    <button class="bg-blue-500 text-white py-2 mt-6 rounded hover:bg-blue-700 w-full"
-                        wire:click='exportarExcel'>Exportar Excel</button>
-                </div>
-                <div class="mt-2">
-                    <div class="overflow-x-auto shadow-md rounded-lg">
-                        <table class="w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-100">
-                                
-                                <tr>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Producto
-                                    </th>
-                                    <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                    Fecha
-                                </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Precio
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Cantidad
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Flete/Servicio
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Total con Flete
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                @foreach ($despachos as $despacho)
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            {{ $despacho->descripcion }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ \Carbon\Carbon::parse($despacho->Fecha)->format('Y-m-d') }}
-
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ number_format($despacho->valorUnitario, 6) }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ number_format($despacho->cantidad, 2) }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ number_format($despacho->FLETE_SERVICIO, 6) }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ number_format($despacho->TOTAL_CON_FLETE, 6) }}
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            @else
-                <div class="overflow-x-auto shadow-md rounded-lg bg-gray-100 text-center py-4">
-                    sin datos que mostrar
-                </div>
-            @endif
-            <!-- Nueva sección: Inventario y Adquisición -->
-            <h1 class="text-white mt-8">Ventas</h1>
-            @if ($despachos != null)
-                <div class="mt-2">
-                    <div class="overflow-x-auto shadow-md rounded-lg">
-                        <table class="w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-100">
-                                <tr>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Producto
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Fecha
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Venta
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Precio Ventas
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Jarras
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                        Jarras/Consigna
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                @foreach ($ventas as $venta)
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            {{ $venta->Descripcion }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ \Carbon\Carbon::parse($venta->Fecha)->format('Y-m-d') }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $venta->Venta }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ number_format($venta->precioventa, 2) }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ number_format($venta->Jarras, 2) }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $venta->JarrasConsigna }}
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            @else
-                <div class="overflow-x-auto shadow-md rounded-lg bg-gray-100 text-center  py-4">
-                    sin datos que mostrar
-                </div>
-            @endif
+          
             <div>
                 <!-- Aquí va tu contenido anterior, omitido por brevedad -->
 
@@ -263,6 +105,9 @@
                             <!-- Encabezados de la tabla -->
                             <thead class="bg-gray-100 text-center">
                                 <tr>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                        Reporte Resumen</th>
                                     <th scope="col"
                                         class="px-6 py-3 text-xs font-medium text-gray-700 uppercase tracking-wider">
                                         Reporte Consigna</th>
@@ -283,6 +128,25 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <!-- Ejemplo de una fila de datos -->
                                 <tr class="text-center">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <div class="flex items-center justify-center space-x-3">
+                                            @if($reportesSeleccion==1)
+                                            <div  wire:click="abrirModalResumen(1)" class="ml-2" style="background-color: #34D399; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <i class="fas fa-gas-pump text-xs"></i>
+                                            </div>
+                                            @elseif($reportesSeleccion==3)
+                                            <div  wire:click="abrirModalResumen(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <i class="fas fa-gas-pump text-xs"></i>
+                                            </div>
+                                            @elseif($reportesSeleccion==2)
+                                            <div  wire:click="abrirModalResumen(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <i class="fas fa-gas-pump text-xs"></i>
+                                            </div>
+                                            @else
+                                              Sin Información para mostrar  
+                                            @endif
+                                        </div>
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                         <div class="flex items-center justify-center space-x-3">
                                             @if ($reportesSeleccion == 1)
@@ -523,7 +387,7 @@
         </button>
     </x-slot>
 </x-dialog-modal>
-<x-dialog-modal id="modal-compras3" maxWidth="4xl" wire:model="showModalInventarioCombustibleconsigna">
+<x-dialog-modal id="modal-compras4" maxWidth="4xl" wire:model="showModalInventarioCombustibleconsigna">
     <x-slot name="title" class="bg-gray-500">
         Inventario Combustible Consigna
     </x-slot>
@@ -538,6 +402,461 @@
         </button>
     </x-slot>
 </x-dialog-modal>
+
+
+    <x-dialog-modal id="modal-compras4" maxWidth="4xl" wire:model="showModalResumen">
+    <x-slot name="title" class="bg-gray-500">
+        Inventario Combustible Consigna
+    </x-slot>
+
+    <x-slot name="content">
+        <div class="flex flex-row space-x-4 px-1">
+            <!-- Primer campo de fecha -->
+            <div class="flex flex-col space-y-2 flex-grow">
+                <label for="fechaInicio" class="text-white">Fecha de inicio</label>
+                <input type="date" wire:model='fechainicio'
+                    class="p-2 border border-gray-300 rounded w-full">
+            </div>
+        
+            <!-- Segundo campo de fecha -->
+            <div class="flex flex-col space-y-2 flex-grow">
+                <label for="fechaFin" class="text-white">Fecha de fin</label>
+                <input type="date" wire:model='fechafin'
+                    class="p-2 border border-gray-300 rounded w-full">
+            </div>
+        
+            <!-- Botón de búsqueda -->
+            <div class="flex flex-col flex-grow">
+                <label for="fechaFin" class="text-white mt-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <button class="bg-blue-500 text-white py-2 rounded hover:bg-blue-700 w-full mt-2"
+                    wire:click='buscar'>Buscar</button>
+            </div>
+        </div>
+        
+        @if (session('error'))
+<div class="flex justify-center">
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-1/2" role="alert">
+       <p> <strong class="font-bold">Error:</strong>
+        <span class="block sm:inline">{{ session('error') }}</span></p>
+    </div>
+</div>
+@endif
+<div class="flex flex-col space-y-3 flex-grow pl-2">
+    <button class="bg-blue-500 text-white py-2 mt-6 rounded hover:bg-blue-700 w-full"
+        wire:click='exportarExcel'>Exportar Excel</button>
+</div>
+@if($invInicial !=null)
+
+<div class="overflow-x-auto mt-3 rounded-lg shadow-md" style="max-height: 400px;">
+    <!-- Contenedor para el desplazamiento vertical y horizontal -->
+    <div class="max-h-full overflow-y-auto">
+        <!-- Asegúrate de que la tabla tenga un ancho suficiente para el desplazamiento horizontal -->
+        <table class="min-w-full divide-y divide-gray-200">
+        <thead>
+            <tr>
+                <th colspan="27" style="background-color: #f0f0f0; font-weight: bold;text-align: start;">Determinacion de costo promedio por producto {{$nombreProducto}}
+                </th>
+            </tr>
+            <tr>
+                <th colspan="27" style="background-color: #f0f0f0; font-weight: bold;;text-align: start;">Reporte de {{\Carbon\Carbon::parse($fechaInicio)->format('Y-m-d')}} al {{$fechaFin}}</th>
+            </tr>
+            <tr>
+                <th colspan="27" style="background-color: #f0f0f0; font-weight: bold;;text-align: start;">E.S 14159 FUTURO</th>
+            </tr>
+            <tr>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Producto</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-6 py-2 ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Inv. Inicial Lts</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Importe Inv. Inicial</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Compras Lts</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Compras Consigna</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Total Compras</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Importe Compras</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Flete</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Total Compras s/Consigna</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Total Compras</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Venta Litros</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Jarras</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Venta Lts Consigna</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Ventas Netas Lts</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Importe Ventas</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Ajuste Inv. Final</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Costo Ajuste</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Inv. Final Lts</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Costo Promedio</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Importe Inv. Final</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2"></th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Inv. Inicial Lts</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Inv. Final Lts</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Costo Promedio</th>
+                <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Importe Inv. Final</th>
+            </tr>
+        </thead>
+        <tbody>
+    
+            @php
+            $fechaInicio2 = \Carbon\Carbon::parse($fechaInicio);
+            $fechaFin2 = \Carbon\Carbon::parse($fechaFin);
+            $rangoFechas = collect();
+            $costopromedioreal = $CostoPromedio;
+            $totalprimero='$'.number_format($costopromedioreal*$invInicial->Inv_Inicial, 2, '.', ',');
+            // Crea un rango de fechas
+            while ($fechaInicio2->lte($fechaFin2)) {
+                $rangoFechas->push($fechaInicio2->copy());
+                $fechaInicio2->addDay();
+            }
+            
+            // Agrupa los datos por fecha
+            $groupedDatos = $datos->groupBy(function ($item) {
+                return \Carbon\Carbon::parse($item->Fecha)->format('Y-m-d');
+            });
+            
+            // Obtener un valor común de descripcion si está disponible
+            $defaultDescripcion = $datos->first() ? $datos->first()->descripcion : 'N/A';
+            $defaultFecha = $datos->first() ? $datos->first()->Fecha : 'N/A';
+            
+            // Combina los datos con el rango de fechas para asegurar que todas las fechas están presentes
+            $datosCompletos = $rangoFechas->mapWithKeys(function ($fecha) use ($groupedDatos, $defaultDescripcion) {
+                $fechaStr = $fecha->format('Y-m-d');
+                $datos = $groupedDatos->get($fechaStr, collect());
+            
+                return [
+                    $fechaStr => (object) [
+                        'fecha' => $fechaStr,
+                        'datos' => $datos->map(function ($item) {
+                            return is_array($item) ? (object) $item : $item;
+                        }),
+                    ],
+                ];
+            });
+            
+            // Verificar si el primer día del rango no tiene datos y agregar un registro vacío
+            $firstDate = $rangoFechas->first()->format('Y-m-d');
+            if ($datosCompletos[$firstDate]->datos->isNotEmpty()) {
+                $datosCompletos[$firstDate]->datos->prepend((object) [
+                    "comp_id" => "",
+                    "Fecha" => $defaultFecha,
+                    "idcomprobante" => 0,
+                    "valorUnitario" => 0,
+                    "cantidad" => 0,
+                    "descripcion" => $defaultDescripcion,
+                    "FLETE_SERVICIO" => 0,
+                    "TOTAL_CON_FLETE" => 0,
+                    "ComprasCantidad" => 0,
+                    "NuFactura" => $totalprimero,
+                ]);
+            }
+            
+            $valorComercializadora='';
+            $sumaAcumulativa = $invInicial->Inv_Inicial;
+            $totalcompras=0;
+            $totalventasTotal=0;
+            $sumaCantidadesCompras=0;
+            $sumaCantidadesComprasConsigna=0;
+            $sumaCantidadescostocompra=0;
+            $sumaCantidadescostoflete=0;
+            $sumaCantidadescostosinconsigna=0;
+            $totalcomprasFinal=0;
+            $sumventaslitro=0;
+            $sumjarras=0;
+            $sumjarrasconsigna=0;
+            $sumventastotales=0;
+            $sumtotalventas=0;
+            $sumacumulativafinal=0;
+            $costofinal=0;
+            $totalcomprassinconsignas=0;
+            //ultimas 4 columnas
+            $ininicialfinal= $invInicial->Inv_Inicial;
+            $infinalfinal=0;
+            $costofinalpromfinal=$CostoPromedio;
+            $costofinalcostofinalpromfinal=0;
+            $importefinalpromfinal=0;
+             // Inicializa la suma acumulativa con el valor inicial
+             @endphp
+            @foreach ($datosCompletos as $index => $grupo)
+            @foreach ($grupo->datos as $dato)
+            @php
+                $sumacumulativafinal=$sumaAcumulativa+(($dato->cantidad ?? 0) + ($dato->ComprasCantidad ?? 0));
+                $valorComercializadora ='Comercializadora '.$dato->descripcion;
+                $totalcompras = (($dato->valorUnitario ?? 0) + ($dato->FLETE_SERVICIO ?? 0)) * (($dato->cantidad ?? 0) + ($dato->ComprasCantidad ?? 0));
+                $totalcomprassinconsignas=(($dato->valorUnitario ?? 0) + ($dato->FLETE_SERVICIO ?? 0)) * ($dato->cantidad ?? 0);
+                if($totalcompras>0){
+                  $costopromedioreal=($costofinal+$totalcompras)/$sumacumulativafinal;
+                  
+                }else{
+                    $costopromedioreal=$costopromedioreal;
+                    //dd($costopromedioreal);
+                }
+                $costofinal=$sumacumulativafinal*$costopromedioreal;
+                $sumaCantidadescostosinconsigna += (($dato->valorUnitario ?? 0) + ($dato->FLETE_SERVICIO ?? 0)) * ($dato->cantidad ?? 0);
+                $ininicialfinal=$ininicialfinal;
+                $infinalfinal=(($ininicialfinal)+($dato->cantidad ?? 0))-(0-0);
+                if($totalcomprassinconsignas>0){
+                  $costofinalpromfinal=($costofinalcostofinalpromfinal+$totalcomprassinconsignas)/$infinalfinal;
+                }else{
+                    $costofinalpromfinal=$costofinalpromfinal;
+                    //dd($costopromedioreal);
+                }
+                $costofinalcostofinalpromfinal=$costofinalpromfinal*$infinalfinal;
+            @endphp
+            <tr>
+                 <!--compras-->
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">Comercializadora {{$dato->descripcion}}</td>
+                <td class="border border-black  text-black text-sm text-center px-6 py-2 ">{{\Carbon\Carbon::parse($dato->Fecha)->format('d-m-Y')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{ number_format($sumaAcumulativa, 2, '.', ',') }}</td> <!-- Muestra la suma acumulativa -->
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{$dato->NuFactura}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{ number_format($dato->cantidad, 2, '.', ',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">
+                    {{ $dato->ComprasCantidad != 0 ? number_format($dato->ComprasCantidad, 2, '.', ',') : '' }}
+                </td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{ number_format($dato->cantidad+$dato->ComprasCantidad, 2, '.', ',') }}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($dato->valorUnitario, 6, '.', ',') }}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{ number_format($dato->FLETE_SERVICIO, 6, '.', ',') }} </td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">
+                    {{ (($dato->valorUnitario + $dato->FLETE_SERVICIO) * $dato->cantidad) != 0 ? '$' . number_format((($dato->valorUnitario + $dato->FLETE_SERVICIO) * $dato->cantidad), 2, '.', ',') : '' }}
+                </td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">
+                    {{ $totalcompras != 0 ? '$' . number_format($totalcompras, 2, '.', ',') : '' }}
+                </td>
+                <!--ventas-->
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">${{ number_format(0, 2, '.', ',') }}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{ number_format($sumacumulativafinal, 2, '.', ',') }}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($costopromedioreal, 4, '.', ',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">${{number_format($costofinal, 2, '.', ',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($ininicialfinal,2,'.',',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($infinalfinal,2,'.',',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($costofinalpromfinal, 4, '.', ',')}}</td> 
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">${{number_format($costofinalcostofinalpromfinal, 2, '.', ',')}}</td> 
+                
+            </tr>
+            @php
+             $sumaCantidadesCompras +=$dato->cantidad ?? 0;
+                $sumaCantidadesComprasConsigna+=$dato->ComprasCantidad ?? 0;
+                $sumaCantidadescostocompra+=$dato->valorUnitario ?? 0;
+                $sumaCantidadescostoflete+=$dato->FLETE_SERVICIO ?? 0;
+                
+                $totalcomprasFinal+=$totalcompras ?? 0;
+            $sumaAcumulativa += $dato->cantidad+$dato->ComprasCantidad;
+            $ininicialfinal=$infinalfinal;
+            $totalprimero='';
+            @endphp
+            @endforeach
+            
+            @foreach($ventas as $venta)
+            
+            @if(\Carbon\Carbon::parse($index)->format('Y-m-d')==\Carbon\Carbon::parse($venta->Fecha)->format('Y-m-d'))
+            @php
+        
+           
+            $sumventastotales=$venta->Venta ?? 0;
+            $sumacumulativafinal=$sumaAcumulativa- $sumventastotales;
+            $totalcons=0;
+            $totalcompras=0;
+            if($totalcompras>0){
+                  $costopromedioreal=($valorcotoinicial+$totalcompras)/$sumacumulativafinal;
+                  
+                }else{
+                    $costopromedioreal=$costopromedioreal;
+                }
+                $totalventas=$venta->Venta*$costopromedioreal;
+                $costofinal=$sumacumulativafinal*$costopromedioreal;
+                if($valorComercializadora==""){
+                    $valorComercializadora='Comercializadora '.$nombreProducto;
+                }
+                $ininicialfinal=$ininicialfinal;
+                $infinalfinal=(($ininicialfinal)+(0))-((($venta->Venta ?? 0)-($venta->Jarras ?? 0) - ($venta->JarrasConsigna ?? 0)-($venta->Jarras ?? 0)));
+                if($totalcons>0){
+                  $costofinalpromfinal=($costofinalcostofinalpromfinal+$totalcons)/$infinalfinal;
+                }else{
+                    $costofinalpromfinal=$costofinalpromfinal;
+                    //dd($costopromedioreal);
+                }
+                $costofinalcostofinalpromfinal=$costofinalpromfinal*$infinalfinal;
+                $valorinicalprecio=$totalprimero;
+            @endphp
+            <tr>
+                 <!--compras-->
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{$valorComercializadora}}</td>
+                <td class="border border-black  text-black text-sm text-center px-6 py-2 ">{{\Carbon\Carbon::parse($index)->format('d-m-Y')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{ number_format($sumaAcumulativa, 2, '.', ',') }}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{$valorinicalprecio}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">
+                    {{ $totalcompras != 0 ? '$' . number_format($totalcompras, 2, '.', ',') : '' }}
+                </td>
+                 <!--ventas-->
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($venta->Venta-$venta->Jarras-$venta->JarrasConsigna, 2, '.', ',')}}</td> 
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($venta->Jarras, 2, '.', ',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{$venta->JarrasConsigna}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">${{number_format($sumventastotales, 2, '.', ',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">${{ number_format($totalventas, 2, '.', ',') }}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{ number_format($sumacumulativafinal, 2, '.', ',') }}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($costopromedioreal, 4, '.', ',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">${{number_format($costofinal, 2, '.', ',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($ininicialfinal,2,'.',',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($infinalfinal,2,'.',',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($costofinalpromfinal, 4, '.', ',')}}</td> 
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">${{number_format($costofinalcostofinalpromfinal, 2, '.', ',')}}</td> 
+            </tr>
+            @php
+             $sumventaslitro+=($venta->Venta ?? 0) -($venta->Jarras ?? 0 ) -($venta->JarrasConsigna ?? 0);
+            $sumjarras+=$venta->Jarras ?? 0;
+            $sumjarrasconsigna+=$venta->JarrasConsigna ?? 0;
+            $sumtotalventas+=$totalventas ?? 0;
+            $totalventasTotal+=$venta->Venta;
+            $sumaAcumulativa = $sumacumulativafinal;
+            $ininicialfinal=$infinalfinal;
+            $totalprimero='';
+            @endphp
+            
+           
+            @endif
+            @php
+    
+            $valorcotoinicial=$sumaAcumulativa*$costopromedioreal;     
+            @endphp
+            @endforeach
+            @endforeach
+            <!--ajustes de inve-->
+            <tr>
+                @php
+                $ajustesinv=$invInicial->Inv_Final-$sumaAcumulativa;
+                $invfinalajuste=$ajustesinv+$sumaAcumulativa;
+                $costofinalpro=$costofinal/$invfinalajuste;
+                $costofinalventsa=$invfinalajuste*$costofinalpro;
+    
+                //ultimos 4 datos
+                $dato1=$ininicialfinal;
+                $dato2=$dato1+$ajustesinv;
+                $dato3=$costofinalcostofinalpromfinal/$dato2;
+                $dato4=$dato2*$dato3;
+               
+                @endphp
+                <!--totales-->
+               <td class="border border-black  text-black text-sm text-center px-4 py-2">{{$valorComercializadora}}</td>
+               <td class="border border-black  text-black text-sm text-center px-6 py-2 ">{{\Carbon\Carbon::parse($fechaFin2)->format('d-m-Y')}}</td>
+               <td class="border border-black  text-black text-sm text-center px-4 py-2">{{ number_format($sumaAcumulativa, 2, '.', ',') }}</td> <!-- Muestra la suma acumulativa -->
+               <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+               <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+               <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+               <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+               <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+               <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+               <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+               <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <!--ventas-->
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td> 
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($ajustesinv, 2, '.', ',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($invfinalajuste, 2, '.', ',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($costofinalpro, 4, '.', ',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">${{number_format($costofinalventsa, 2, '.', ',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($dato1, 2, '.', ',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($dato2, 2, '.', ',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($dato3, 4, '.', ',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">${{number_format($dato4, 2, '.', ',')}}</td>
+               
+           </tr>
+           <tr>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2 "></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+           </tr>
+    
+            <tr>
+                @php
+                $invfinal=(($invInicial->Inv_Inicial)+($sumaCantidadesCompras+$sumaCantidadesComprasConsigna))-($totalventas);
+                @endphp
+                <!--totales-->
+               <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+               <td class="border border-black  text-black text-sm text-center px-4 py-2 "></td>
+               <td class="border border-black  text-black text-sm text-center px-4 py-2"></td> <!-- Muestra la suma acumulativa -->
+               <td class="border border-black  text-black text-sm text-center px-4 py-2">TOTALES</td>
+               <td class="border border-black  text-black text-sm text-center px-4 py-2">{{ number_format($sumaCantidadesCompras, 2, '.', ',')}}</td>
+               <td class="border border-black  text-black text-sm text-center px-4 py-2">{{ number_format($sumaCantidadesComprasConsigna, 2, '.', ',')}}</td>
+               <td class="border border-black  text-black text-sm text-center px-4 py-2">{{ number_format($sumaCantidadesCompras+$sumaCantidadesComprasConsigna, 2, '.', ',') }}</td>
+               <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($sumaCantidadescostocompra, 6, '.', ',') }}</td>
+               <td class="border border-black  text-black text-sm text-center px-4 py-2">{{ number_format($sumaCantidadescostoflete, 6, '.', ',') }} </td>
+               <td class="border border-black  text-black text-sm text-center px-4 py-2">${{ number_format($sumaCantidadescostosinconsigna, 2, '.', ',')}}</td>
+               <td class="border border-black  text-black text-sm text-center px-4 py-2">${{number_format($totalcomprasFinal, 2, '.', ',')}}</td>
+                <!--ventas-->
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($sumventaslitro, 2, '.', ',')}}</td> 
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{$sumjarras}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{$sumjarrasconsigna}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">${{number_format($totalventasTotal, 2, '.', ',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">${{ number_format($sumtotalventas, 2, '.', ',') }}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{ number_format($ajustesinv, 2, '.', ',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($invfinalajuste, 2, '.', ',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($costofinalpro, 4, '.', ',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">${{number_format($costofinalventsa, 2, '.', ',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($dato2, 2, '.', ',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($dato3, 4, '.', ',')}}</td>
+                <td class="border border-black  text-black text-sm text-center px-4 py-2">${{number_format($dato4, 2, '.', ',')}}</td>
+               
+           </tr>
+           
+        </tbody>
+    </table>
+    
+</div>
+</div>
+@endif
+    </x-slot>
+
+    <x-slot name="footer">
+        <button x-on:click="show = false" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+            Cerrar
+        </button>
+    </x-slot>
+    </x-dialog-modal>
+
+
     <script>
         $(document).ready(function() {
             $('#EstacionSeleccionada').select2();
@@ -548,4 +867,5 @@
             // Aquí puedes hacer lo que necesites con el valor seleccionado, como enviarlo a través de Livewire
         });
     </script>
+
 </div>

@@ -74,10 +74,10 @@
                                         @endif
                                     </th> --}}
                                     <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider
+                                        class="px-3 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider
                                         cursor-pointer"
                                         wire:click="order('NumeroSistemaContable')">
-                                        Numero Sistema Contable
+                                        <p>Num.Sistema Contable
                                         @if ($sort == 'NumeroSistemaContable')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
@@ -88,26 +88,27 @@
                                             <i class="fas fa-sort float-right hover:float-left mt-1"></i>
 
                                         @endif
+                                        </p>
                                     </th>
                                     <th scope="col"
-                                        class="w-32 px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider
-                                        cursor-pointer "
-                                        wire:click="order('Estacion')">
-                                        Estación
+                                    class="w-32 px-3 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider cursor-pointer"
+                                    wire:click="order('Estacion')">
+                                    <div class="flex items-center">
+                                        <span>Estación</span>
                                         @if ($sort == 'Estacion')
                                             @if ($orderBy == 'asc')
-                                                <i class="fas fa-sort-alpha-up-alt mt-1"></i>
+                                                <i class="fas fa-sort-alpha-up-alt ml-2"></i>
                                             @else
-                                                <i class="fas fa-sort-alpha-down-alt mt-1"></i>
+                                                <i class="fas fa-sort-alpha-down-alt ml-2"></i>
                                             @endif
                                         @else
-                                            <i class="fas fa-sort float-right hover:float-left mt-1"></i>
-
+                                            <i class="fas fa-sort ml-2"></i>
                                         @endif
-                                    </th>
+                                    </div>
+                                </th>
 
                                     <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider
+                                        class="px-3 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider
                                         cursor-pointer"
                                         wire:click="order('NombreEstacion')">
                                         Nombre Estacion
@@ -124,7 +125,7 @@
                                     </th>
 
                                     <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider
+                                        class="px-3 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider
                                         cursor-pointer"
                                         wire:click="order('DireccionFiscal')">
                                         Direccion Fiscal
@@ -142,7 +143,7 @@
 
 
                                     <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                        class="px-6 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider">
                                         Detalles
                                     </th>
                                 </tr>
@@ -155,24 +156,24 @@
                                             {{ $estacion->IdEstacion }}
 
                                         </td> --}}
-                                        <td class="px-6 py-4 w-72 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-3 py-4 w-10 whitespace-nowrap text-center text-sm text-gray-500">
                                             {{ $estacion->NumeroSistemaContable }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="w-32 px-3 py-4 whitespace-nowrap text-center text-sm text-gray-500">
                                             {{ $estacion->estacion }}
                                         </td>
 
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ $estacion->NombreEstacion }}
                                         </td>
 
-                                        <td class="px-6 py-4 text-sm text-gray-500">
+                                        <td class="px-3 py-4 text-sm text-gray-500">
                                             {{ $estacion->DireccionFiscal }}
 
                                         </td>
 
 
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-500">
 
                                             <x-button title="Detalles"
                                                 wire:click='detalles({{ $estacion->IdEstacion }})'>
