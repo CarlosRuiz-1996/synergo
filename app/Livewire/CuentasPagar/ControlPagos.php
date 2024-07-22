@@ -81,58 +81,63 @@ class ControlPagos extends Component
 
         //dr.impPagado
         return DB::table('COMPROBANTE as c')
-            ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
-            ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
-            ->join('DOCTO_RELACIONADO as dr', DB::raw('CAST(dr.idDocumento AS VARCHAR(MAX))'), '=', DB::raw('CAST(t.UUID AS VARCHAR(MAX))'))
-
-            ->whereBetween('c.Fecha', [$startDate, $endDate])
-            ->where(function ($query) {
-                $query->where('c.TipoDeComprobante', 'LIKE', 'P')
-                    ->orWhere('c.TipoDeComprobante', 'LIKE', 'I');
-            })->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
-
-
-            ->select(
-                'c.id',
-                'c.Fecha',
-                DB::raw("CONCAT(c.Serie, '-', c.folio) as n_factura"),
-                'conc.descripcion as combustible',
-                'conc.cantidad as litros',
-                'c.SubTotal',
-                'c.Total',
-                't.UUID as estatus',
-                'c.TipoDeComprobante'
-            )->orderBy('c.Fecha', 'DESC')
-            ->paginate(10);
+        ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
+        ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
+        ->join('DOCTO_RELACIONADO as dr', DB::raw('CAST(dr.idDocumento AS VARCHAR(MAX))'), '=', DB::raw('CAST(t.UUID AS VARCHAR(MAX))'))
+        ->whereBetween('c.Fecha', [$startDate, $endDate])
+        ->where('c.TipoDeComprobante', 'LIKE', 'I')
+        ->where(function ($query) {
+            $query->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
+                  ->orWhere('conc.descripcion', 'LIKE', 'PEMEX PREMIUM')
+                  ->orWhere('conc.descripcion', 'LIKE', 'PEMEX DIESEL');
+        })
+        ->select(
+            'c.id',
+            'c.Fecha',
+            DB::raw("CONCAT(c.Serie, '-', c.folio) as n_factura"),
+            'conc.descripcion as combustible',
+            'conc.cantidad as litros',
+            'c.SubTotal',
+            'c.Total',
+            't.UUID as estatus',
+            'c.TipoDeComprobante'
+        )
+        ->orderBy('c.Fecha', 'DESC')
+        ->paginate(10);
+    
     }
     public $total_facturas;
     public function monto()
     {
         $startDate = $this->fechainicio ? Carbon::createFromFormat('Y-m-d', $this->fechainicio)->startOfDay() : Carbon::createFromDate(null, 4, 1)->startOfDay();
         $endDate = $this->fechafin ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay() : Carbon::createFromDate(null, 4, 30)->endOfDay();
-
-        $this->monto_pagado =  DB::table('COMPROBANTE as c')
-            ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
-            ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
-            ->join('DOCTO_RELACIONADO as dr', DB::raw('CAST(dr.idDocumento AS NVARCHAR(MAX))'), '=', DB::raw('CAST(t.UUID AS NVARCHAR(MAX))'))
-            ->whereBetween('c.Fecha', [$startDate, $endDate])
-            ->where(function ($query) {
-                $query->where('c.TipoDeComprobante', 'LIKE', 'P')
-                    ->orWhere('c.TipoDeComprobante', 'LIKE', 'I');
-            })
-            ->sum('c.Total');
-
-
-        $this->total_facturas =  DB::table('COMPROBANTE as c')
-            ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
-            ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
-            ->join('DOCTO_RELACIONADO as dr', DB::raw('CAST(dr.idDocumento AS NVARCHAR(MAX))'), '=', DB::raw('CAST(t.UUID AS NVARCHAR(MAX))'))
-            ->whereBetween('c.Fecha', [$startDate, $endDate])
-            ->where(function ($query) {
-                $query->where('c.TipoDeComprobante', 'LIKE', 'P')
-                    ->orWhere('c.TipoDeComprobante', 'LIKE', 'I');
-            })
-            ->count();
+        $this->monto_pagado = DB::table('COMPROBANTE as c')
+        ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
+        ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
+        ->join('DOCTO_RELACIONADO as dr', DB::raw('CAST(dr.idDocumento AS NVARCHAR(MAX))'), '=', DB::raw('CAST(t.UUID AS NVARCHAR(MAX))'))
+        ->whereBetween('c.Fecha', [$startDate, $endDate])
+        ->where('c.TipoDeComprobante', 'LIKE', 'I')
+        ->where(function ($query) {
+            $query->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
+                  ->orWhere('conc.descripcion', 'LIKE', 'PEMEX PREMIUM')
+                  ->orWhere('conc.descripcion', 'LIKE', 'PEMEX DIESEL');
+        })
+        ->sum('c.Total');
+    
+    $this->total_facturas = DB::table('COMPROBANTE as c')
+        ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
+        ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
+        ->join('DOCTO_RELACIONADO as dr', DB::raw('CAST(dr.idDocumento AS NVARCHAR(MAX))'), '=', DB::raw('CAST(t.UUID AS NVARCHAR(MAX))'))
+        ->whereBetween('c.Fecha', [$startDate, $endDate])
+        ->where('c.TipoDeComprobante', 'LIKE', 'I')
+        ->where(function ($query) {
+            $query->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
+                  ->orWhere('conc.descripcion', 'LIKE', 'PEMEX PREMIUM')
+                  ->orWhere('conc.descripcion', 'LIKE', 'PEMEX DIESEL');
+        })
+        ->count();
+    
+    
     }
 
     public $isOpen = false;

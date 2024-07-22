@@ -82,8 +82,6 @@
 
                                         <h2><b>RFC: {{ $estaciond->rfc_emisor }}</b></h2>
 
-                                        <h2><b>Domicilio: XXXXXXXXXXXXXXXXXX</b></h2>
-
                                     </div>
                                     <div class="col-span-1 mt-5">
                                         <x-button wire:click='openModal'>Detalles</x-button>
