@@ -27,28 +27,11 @@
                     </div>
                     <div class="menu-column mb-8 ml-4">
                         <ul class="menu ml-4">
-                            <li class="menu-item text-lg" data-submenu="submenu-9"><i class="fas fa-coins ml-6"></i>Tesorería</li>
-                            <li class="menu-item text-lg" data-submenu="submenu-10"><i class="fas fa-user-tie ml-6"></i>Administrativo</li>
-                            <li class="menu-item text-lg" data-submenu="submenu-11"><i class="fas fa-chart-pie ml-6"></i>Reporte</li>
-                            <li class="menu-item text-lg" data-submenu="submenu-12"><i class="fas fa-tachometer-alt ml-6"></i>Dashboard</li>
-                            <li class="menu-item text-lg" data-submenu="submenu-13"><i class="fas fa-boxes ml-6"></i>Inventario</li>
-                        </ul>
-                    </div>
-                    <div class="menu-column">
-                        <ul class="menu">
-                            <li class="menu-item text-lg" data-submenu="submenu-1"><i class="fas fa-book"></i>Catálogos</li>
-                            <li class="menu-item text-lg" data-submenu="submenu-2"><i class="fas fa-piggy-bank"></i>Bancos
-                                <ul class="submenu-items" id="submenu-2">
-                                    <a href="{{route('reporte.cajas')}}">
-                                        <li class="submenu-item text-lg"><i class="fas fa-file-invoice"></i><a href="{{ route('subir-archivo') }}">Subir factura</a></li>
-                                        <li class="submenu-item text-lg"><i class="fas fa-list-alt"></i>Clasificar pagos</li>
-                                        <li class="submenu-item text-lg"><i class="fas fa-clipboard-check"></i>Pendientes de pagos</li>
-                                        <li class="submenu-item text-lg"><i class="fas fa-hand-holding-usd"></i>Pagos por autorizar</li>
-                                        <li class="submenu-item text-lg"><i class="fas fa-file-signature"></i>Pago autorizado por definir</li>
-                                        <li class="submenu-item text-lg"><i class="fas fa-file"></i>Pago sin registro</li>
-                                    </a>
-                                </ul>
-                            </li>
+                            <li style="padding-left:80px" class="menu-item text-lg" data-submenu="submenu-9"><i class="fas fa-coins ml-6"></i>Tesorería</li>
+                            <li style="padding-left:80px" class="menu-item text-lg" data-submenu="submenu-10"><i class="fas fa-user-tie ml-6"></i>Administrativo</li>
+                            <li style="padding-left:80px" class="menu-item text-lg" data-submenu="submenu-11"><i class="fas fa-chart-pie ml-6"></i>Reporte</li>
+                            <li style="padding-left:80px" class="menu-item text-lg" data-submenu="submenu-12"><i class="fas fa-tachometer-alt ml-6"></i>Dashboard</li>
+                            <li style="padding-left:80px" class="menu-item text-lg" data-submenu="submenu-13"><i class="fas fa-boxes ml-6"></i>Inventario</li>
                         </ul>
                     </div>
                 </div>

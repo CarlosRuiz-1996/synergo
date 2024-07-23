@@ -436,7 +436,7 @@
         @if (session('error'))
 <div class="flex justify-center">
     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-1/2" role="alert">
-       <p> <strong class="font-bold">Error:</strong>
+       <p> <strong class="font-bold">No se puede encontro información en el periodo seleccionbado :</strong>
         <span class="block sm:inline">{{ session('error') }}</span></p>
     </div>
 </div>
