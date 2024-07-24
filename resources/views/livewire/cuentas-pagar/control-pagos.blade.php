@@ -39,7 +39,7 @@
                 <div class="col-span-2 "></div>
                 <div class="col-span-1">
                     <label for="fechaInicio" class="text-white">Fecha de inicio</label>
-                    <input type="date" wire:model='fechainicio' min="2024-04-01" max="2024-04-30"
+                    <input type="date" wire:model='fechainicio'
                         class="p-2 rounded w-full @error('fechainicio') border-red-500 text-red-900   focus:border-red-500 @enderror">
                     <x-input-error for="fechainicio" />
 
@@ -47,7 +47,7 @@
                 </div>
                 <div class="col-span-1">
                     <label for="fechaFin" class="text-white">Fecha de fin</label>
-                    <input type="date" wire:model='fechafin' min="2024-04-01" max="2024-04-30"
+                    <input type="date" wire:model='fechafin'
                         class="p-2 rounded w-full @error('fechafin') border-red-500 text-red-900   focus:border-red-500 @enderror">
                     <x-input-error for="fechafin" />
 

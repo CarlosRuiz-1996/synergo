@@ -95,7 +95,7 @@
           
             <div>
                 <!-- Aquí va tu contenido anterior, omitido por brevedad -->
-
+                @if($EstacionSeleccionada  =='153')
                 <!-- Sección de la tabla con detalles -->
                 <div class="mt-8">
                     <!-- Ajusta el margen top según tu diseño -->
@@ -250,7 +250,14 @@
                             </tbody>
                         </table>
                     </div>
+                </div>                    
+                @else
+                <div class="flex justify-center">
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-1/2" role="alert">
+                       <p> <strong class="font-bold">No hay informacion para esta estacion.</strong>
+                    </div>
                 </div>
+                @endif
             </div>
 
         </div>
@@ -406,7 +413,7 @@
 
     <x-dialog-modal id="modal-compras4" maxWidth="4xl" wire:model="showModalResumen">
     <x-slot name="title" class="bg-gray-500">
-        Inventario Combustible Consigna
+        Determinación de costo
     </x-slot>
 
     <x-slot name="content">
@@ -436,7 +443,7 @@
         @if (session('error'))
 <div class="flex justify-center">
     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-1/2" role="alert">
-       <p> <strong class="font-bold">No se puede encontro información en el periodo seleccionbado :</strong>
+       <p> <strong class="font-bold">Lo sentimos, no se puede generar el reporte en el periodo seleccionado.</strong>
         <span class="block sm:inline">{{ session('error') }}</span></p>
     </div>
 </div>
