@@ -251,10 +251,16 @@
                         </table>
                     </div>
                 </div>                    
-                @else
-                <div class="flex justify-center">
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-1/2" role="alert">
+                @elseif($EstacionSeleccionada  !='153' && $EstacionSeleccionada  !='')
+                <div class="flex justify-center mt-4">
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-1/2 text-center" role="alert">
                        <p> <strong class="font-bold">No hay informacion para esta estacion.</strong>
+                    </div>
+                </div>
+                @else
+                <div class="flex justify-center mt-4">
+                    <div class="bg-red-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative w-1/2 text-center" role="alert">
+                       <p> <strong class="font-bold">Seleccione una estacion.</strong>
                     </div>
                 </div>
                 @endif

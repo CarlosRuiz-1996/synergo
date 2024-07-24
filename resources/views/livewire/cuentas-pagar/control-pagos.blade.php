@@ -73,7 +73,7 @@
                         <form action="{{ route('procesar-archivos') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="file" name="archivo_zip">
-                            <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Subir archivo ZIP</button>
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Subir archivo ZIP</button>
                         </form>
                         <div class="col-span-1 mt-5">
                                     <x-button wire:click='insertarBase'>Cargar información XML</x-button>
