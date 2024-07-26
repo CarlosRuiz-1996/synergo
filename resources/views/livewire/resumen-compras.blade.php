@@ -746,20 +746,48 @@
             @endforeach
             @endforeach
             <!--ajustes de inve-->
+            
+            @php
+            $ajustesinv = 0;
+            $mensajesfinal="TOTALES";
+            if($invInicial->Inv_Final==0){
+                $ajustesinv = 0;
+                $mensajesfinal="TOTALES PARCIALES";
+            }else{
+                $ajustesinv = $invInicial->Inv_Final - $sumaAcumulativa;
+            }
+           
+            // Validar que $ajustesinv no sea negativo y evitar división por cero
+            if ($ajustesinv <= 0) {
+                // Manejar el caso donde ajustesinv es negativo o cero
+                $invfinalajuste = $ajustesinv + $sumaAcumulativa; // O asignar un valor predeterminado
+                $costofinalpro = $costofinal / $invfinalajuste;
+                $costofinalventsa = $invfinalajuste * $costofinalpro;
+            } else {
+                $invfinalajuste = $ajustesinv + $sumaAcumulativa;
+
+                // Validar que $invfinalajuste no sea cero para evitar división por cero
+                if ($invfinalajuste == 0) {
+                    $costofinalpro = 0; // O manejar según la lógica de negocio
+                    $costofinalventsa = 0; // O manejar según la lógica de negocio
+                } else {
+                    $costofinalpro = $costofinal / $invfinalajuste;
+                    $costofinalventsa = $invfinalajuste * $costofinalpro;
+                }
+            }
+
+
+
+            //ultimos 4 datos
+            $dato1=$ininicialfinal;
+            $dato2=$dato1+$ajustesinv;
+            $dato3=$costofinalcostofinalpromfinal/$dato2;
+            $dato4=$dato2*$dato3;
+           
+            @endphp
+            @if($invInicial->Inv_Final !=0)
             <tr>
-                @php
-                $ajustesinv=$invInicial->Inv_Final-$sumaAcumulativa;
-                $invfinalajuste=$ajustesinv+$sumaAcumulativa;
-                $costofinalpro=$costofinal/$invfinalajuste;
-                $costofinalventsa=$invfinalajuste*$costofinalpro;
-    
-                //ultimos 4 datos
-                $dato1=$ininicialfinal;
-                $dato2=$dato1+$ajustesinv;
-                $dato3=$costofinalcostofinalpromfinal/$dato2;
-                $dato4=$dato2*$dato3;
-               
-                @endphp
+
                 <!--totales-->
                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{$valorComercializadora}}</td>
                <td class="border border-black  text-black text-sm text-center px-6 py-2 ">{{\Carbon\Carbon::parse($fechaFin2)->format('d-m-Y')}}</td>
@@ -790,6 +818,7 @@
                 <td class="border border-black  text-black text-sm text-center px-4 py-2">${{number_format($dato4, 2, '.', ',')}}</td>
                
            </tr>
+           @endif
            <tr>
             <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
             <td class="border border-black  text-black text-sm text-center px-4 py-2 "></td>
@@ -827,7 +856,7 @@
                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
                <td class="border border-black  text-black text-sm text-center px-4 py-2 "></td>
                <td class="border border-black  text-black text-sm text-center px-4 py-2"></td> <!-- Muestra la suma acumulativa -->
-               <td class="border border-black  text-black text-sm text-center px-4 py-2">TOTALES</td>
+               <td class="border border-black  text-black text-sm text-center px-4 py-2">{{$mensajesfinal}}</td>
                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{ number_format($sumaCantidadesCompras, 2, '.', ',')}}</td>
                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{ number_format($sumaCantidadesComprasConsigna, 2, '.', ',')}}</td>
                <td class="border border-black  text-black text-sm text-center px-4 py-2">{{ number_format($sumaCantidadesCompras+$sumaCantidadesComprasConsigna, 2, '.', ',') }}</td>
@@ -869,6 +898,17 @@
     </x-slot>
     </x-dialog-modal>
 
+    <div>
+        @if (session()->has('database_messages'))
+            @foreach (session('database_messages') as $message)
+                <div class="alert alert-info">
+                    {{ $message }}
+                </div>
+            @endforeach
+        @endif
+    
+        <!-- Aquí va el resto del contenido de tu componente -->
+    </div>
 
     <script>
         $(document).ready(function() {

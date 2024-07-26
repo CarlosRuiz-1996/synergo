@@ -282,77 +282,105 @@
         @endforeach
         @endforeach
         <!--ajustes de inve-->
-        <tr>
-            @php
-            $ajustesinv=$invInicial->Inv_Final-$sumaAcumulativa;
-            $invfinalajuste=$ajustesinv+$sumaAcumulativa;
-            $costofinalpro=$costofinal/$invfinalajuste;
-            $costofinalventsa=$invfinalajuste*$costofinalpro;
+        @php
+        $ajustesinv = 0;
+        $mensajesfinal="TOTALES";
+        if($invInicial->Inv_Final==0){
+            $ajustesinv = 0;
+            $mensajesfinal="TOTALES PARCIALES";
+        }else{
+            $ajustesinv = $invInicial->Inv_Final - $sumaAcumulativa;
+        }
+       
+        // Validar que $ajustesinv no sea negativo y evitar división por cero
+        if ($ajustesinv <= 0) {
+            // Manejar el caso donde ajustesinv es negativo o cero
+            $invfinalajuste = $ajustesinv + $sumaAcumulativa; // O asignar un valor predeterminado
+            $costofinalpro = $costofinal / $invfinalajuste;
+            $costofinalventsa = $invfinalajuste * $costofinalpro;
+        } else {
+            $invfinalajuste = $ajustesinv + $sumaAcumulativa;
 
-            //ultimos 4 datos
-            $dato1=$ininicialfinal;
-            $dato2=$dato1+$ajustesinv;
-            $dato3=$costofinalcostofinalpromfinal/$dato2;
-            $dato4=$dato2*$dato3;
-           
-            @endphp
+            // Validar que $invfinalajuste no sea cero para evitar división por cero
+            if ($invfinalajuste == 0) {
+                $costofinalpro = 0; // O manejar según la lógica de negocio
+                $costofinalventsa = 0; // O manejar según la lógica de negocio
+            } else {
+                $costofinalpro = $costofinal / $invfinalajuste;
+                $costofinalventsa = $invfinalajuste * $costofinalpro;
+            }
+        }
+
+
+
+        //ultimos 4 datos
+        $dato1=$ininicialfinal;
+        $dato2=$dato1+$ajustesinv;
+        $dato3=$costofinalcostofinalpromfinal/$dato2;
+        $dato4=$dato2*$dato3;
+       
+        @endphp
+        @if($invInicial->Inv_Final !=0)
+        <tr>
+
             <!--totales-->
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;text-align: right;">{{$valorComercializadora}}</td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{\Carbon\Carbon::parse($fechaFin2)->format('d-m-Y')}}</td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{ number_format($sumaAcumulativa, 2, '.', ',') }}</td> <!-- Muestra la suma acumulativa -->
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+           <td class="border border-black  text-black text-sm text-center px-4 py-2">{{$valorComercializadora}}</td>
+           <td class="border border-black  text-black text-sm text-center px-6 py-2 ">{{\Carbon\Carbon::parse($fechaFin2)->format('d-m-Y')}}</td>
+           <td class="border border-black  text-black text-sm text-center px-4 py-2">{{ number_format($sumaAcumulativa, 2, '.', ',') }}</td> <!-- Muestra la suma acumulativa -->
+           <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+           <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+           <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+           <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+           <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+           <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+           <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+           <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
             <!--ventas-->
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td> 
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($ajustesinv, 2, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($invfinalajuste, 2, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($costofinalpro, 4, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{number_format($costofinalventsa, 2, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($dato1, 2, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($dato2, 2, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($dato3, 4, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{number_format($dato4, 2, '.', ',')}}</td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td> 
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($ajustesinv, 2, '.', ',')}}</td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($invfinalajuste, 2, '.', ',')}}</td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($costofinalpro, 4, '.', ',')}}</td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2">${{number_format($costofinalventsa, 2, '.', ',')}}</td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($dato1, 2, '.', ',')}}</td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($dato2, 2, '.', ',')}}</td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($dato3, 4, '.', ',')}}</td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2">${{number_format($dato4, 2, '.', ',')}}</td>
            
        </tr>
+       @endif
        <tr>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-        <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2 "></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+        <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
        </tr>
 
         <tr>
@@ -360,33 +388,33 @@
             $invfinal=(($invInicial->Inv_Inicial)+($sumaCantidadesCompras+$sumaCantidadesComprasConsigna))-($totalventas);
             @endphp
             <!--totales-->
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 150px;text-align: right;"></td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td> <!-- Muestra la suma acumulativa -->
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">TOTALES</td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{ number_format($sumaCantidadesCompras, 2, '.', ',')}}</td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{ number_format($sumaCantidadesComprasConsigna, 2, '.', ',')}}</td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{ number_format($sumaCantidadesCompras+$sumaCantidadesComprasConsigna, 2, '.', ',') }}</td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($sumaCantidadescostocompra, 6, '.', ',') }}</td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{ number_format($sumaCantidadescostoflete, 6, '.', ',') }} </td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{ number_format($sumaCantidadescostosinconsigna, 2, '.', ',')}}</td>
-           <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{number_format($totalcomprasFinal, 2, '.', ',')}}</td>
+           <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+           <td class="border border-black  text-black text-sm text-center px-4 py-2 "></td>
+           <td class="border border-black  text-black text-sm text-center px-4 py-2"></td> <!-- Muestra la suma acumulativa -->
+           <td class="border border-black  text-black text-sm text-center px-4 py-2">{{$mensajesfinal}}</td>
+           <td class="border border-black  text-black text-sm text-center px-4 py-2">{{ number_format($sumaCantidadesCompras, 2, '.', ',')}}</td>
+           <td class="border border-black  text-black text-sm text-center px-4 py-2">{{ number_format($sumaCantidadesComprasConsigna, 2, '.', ',')}}</td>
+           <td class="border border-black  text-black text-sm text-center px-4 py-2">{{ number_format($sumaCantidadesCompras+$sumaCantidadesComprasConsigna, 2, '.', ',') }}</td>
+           <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($sumaCantidadescostocompra, 6, '.', ',') }}</td>
+           <td class="border border-black  text-black text-sm text-center px-4 py-2">{{ number_format($sumaCantidadescostoflete, 6, '.', ',') }} </td>
+           <td class="border border-black  text-black text-sm text-center px-4 py-2">${{ number_format($sumaCantidadescostosinconsigna, 2, '.', ',')}}</td>
+           <td class="border border-black  text-black text-sm text-center px-4 py-2">${{number_format($totalcomprasFinal, 2, '.', ',')}}</td>
             <!--ventas-->
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($sumventaslitro, 2, '.', ',')}}</td> 
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{$sumjarras}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{$sumjarrasconsigna}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{number_format($totalventasTotal, 2, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{ number_format($sumtotalventas, 2, '.', ',') }}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{ number_format($ajustesinv, 2, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($invfinalajuste, 2, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($costofinalpro, 4, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{number_format($costofinalventsa, 2, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;"></td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($dato2, 2, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">{{number_format($dato3, 4, '.', ',')}}</td>
-            <td style="border: 1px solid black; padding: 8px; text-align: left; width: 100px;text-align: right;">${{number_format($dato4, 2, '.', ',')}}</td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($sumventaslitro, 2, '.', ',')}}</td> 
+            <td class="border border-black  text-black text-sm text-center px-4 py-2">{{$sumjarras}}</td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2">{{$sumjarrasconsigna}}</td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2">${{number_format($totalventasTotal, 2, '.', ',')}}</td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2">${{ number_format($sumtotalventas, 2, '.', ',') }}</td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2">{{ number_format($ajustesinv, 2, '.', ',')}}</td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($invfinalajuste, 2, '.', ',')}}</td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($costofinalpro, 4, '.', ',')}}</td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2">${{number_format($costofinalventsa, 2, '.', ',')}}</td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2"></td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($dato2, 2, '.', ',')}}</td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2">{{number_format($dato3, 4, '.', ',')}}</td>
+            <td class="border border-black  text-black text-sm text-center px-4 py-2">${{number_format($dato4, 2, '.', ',')}}</td>
            
        </tr>
        

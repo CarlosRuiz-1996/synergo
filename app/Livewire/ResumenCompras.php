@@ -108,124 +108,123 @@ public function render()
     }
     $this->totalesValores=$this->totales();
     
-    //dd($ventas);
-     //$inicial=$this->buscarInventarioInicial();
-     // Retorna la vista con los resultados de la consulta
-     //dd($despachos);
-    return view('livewire.resumen-compras', compact('despachos','ventas','estaciones'));
+
+    return view('livewire.resumen-compras', compact('despachos','ventas','estaciones'),[
+        'databaseMessages' => session('database_messages', []),
+    ]);
     //return view('livewire.resumen-compras');
 }
-public function buscar(){
-     
-    // Realiza la consulta a la base de datos utilizando los filtros
-   if($this->EstacionSeleccionada=="" ||  $this->EstacionSeleccionada != 153){
-    return null;
-   }else{
+
+public function buscar()
+{
+    // Verifica la estación seleccionada
+    if ($this->EstacionSeleccionada == "" || $this->EstacionSeleccionada != 153) {
+        return null;
+    }
+
     // Establece las fechas de inicio y fin
-    // Establece las fechas de inicio y fin
-    $combustible = !empty($this->TipoCombustible) ? (array)$this->TipoCombustible : ['PEMEX MAGNA', 'PEMEX DIESEL', 'PEMEX PREMIUM'];  
+    $combustible = !empty($this->TipoCombustible) ? (array)$this->TipoCombustible : ['PEMEX MAGNA', 'PEMEX DIESEL', 'PEMEX PREMIUM'];
     $fechareal = $this->fechainicio ? Carbon::createFromFormat('Y-m-d', $this->fechainicio)->startOfDay() : Carbon::createFromDate(null, 4, 1)->startOfDay();
     $endDate = $this->fechafin ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay() : Carbon::createFromDate(null, 4, 30)->endOfDay();
+
     // Obtiene la fecha un día antes de startDate
     $startDate = $fechareal->copy()->subDay();
+
     $nuCombustibles = [];
-    $CostoPromedio =0.0;
-    $nombreProducto ="";
+    $CostoPromedio = 0.0;
+    $nombreProducto = "";
     foreach ($combustible as $tipo) {
         switch ($tipo) {
             case 'PEMEX MAGNA':
                 $nuCombustibles[] = 1;
-                $CostoPromedio =16.801917;
-                $nombreProducto ='PEMEX MAGNA';
+                $CostoPromedio = 16.801917;
+                $nombreProducto = 'PEMEX MAGNA';
                 break;
             case 'PEMEX PREMIUM':
                 $nuCombustibles[] = 2;
-                $nombreProducto ='PEMEX PREMIUM';
-                $CostoPromedio =19.920347;
+                $nombreProducto = 'PEMEX PREMIUM';
+                $CostoPromedio = 19.920347;
                 break;
             case 'PEMEX DIESEL':
                 $nuCombustibles[] = 3;
-                $CostoPromedio =18.412003;
-                $nombreProducto='PEMEX DIESEL';
+                $CostoPromedio = 18.412003;
+                $nombreProducto = 'PEMEX DIESEL';
                 break;
-            // Agregar más casos según sea necesario
         }
     }
+
     $despachos = DB::table('COMPROBANTE as comp')
-    ->select(
-        'comp.id AS comp_id',
-        DB::raw("CASE 
-                    WHEN CAST(comp.Fecha AS DATE) = '2024-03-31' THEN CAST('2024-04-01' AS DATE)
-                    ELSE CAST(comp.Fecha AS DATE)
-                END AS Fecha"),
-        'concPE.idcomprobante',
-        'concPE.valorUnitario',
-        'concPE.cantidad',
-        'concPE.descripcion',
-        DB::raw('(concSI.valorUnitario / concPE.cantidad) AS FLETE_SERVICIO'),
-        DB::raw('ROUND(((concPE.valorUnitario + (concSI.valorUnitario / concPE.cantidad)) * concPE.cantidad), 2) AS TOTAL_CON_FLETE'),
-        DB::raw('ISNULL(cp.ComprasCantidad, 0) AS ComprasCantidad'),
-        DB::raw("(SELECT TOP 1 c.NuFactura 
-                  FROM ComGasolina c 
-                  WHERE CAST(c.Fecha AS DATE) = CASE 
-                                                WHEN CAST(comp.Fecha AS DATE) = '2024-03-31' THEN '2024-04-01'
-                                                ELSE CAST(comp.Fecha AS DATE)
-                                              END
-                  AND c.Cantidad = concPE.cantidad
-                 ) AS NuFactura")
-    )
-    ->join('CONCEPTOS as concPE', 'concPE.idcomprobante', '=', 'comp.id')
-    ->leftJoin('CONCEPTOS as concSI', function ($join) {
-        $join->on('concSI.idcomprobante', '=', 'comp.id')
-            ->whereRaw("CAST(concSI.descripcion AS nvarchar(max)) = 'Servicio de intermediacion de productos'");
-    })
-    ->leftJoin(DB::raw("(SELECT 
-                            cc.Fecha,
-                            c.NuFactura,
-                            cc.NuFactura AS NuFacturaAjustada,
-                            c.Cantidad,
-                            ISNULL(cc.Cantidad, 0) AS ComprasCantidad,
-                            c.NuCamion
-                        FROM ComGasolina cc
-                        INNER JOIN ComGasolina c ON 
-                            LEFT(CAST(cc.NuFactura AS nvarchar(max)), LEN(CAST(cc.NuFactura AS nvarchar(max))) - 2) = CAST(c.NuFactura AS nvarchar(max))
-                             AND c.NuTanque IN ('" . implode("','", $nuCombustibles) . "')
-                            AND cc.NuCamion = '1111'
-                        ) AS cp"), function ($join) {
-        $join->on(DB::raw("CASE 
-                                WHEN cp.NuCamion = '1111' AND CAST(cp.Fecha AS DATE) = '2024-03-31' THEN CAST('2024-04-01' AS DATE)
-                                WHEN cp.NuCamion = '1111' THEN CAST(cp.Fecha AS DATE)
-                                ELSE CAST(cp.Fecha AS DATE)
-                            END"), '=', DB::raw("CASE 
-                                                    WHEN CAST(comp.Fecha AS DATE) = '2024-03-31' THEN CAST('2024-04-01' AS DATE)
+        ->select(
+            'comp.id AS comp_id',
+            DB::raw("CASE 
+                        WHEN CAST(comp.Fecha AS DATE) = '2024-03-31' THEN CAST('2024-04-01' AS DATE)
+                        ELSE CAST(comp.Fecha AS DATE)
+                    END AS Fecha"),
+            'concPE.idcomprobante',
+            'concPE.valorUnitario',
+            'concPE.cantidad',
+            'concPE.descripcion',
+            DB::raw('(concSI.valorUnitario / concPE.cantidad) AS FLETE_SERVICIO'),
+            DB::raw('ROUND(((concPE.valorUnitario + (concSI.valorUnitario / concPE.cantidad)) * concPE.cantidad), 2) AS TOTAL_CON_FLETE'),
+            DB::raw('ISNULL(cp.ComprasCantidad, 0) AS ComprasCantidad'),
+            DB::raw("(SELECT TOP 1 c.NuFactura 
+                      FROM ComGasolina c 
+                      WHERE CAST(c.Fecha AS DATE) = CASE 
+                                                    WHEN CAST(comp.Fecha AS DATE) = '2024-03-31' THEN '2024-04-01'
                                                     ELSE CAST(comp.Fecha AS DATE)
-                                                END"))
-             ->on('cp.Cantidad', '=', 'concPE.cantidad');
-    })
-    ->leftJoin(DB::raw("(SELECT 
-                            comp.id AS comp_id,
-                            CAST(comp.Fecha AS DATE) AS Fecha,
-                            concPE.idcomprobante,
-                            concPE.valorUnitario,
-                            concPE.cantidad,
-                            ROW_NUMBER() OVER(PARTITION BY CAST(comp.Fecha AS DATE) ORDER BY comp.Fecha) AS RowNumber
-                        FROM COMPROBANTE AS comp
-                        INNER JOIN CONCEPTOS AS concPE ON concPE.idcomprobante = comp.id
-                        WHERE CAST(concPE.descripcion AS nvarchar(max)) IN ('" . implode("','", $combustible) . "')
-                          AND comp.Fecha >= '2024-03-31' AND comp.Fecha <= '2024-05-01'
-                        ) AS CompConRowNumber"), function ($join) {
-        $join->on('CompConRowNumber.comp_id', '=', 'comp.id');
-    })
-    ->whereRaw("CAST(concPE.descripcion AS nvarchar(max)) IN ('" . implode("','", $combustible) . "')")
-    ->whereBetween('comp.Fecha', [$startDate, $endDate])
-    ->orderBy('comp.Fecha')
-    ->orderBy('concPE.idcomprobante')
-    ->get();
-//dd($despachos);
+                                                  END
+                      AND c.Cantidad = concPE.cantidad
+                     ) AS NuFactura")
+        )
+        ->join('CONCEPTOS as concPE', 'concPE.idcomprobante', '=', 'comp.id')
+        ->leftJoin('CONCEPTOS as concSI', function ($join) {
+            $join->on('concSI.idcomprobante', '=', 'comp.id')
+                ->whereRaw("CAST(concSI.descripcion AS nvarchar(max)) = 'Servicio de intermediacion de productos'");
+        })
+        ->leftJoin(DB::raw("(SELECT 
+                                cc.Fecha,
+                                c.NuFactura,
+                                cc.NuFactura AS NuFacturaAjustada,
+                                c.Cantidad,
+                                ISNULL(cc.Cantidad, 0) AS ComprasCantidad,
+                                c.NuCamion
+                            FROM ComGasolina cc
+                            INNER JOIN ComGasolina c ON 
+                                LEFT(CAST(cc.NuFactura AS nvarchar(max)), LEN(CAST(cc.NuFactura AS nvarchar(max))) - 2) = CAST(c.NuFactura AS nvarchar(max))
+                                 AND c.NuTanque IN ('" . implode("','", $nuCombustibles) . "')
+                                AND cc.NuCamion = '1111'
+                            ) AS cp"), function ($join) {
+            $join->on(DB::raw("CASE 
+                                    WHEN cp.NuCamion = '1111' AND CAST(cp.Fecha AS DATE) = '2024-03-31' THEN CAST('2024-04-01' AS DATE)
+                                    WHEN cp.NuCamion = '1111' THEN CAST(cp.Fecha AS DATE)
+                                    ELSE CAST(cp.Fecha AS DATE)
+                                END"), '=', DB::raw("CASE 
+                                                        WHEN CAST(comp.Fecha AS DATE) = '2024-03-31' THEN CAST('2024-04-01' AS DATE)
+                                                        ELSE CAST(comp.Fecha AS DATE)
+                                                    END"))
+                 ->on('cp.Cantidad', '=', 'concPE.cantidad');
+        })
+        ->leftJoin(DB::raw("(SELECT 
+                                comp.id AS comp_id,
+                                CAST(comp.Fecha AS DATE) AS Fecha,
+                                concPE.idcomprobante,
+                                concPE.valorUnitario,
+                                concPE.cantidad,
+                                ROW_NUMBER() OVER(PARTITION BY CAST(comp.Fecha AS DATE) ORDER BY comp.Fecha) AS RowNumber
+                            FROM COMPROBANTE AS comp
+                            INNER JOIN CONCEPTOS AS concPE ON concPE.idcomprobante = comp.id
+                            WHERE CAST(concPE.descripcion AS nvarchar(max)) IN ('" . implode("','", $combustible) . "')
+                              AND comp.Fecha >= '2024-03-31' AND comp.Fecha <= '2024-05-01'
+                            ) AS CompConRowNumber"), function ($join) {
+            $join->on('CompConRowNumber.comp_id', '=', 'comp.id');
+        })
+        ->whereRaw("CAST(concPE.descripcion AS nvarchar(max)) IN ('" . implode("','", $combustible) . "')")
+        ->whereBetween('comp.Fecha', [$startDate, $endDate])
+        ->orderBy('comp.Fecha')
+        ->orderBy('concPE.idcomprobante')
+        ->get();
 
-
-
-        $ventas = DB::table('ERGVentasGasolina_View as er')
+    $ventas = DB::table('ERGVentasGasolina_View as er')
         ->join('CatCombustibles as ct', 'ct.NuCombustible', '=', 'er.NuCombustible')
         ->select('er.*', 'ct.Descripcion')
         ->whereBetween('er.Fecha', ['2024-04-01', $endDate])
@@ -233,26 +232,47 @@ public function buscar(){
         ->orderByRaw("er.Fecha ASC")
         ->get();
 
-        $results = DB::table('ERInventarioCombustibleReglaxEStablaVentas_View')
-        ->whereIn('NuCombustible', $nuCombustibles)
-        ->whereBetween('Fecha', ['2024-04-01', $endDate->toDateTimeString()])
-        ->first();
+    $results = null;
 
-         // Verificar si alguna de las variables es null
-        if ($despachos->isEmpty() || $ventas->isEmpty() || is_null($results)) {
-            Session::flash('error', 'Ingrese el Primer dia y el ultimo dia del mes.');
-            return redirect()->back();
-        }else{
-            $this->datos=$despachos;
-            $this->fechaInicio=$fechareal;
-            $this->fechaFin=$endDate->toDateString();
-            $this->invInicial=$results;
-            $this->ventas=$ventas;
-            $this->CostoPromedio=$CostoPromedio;
-            $this->nombreProducto=$nombreProducto;
+    if ($fechareal->day == 1 && $endDate->day == $endDate->daysInMonth) {
+        // Consulta a ERInventarioCombustibleReglaxEStablaVentas_View cuando es el primer y último día del mes
+        $results = DB::table('ERInventarioCombustibleReglaxEStablaVentas_View')
+            ->whereIn('NuCombustible', $nuCombustibles)
+            ->whereBetween('Fecha', ['2024-04-01', $endDate->toDateTimeString()])
+            ->first();
+    } else {
+        // Obtiene el valor de litros del día anterior al primer día del mes seleccionado
+        $litrosAnterior = DB::table('ERCalculaRegla_View')
+            ->select('Litros')
+            ->whereDate('Fecha', $startDate->toDateString())
+            ->whereIn('NuCombustible', $nuCombustibles)
+            ->first();
+
+        // Asigna los valores de inv_inicial e inv_final
+        if ($litrosAnterior) {
+            $results = (object) [
+                'Inv_Inicial' => $litrosAnterior->Litros,
+                'Inv_Final' => 0
+            ];
         }
     }
+
+    // Verificar si alguna de las variables es null
+    if ($despachos->isEmpty() || $ventas->isEmpty() || is_null($results)) {
+        Session::flash('error', 'Ingrese el Primer dia y el ultimo dia del mes.');
+        return redirect()->back();
+    } else {
+        $this->datos = $despachos;
+        $this->fechaInicio = $fechareal;
+        $this->fechaFin = $endDate->toDateString();
+        $this->invInicial = $results;
+        $this->ventas = $ventas;
+        $this->CostoPromedio = $CostoPromedio;
+        $this->nombreProducto = $nombreProducto;
+    }
 }
+
+
 
 
 public function buscarInventarioInicial(){
@@ -372,10 +392,28 @@ public function exportarExcel()
         ->orderByRaw("er.Fecha ASC")
         ->get();
 
-        $results = DB::table('ERInventarioCombustibleReglaxEStablaVentas_View')
-        ->whereIn('NuCombustible', $nuCombustibles)
-        ->whereBetween('Fecha', ['2024-04-01', $endDate->toDateTimeString()])
-        ->first();
+        if ($fechareal->day == 1 && $endDate->day == $endDate->daysInMonth) {
+            // Consulta a ERInventarioCombustibleReglaxEStablaVentas_View cuando es el primer y último día del mes
+            $results = DB::table('ERInventarioCombustibleReglaxEStablaVentas_View')
+                ->whereIn('NuCombustible', $nuCombustibles)
+                ->whereBetween('Fecha', ['2024-04-01', $endDate->toDateTimeString()])
+                ->first();
+        } else {
+            // Obtiene el valor de litros del día anterior al primer día del mes seleccionado
+            $litrosAnterior = DB::table('ERCalculaRegla_View')
+                ->select('Litros')
+                ->whereDate('Fecha', $startDate->toDateString())
+                ->whereIn('NuCombustible', $nuCombustibles)
+                ->first();
+    
+            // Asigna los valores de inv_inicial e inv_final
+            if ($litrosAnterior) {
+                $results = (object) [
+                    'Inv_Inicial' => $litrosAnterior->Litros,
+                    'Inv_Final' => 0
+                ];
+            }
+        }
 
          // Verificar si alguna de las variables es null
         if ($despachos->isEmpty() || $ventas->isEmpty() || is_null($results)) {
@@ -655,6 +693,29 @@ public function insertarBase()
         }
     }
 }
+
+public function mount()
+    {
+        $this->checkDatabaseConnections();
+    }
+
+    public function checkDatabaseConnections()
+    {
+        $databases = ['sqlsrv', 'sqlsrv2', 'sqlsrv3'];
+        $messages = [];
+
+        foreach ($databases as $database) {
+            try {
+                DB::connection($database)->getPdo();
+                $messages[] = "Conectado a la base de datos: $database";
+            } catch (\Exception $e) {
+                $messages[] = "Error al conectar a la base de datos: $database - " . $e->getMessage();
+            }
+        }
+
+        session()->flash('database_messages', $messages);
+    }
+
 
 
 
