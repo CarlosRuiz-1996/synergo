@@ -247,7 +247,7 @@ class ControlPagos extends Component
     {
         // Validar el archivo ZIP
         $request->validate([
-            'archivo_zip' => 'required|mimes:zip|max:10240', // Max 10MB
+            'archivo_zip' => 'required|mimes:zip|max:102400', // Max 10MB
         ]);
     
         // Guardar el archivo ZIP en el servidor
