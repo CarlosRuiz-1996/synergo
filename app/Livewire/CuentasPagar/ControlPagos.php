@@ -2,6 +2,7 @@
 
 namespace App\Livewire\CuentasPagar;
 
+use App\Exports\reportes\Excelreportepagos;
 use App\Jobs\ProcesarArchivosXml;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -10,13 +11,16 @@ use Livewire\WithPagination;
 use App\Livewire\DescargarComprobateXmloPDF;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Livewire\WithoutUrlPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ControlPagos extends Component
 {
 
     public DescargarComprobateXmloPDF $export;
-    use WithPagination;
-    public $estacionSeleccionada;
+    use WithPagination, WithoutUrlPagination; 
+    public $estacionSeleccionada=[];
     public $fechainicio = '2024-04-01';
     public $fechafin = '2024-04-30';
     public $TipoCombustible;
@@ -24,155 +28,183 @@ class ControlPagos extends Component
     protected $detalles = [];
     public $readyToLoad = false;
     public $monto_pagado;
-    public $estaciond;
+    public $estaciond=[];
     public $valor1=false;
+    public $showModal=false;
+    public $connection;
+    public $proveedor;
+    public $nombre_reporte;
+    
 
-    protected $rules = [
-        'fechainicio' => 'date|before_or_equal:fechafin',
-        'fechafin' => 'date|after_or_equal:fechainicio',
-    ];
-
-    protected $messages = [
-        'fechainicio.before_or_equal' => 'Fecha incorrecta.',
-        'fechafin.after_or_equal' => 'Fecha incorrecta.',
-    ];
     public function render()
     {
-        if ($this->readyToLoad) {
+        $connections = ['sqlsrv', 'sqlsrv2', 'sqlsrv3'];
+        $combinedData = collect();
 
-            $estaciones = DB::table('EstacionesExcel')->orderBy('NombreEstacion', 'ASC')->get();
-            // $detalles = $this->filtrar();
-           
-            // $this->monto();
-            if ($this->TipoCombustible == 'Pagada' || $this->TipoCombustible == 0) {
-
-                $this->monto();
-                $detalles = $this->filtrar();
-            }else{
-                $detalles = [];
-                $this->monto_pagado=0;
-                $this->total_facturas = 0;
-    
-            }
-
-        } else {
-           
-            $estaciones =  DB::table('EstacionesExcel')->orderBy('NombreEstacion', 'ASC')->get();
-            $detalles = [];
-            $this->valor1=true;
+        foreach ($connections as $connection) {
+            $data = DB::connection($connection)
+                ->table('EMISOR')
+                ->pluck('nombre_emisor'); // Esto ya devuelve una colección de strings
+            $combinedData = $combinedData->merge($data);
         }
-        return view('livewire.cuentas-pagar.control-pagos', compact('estaciones', 'detalles'));
+
+        // Asegúrate de que $combinedData es una colección de strings y usa unique
+        $uniqueEmisors = $combinedData->unique()->values(); 
+
+        $estaciones =  DB::table('EstacionesExcel')->orderBy('NombreEstacion', 'ASC')->get();
+        $datos = $this->showModal ? $this->obtenerDatos() : collect(); // Si el modal está abierto, obtenemos los datos paginados
+        return view('livewire.cuentas-pagar.control-pagos', compact('estaciones','datos','uniqueEmisors'));
     }
-    public function loadEstaciones()
-    {
-        $this->readyToLoad = true;
-    }
+    
     public function buscar()
     {
-
-        $this->validate();
-        if ($this->estacionSeleccionada !='153') {
-            $this->valor1=true;
-            $this->estaciond = [];
-            $this->estacion_detalle = [];
+        $this->estaciond=[];
+        if ($this->estacionSeleccionada == "" ) {
+            return null;
         }else{
-            $this->valor1=false;
-        $this->estaciond = DB::table('EMISOR')->first();
-        $this->estacion_detalle = DB::table('EstacionesExcel')->where('IdEstacion', $this->estacionSeleccionada)->first();
+            $selectedStations=$this->estacionSeleccionada;
         }
+        foreach ($selectedStations as $station) {
+            switch ($station) {
+                case 153:
+                    $connection = 'sqlsrv';
+                    
+                    break;
+                case 143:
+                    $connection = 'sqlsrv3';
+                    break;
+                case 141:
+                    $connection = 'sqlsrv2';
+                    break;
+                default:
+                    continue 2; // Si no es ninguna de las estaciones especificadas, salta al siguiente
+            }
         
+            // Aquí puedes realizar las búsquedas y agregar los resultados al array estaciond
+            $data = DB::connection($connection)->table('Estaciones')->get(); // Utiliza get() si esperas múltiples resultados
+            $this->estaciond[$station] = $data;
+        }       
     }
 
-
-    public function filtrar()
-    {
-        if ($this->estacionSeleccionada =='153') {
-        $startDate = $this->fechainicio ? Carbon::createFromFormat('Y-m-d', $this->fechainicio)->startOfDay() : Carbon::createFromDate(null, 4, 1)->startOfDay();
-        $endDate = $this->fechafin ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay() : Carbon::createFromDate(null, 4, 30)->endOfDay();
-
-        //dr.impPagado
-        return DB::table('COMPROBANTE as c')
-        ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
-        ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
-        ->join('DOCTO_RELACIONADO as dr', DB::raw('CAST(dr.idDocumento AS VARCHAR(MAX))'), '=', DB::raw('CAST(t.UUID AS VARCHAR(MAX))'))
-        ->whereBetween('c.Fecha', [$startDate, $endDate])
-        ->where('c.TipoDeComprobante', 'LIKE', 'I')
-        ->where(function ($query) {
-            $query->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
-                  ->orWhere('conc.descripcion', 'LIKE', 'PEMEX PREMIUM')
-                  ->orWhere('conc.descripcion', 'LIKE', 'PEMEX DIESEL');
-        })
-        ->select(
-            'c.id',
-            'c.Fecha',
-            DB::raw("CONCAT(c.Serie, '-', c.folio) as n_factura"),
-            'conc.descripcion as combustible',
-            'conc.cantidad as litros',
-            'c.SubTotal',
-            'c.Total',
-            't.UUID as estatus',
-            'c.TipoDeComprobante'
-        )
-        ->orderBy('c.Fecha', 'DESC')
-        ->paginate(10);
-    }else{
-        $this->valor1=true;
-       return [];
-    }
-}
     public $total_facturas;
     public function monto()
     {
-        if ($this->estacionSeleccionada =='153') {
         $startDate = $this->fechainicio ? Carbon::createFromFormat('Y-m-d', $this->fechainicio)->startOfDay() : Carbon::createFromDate(null, 4, 1)->startOfDay();
         $endDate = $this->fechafin ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay() : Carbon::createFromDate(null, 4, 30)->endOfDay();
-        $this->monto_pagado = DB::table('COMPROBANTE as c')
-        ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
-        ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
-        ->join('DOCTO_RELACIONADO as dr', DB::raw('CAST(dr.idDocumento AS NVARCHAR(MAX))'), '=', DB::raw('CAST(t.UUID AS NVARCHAR(MAX))'))
-        ->whereBetween('c.Fecha', [$startDate, $endDate])
-        ->where('c.TipoDeComprobante', 'LIKE', 'I')
-        ->where(function ($query) {
-            $query->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
-                  ->orWhere('conc.descripcion', 'LIKE', 'PEMEX PREMIUM')
-                  ->orWhere('conc.descripcion', 'LIKE', 'PEMEX DIESEL');
-        })
-        ->sum('c.Total');
+        $nombreEmisor = $this->proveedor; // o lo que corresponda según tu lógica
     
-    $this->total_facturas = DB::table('COMPROBANTE as c')
-        ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
-        ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
-        ->join('DOCTO_RELACIONADO as dr', DB::raw('CAST(dr.idDocumento AS NVARCHAR(MAX))'), '=', DB::raw('CAST(t.UUID AS NVARCHAR(MAX))'))
-        ->whereBetween('c.Fecha', [$startDate, $endDate])
-        ->where('c.TipoDeComprobante', 'LIKE', 'I')
-        ->where(function ($query) {
-            $query->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
-                  ->orWhere('conc.descripcion', 'LIKE', 'PEMEX PREMIUM')
-                  ->orWhere('conc.descripcion', 'LIKE', 'PEMEX DIESEL');
-        })
-        ->count();
-        $this->valor1=false;
-        }else{
-            $this->total_facturas=0;
-            $this->monto_pagado=0;
-            $this->valor1=true;
+        // Suma del total pagado
+        $this->monto_pagado = DB::connection($this->connection)->table('COMPROBANTE as c')
+            ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
+            ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
+            ->join('DOCTO_RELACIONADO as dr', DB::raw('CAST(dr.idDocumento AS NVARCHAR(MAX))'), '=', DB::raw('CAST(t.UUID AS NVARCHAR(MAX))'))
+            ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
+            ->whereBetween('c.Fecha', [$startDate, $endDate])
+            ->where('c.TipoDeComprobante', 'LIKE', 'I')
+            ->where(function ($query) {
+                $query->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
+                      ->orWhere('conc.descripcion', 'LIKE', 'PEMEX PREMIUM')
+                      ->orWhere('conc.descripcion', 'LIKE', 'PEMEX DIESEL');
+            })
+            ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
+                $query->where('e.nombre_emisor', 'LIKE', $nombreEmisor); // Filtro por nombre_emisor si está definido
+            })
+            ->sum('c.Total');
+    
+        // Contar el número de facturas
+        $this->total_facturas = DB::connection($this->connection)->table('COMPROBANTE as c')
+            ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
+            ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
+            ->join('DOCTO_RELACIONADO as dr', DB::raw('CAST(dr.idDocumento AS NVARCHAR(MAX))'), '=', DB::raw('CAST(t.UUID AS NVARCHAR(MAX))'))
+            ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
+            ->whereBetween('c.Fecha', [$startDate, $endDate])
+            ->where('c.TipoDeComprobante', 'LIKE', 'I')
+            ->where(function ($query) {
+                $query->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
+                      ->orWhere('conc.descripcion', 'LIKE', 'PEMEX PREMIUM')
+                      ->orWhere('conc.descripcion', 'LIKE', 'PEMEX DIESEL');
+            })
+            ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
+                $query->where('e.nombre_emisor', 'LIKE', $nombreEmisor); // Filtro por nombre_emisor si está definido
+            })
+            ->count();
+    }
+    
+
+
+
+    public function abrirModal($valor)
+    {
+        // Reiniciar el estado del componente
+        $this->nombre_reporte="";
+        $this->resetPage();
+        $this->reset(['fechainicio', 'fechafin']);
+        switch ($valor) {
+            case 153:
+                $this->connection = 'sqlsrv';
+                $this->nombre_reporte=$this->proveedor.'  /  GASOLINERIA DEL FUTURO';
+                break;
+            case 143:
+                $this->connection = 'sqlsrv3';
+                $this->nombre_reporte=$this->proveedor.'  /  CORPORATIVO INMOBILIARIO ECUESTRE';
+                break;
+            case 141:
+                $this->connection = 'sqlsrv2';
+                $this->nombre_reporte=$this->proveedor.'  /  GASOLINERIA CORAL S.A. DE C.V.';
+                break;
+            default:
+                return null; 
         }
+        
+        $this->showModal = true;
+    }
+    public function obtenerDatosdos(){
+        $this->resetPage();
+        $this->obtenerDatos();
+        $this->monto();
+    }
+
+    public function obtenerDatos()
+    {
+        $startDate = $this->fechainicio ? Carbon::createFromFormat('Y-m-d', $this->fechainicio)->startOfDay() : Carbon::createFromDate(null, 4, 1)->startOfDay();
+        $endDate = $this->fechafin ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay() : Carbon::createFromDate(null, 4, 30)->endOfDay();
     
+        // Asegúrate de definir $this->nombreEmisor si quieres filtrar por un nombre de emisor específico
+        $nombreEmisor = $this->proveedor; // o lo que corresponda según tu lógica
+        $this->monto();
+        return DB::connection($this->connection)
+            ->table('COMPROBANTE as c')
+            ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
+            ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
+            ->join('DOCTO_RELACIONADO as dr', DB::raw('CAST(dr.idDocumento AS VARCHAR(MAX))'), '=', DB::raw('CAST(t.UUID AS VARCHAR(MAX))'))
+            ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
+            ->whereBetween('c.Fecha', [$startDate, $endDate])
+            ->where('c.TipoDeComprobante', 'LIKE', 'I')
+            ->where(function ($query) {
+                $query->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
+                      ->orWhere('conc.descripcion', 'LIKE', 'PEMEX PREMIUM')
+                      ->orWhere('conc.descripcion', 'LIKE', 'PEMEX DIESEL');
+            })
+            ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
+                $query->where('e.nombre_emisor', 'LIKE',$nombreEmisor); // Filtro por nombre_emisor si está definido
+            })
+            ->select(
+                'c.id',
+                'c.Fecha',
+                DB::raw("CONCAT(c.Serie, '-', c.folio) as n_factura"),
+                'conc.descripcion as combustible',
+                'conc.cantidad as litros',
+                'c.SubTotal',
+                'c.Total',
+                't.UUID as estatus',
+                'c.TipoDeComprobante',
+                'e.nombre_emisor'
+            )
+            ->orderBy('c.Fecha', 'DESC')
+            ->paginate(5);
     }
-
-    public $isOpen = false;
-    public $pdfUrl;
-    public function mostrarPdf($pdfPath)
-    {
-        $this->pdfUrl = $pdfPath;
-        $this->isOpen = true;
-    }
-
-    public function closeModal()
-    {
-        $this->isOpen = false;
-        $this->pdfUrl = null;
-    }
+    
+    
 
 
     //xml
@@ -393,6 +425,45 @@ class ControlPagos extends Component
             }
         }
     }
+}
+public function exportarExcel()
+{
+    $startDate = $this->fechainicio ? Carbon::createFromFormat('Y-m-d', $this->fechainicio)->startOfDay() : Carbon::createFromDate(null, 4, 1)->startOfDay();
+    $endDate = $this->fechafin ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay() : Carbon::createFromDate(null, 4, 30)->endOfDay();
+    $nombreEmisor = $this->proveedor;
+    $info=DB::connection($this->connection)
+    ->table('COMPROBANTE as c')
+    ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
+    ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
+    ->join('DOCTO_RELACIONADO as dr', DB::raw('CAST(dr.idDocumento AS VARCHAR(MAX))'), '=', DB::raw('CAST(t.UUID AS VARCHAR(MAX))'))
+    ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
+    ->whereBetween('c.Fecha', [$startDate, $endDate])
+    ->where('c.TipoDeComprobante', 'LIKE', 'I')
+    ->where(function ($query) {
+        $query->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
+              ->orWhere('conc.descripcion', 'LIKE', 'PEMEX PREMIUM')
+              ->orWhere('conc.descripcion', 'LIKE', 'PEMEX DIESEL');
+    })
+    ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
+        $query->where('e.nombre_emisor', 'LIKE',$nombreEmisor); // Filtro por nombre_emisor si está definido
+    })
+    ->select(
+        'c.id',
+        'c.Fecha',
+        DB::raw("CONCAT(c.Serie, '-', c.folio) as n_factura"),
+        'conc.descripcion as combustible',
+        'conc.cantidad as litros',
+        'c.SubTotal',
+        'c.Total',
+        't.UUID as estatus',
+        'c.TipoDeComprobante',
+        'e.nombre_emisor'
+    )
+    ->orderBy('c.Fecha', 'DESC')
+        ->get();
+
+        $nombredoc = 'Resumen_del_' . $startDate->format('d-m-Y') . '_a_' . $endDate->format('d-m-Y') .'.xlsx';
+    return Excel::download(new Excelreportepagos($info), $nombredoc);
 }
 
 }

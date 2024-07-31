@@ -59,6 +59,8 @@ public function abrirModal($valor)
 }
 public function abrirModalResumen($valor)
 {
+        $this->fechainicio='2024-04-01';
+        $this->fechafin='2024-04-30';
         $this->showModalResumen = true; 
 }
 
@@ -117,9 +119,25 @@ public function render()
 
 public function buscar()
 {
+
+    // 143 ecue
+    // 141 coral
     // Verifica la estación seleccionada
-    if ($this->EstacionSeleccionada == "" || $this->EstacionSeleccionada != 153) {
+    if ($this->EstacionSeleccionada == "" ) {
         return null;
+    }
+    switch ($this->EstacionSeleccionada) {
+        case 153:
+            $connection = 'sqlsrv';
+            break;
+        case 143:
+            $connection = 'sqlsrv3';
+            break;
+        case 141:
+            $connection = 'sqlsrv2';
+            break;
+        default:
+            return null; // Si no es ninguna de las estaciones, retorna null
     }
 
     // Establece las fechas de inicio y fin
@@ -153,7 +171,7 @@ public function buscar()
         }
     }
 
-    $despachos = DB::table('COMPROBANTE as comp')
+    $despachos = DB::connection($connection)->table('COMPROBANTE as comp')
         ->select(
             'comp.id AS comp_id',
             DB::raw("CASE 
@@ -224,7 +242,7 @@ public function buscar()
         ->orderBy('concPE.idcomprobante')
         ->get();
 
-    $ventas = DB::table('ERGVentasGasolina_View as er')
+    $ventas = DB::connection($connection)->table('ERGVentasGasolina_View as er')
         ->join('CatCombustibles as ct', 'ct.NuCombustible', '=', 'er.NuCombustible')
         ->select('er.*', 'ct.Descripcion')
         ->whereBetween('er.Fecha', ['2024-04-01', $endDate])
@@ -236,13 +254,13 @@ public function buscar()
 
     if ($fechareal->day == 1 && $endDate->day == $endDate->daysInMonth) {
         // Consulta a ERInventarioCombustibleReglaxEStablaVentas_View cuando es el primer y último día del mes
-        $results = DB::table('ERInventarioCombustibleReglaxEStablaVentas_View')
+        $results = DB::connection($connection)->table('ERInventarioCombustibleReglaxEStablaVentas_View')
             ->whereIn('NuCombustible', $nuCombustibles)
             ->whereBetween('Fecha', ['2024-04-01', $endDate->toDateTimeString()])
             ->first();
     } else {
         // Obtiene el valor de litros del día anterior al primer día del mes seleccionado
-        $litrosAnterior = DB::table('ERCalculaRegla_View')
+        $litrosAnterior = DB::connection($connection)->table('ERCalculaRegla_View')
             ->select('Litros')
             ->whereDate('Fecha', $startDate->toDateString())
             ->whereIn('NuCombustible', $nuCombustibles)
@@ -258,7 +276,7 @@ public function buscar()
     }
 
     // Verificar si alguna de las variables es null
-    if ($despachos->isEmpty() || $ventas->isEmpty() || is_null($results)) {
+    if (is_null($results)) {
         Session::flash('error', 'Ingrese el Primer dia y el ultimo dia del mes.');
         return redirect()->back();
     } else {

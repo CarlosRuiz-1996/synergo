@@ -1,101 +1,77 @@
 <div>
-    <div class="flex justify-center min-h-screen bg-cover bg-center"
-        style="background-image: url('{{ asset('img/bg.png') }}');">
-        <div class="w-full max-w-lg"
-            style="width: 100%; 
-               max-width: 100%; 
-               background-color: rgba(157, 175, 191, 0.483); 
-               box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-               border-radius: 1rem; 
-               padding: 1.5rem; 
-               margin-top: 2rem; 
-               margin-bottom: 1.5rem; 
-               margin-left: 1.25rem; 
-               margin-right: 1.25rem; 
-               backdrop-filter: blur(5px);">
+    <div class="flex justify-center min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('img/bg.png') }}');">
+        <div class="w-full max-w-lg" style="width: 100%;max-width: 100%;background-color: rgba(157, 175, 191, 0.483);box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);border-radius: 1rem;padding: 1.5rem;margin-top: 2rem; margin-bottom: 1.5rem; margin-left: 1.25rem; margin-right: 1.25rem; backdrop-filter: blur(5px);">
             <h2 class="text-2xl font-bold text-white mb-4">
                 <a href="{{ route('dashboard') }}" title="ATRAS" class="me-2">
                     <i class="fa fa-arrow-left"></i>
                 </a>
-                Determinacion de costo promedio</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Aumenté el gap a 6 para mayor separación -->
-                <div class="flex flex-col space-y-4">
-                    <!-- Campo de entrada para Estación de servicio -->
-                    <div wire:ignore>
-                        <div class="flex flex-col space-y-3">
-                            <label for="estacion" class="text-white">Selecciona una estación de servicio</label>
-                            <select wire:model="EstacionSeleccionada" id="EstacionSeleccionada"
-                                name="EstacionSeleccionada" class="p-2 border border-gray-300 rounded w-full"
-                                placeholder="Selecciona una estación">
-                                <option value="">Selecciona una estación...</option>
-                                @foreach ($estaciones as $estacion)
-                                    <option value="{{ $estacion->IdEstacion }}">
-                                        {{ $estacion->estacion }}--{{ $estacion->NombreEstacion }}</option>
-                                @endforeach
-                            </select>
+                Determinacion de costo promedio
+            </h2>
+            <div class="flex flex-col space-y-1">
+                <div class="flex items-center justify-between space-x-1">
+                    <!-- Contenedor de inputs y botón a la izquierda -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-3/4">
+                        <!-- Campo de entrada para Estación de servicio -->
+                        <div wire:ignore class="flex flex-col space-y-4">
+                            <div class="flex flex-col space-y-3">
+                                <label for="estacion" class="text-white">Selecciona estación</label>
+                                <select wire:model="EstacionSeleccionada" id="EstacionSeleccionada" name="EstacionSeleccionada"
+                                    class="select2 p-2 border border-gray-300 rounded w-full" placeholder="Selecciona una estación">
+                                    <option value="">Selecciona una estación...</option>
+                                    @foreach ($estaciones as $estacion)
+                                        <option value="{{ $estacion->IdEstacion }}">{{ $estacion->estacion }}--{{ $estacion->NombreEstacion }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                    </div>
-
-                    <!-- Campos de entrada para fecha y botón de búsqueda -->
-                    <div class="flex space-x-4 items-center">
-                        <!-- Primer campo de fecha -->
-                        <div class="flex flex-col space-y-3 flex-grow px-3">
-                            <label for="TipoCombustible" class="text-white">Tipo de combustible</label>
-                            <select id="TipoCombustible" wire:model='TipoCombustible'
-                                class="p-2 border border-gray-300 rounded w-full">
-                                <option value="">Seleccione</option>
-                                <option value="PEMEX DIESEL">Pemex Diesel</option>
-                                <option value="PEMEX MAGNA">Pemex Magna</option>
-                                <option value="PEMEX PREMIUM">Pemex Premium</option>
-                            </select>
+                        <!-- Campo de entrada para Tipo de combustible -->
+                        <div wire:ignore class="flex flex-col space-y-4">
+                            <div class="flex flex-col space-y-3">
+                                <label for="TipoCombustible" class="text-white">Tipo de combustible</label>
+                                <select id="TipoCombustible" wire:model='TipoCombustible' class="select2 p-2 border border-gray-300 rounded w-full">
+                                    <option value="">Seleccione</option>
+                                    <option value="PEMEX DIESEL">Pemex Diesel</option>
+                                    <option value="PEMEX MAGNA">Pemex Magna</option>
+                                    <option value="PEMEX PREMIUM">Pemex Premium</option>
+                                </select>
+                            </div>
                         </div>
                         <!-- Botón de búsqueda -->
-                        
-                        <div class="flex flex-col space-y-3 flex-grow pl-2">
-                            <button class="bg-blue-500 text-white py-2 mt-6 rounded hover:bg-blue-700 w-full"
-                                wire:click='buscar'>Buscar</button>
+                        <div class="flex flex-col space-y-4 mt-2">
+                            <button class="bg-blue-500 text-white py-1 mt-6 rounded hover:bg-blue-700 w-full" wire:click='buscar'>Buscar</button>
                         </div>
                     </div>
-                </div>
-
-
-                <div class="flex flex-col space-y-1">
-                    <div class="flex items-center justify-end space-x-1">
-                        <div class="w-full overflow-x-auto shadow-md rounded-lg">
-                            <table class="w-full divide-y divide-gray-200 text-center text-xs">
-                                <thead class="bg-gray-100">
+            
+                    <!-- Contenedor de la tabla a la derecha -->
+                    <div class="w-1/4 overflow-x-auto shadow-md rounded-lg">
+                        <table class="w-full divide-y divide-gray-200 text-center text-xs">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="border border-gray-200 px-2 py-1">GAS</th>
+                                    <th class="border border-gray-200 px-2 py-1">C/PROMEDIO</th>
+                                    <th class="border border-gray-200 px-2 py-1">VENTAS</th>
+                                    <th class="border border-gray-200 px-2 py-1">COMPRAS</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white">
+                                @foreach ($totalesValores as $resultado)
                                     <tr>
-                                        <th class="border border-gray-200 px-2 py-1">GAS</th>
-                                        <th class="border border-gray-200 px-2 py-1">C/PROMEDIO</th>
-                                        <th class="border border-gray-200 px-2 py-1">VENTAS</th>
-                                        <th class="border border-gray-200 px-2 py-1">COMPRAS</th>
+                                        <td class="border border-gray-200 px-2 py-1">{{ $resultado->descripcion }}</td>
+                                        <td class="border border-gray-200 px-2 py-1">{{ $resultado->PromedioValorUnitario }}</td>
+                                        <td class="border border-gray-200 px-2 py-1">{{ $resultado->TotalCantidad }}</td>
+                                        <td class="border border-gray-200 px-2 py-1">{{ $resultado->SumaEntregueRecibi }}</td>
                                     </tr>
-                                </thead>
-                                <tbody class="bg-white">
-                                    @foreach ($totalesValores as $resultado)
-                                        <tr>
-                                            <td class="border border-gray-200 px-2 py-1">{{ $resultado->descripcion }}
-                                            </td>
-                                            <td class="border border-gray-200 px-2 py-1">
-                                                {{ $resultado->PromedioValorUnitario }}</td>
-                                            <td class="border border-gray-200 px-2 py-1">{{ $resultado->TotalCantidad }}
-                                            </td>
-                                            <td class="border border-gray-200 px-2 py-1">
-                                                {{ $resultado->SumaEntregueRecibi }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-
             </div>
-          
+            
+                
             <div>
                 <!-- Aquí va tu contenido anterior, omitido por brevedad -->
-                @if($EstacionSeleccionada  =='153')
+                @if($EstacionSeleccionada  =='153' || $EstacionSeleccionada  =='141' || $EstacionSeleccionada  =='143')
                 <!-- Sección de la tabla con detalles -->
                 <div class="mt-8">
                     <!-- Ajusta el margen top según tu diseño -->
@@ -251,7 +227,7 @@
                         </table>
                     </div>
                 </div>                    
-                @elseif($EstacionSeleccionada  !='153' && $EstacionSeleccionada  !='')
+                @elseif($EstacionSeleccionada  !='153' && $EstacionSeleccionada  !=''  && $EstacionSeleccionada  !='141'  && $EstacionSeleccionada  !='143')
                 <div class="flex justify-center mt-4">
                     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-1/2 text-center" role="alert">
                        <p> <strong class="font-bold">No hay informacion para esta estacion.</strong>
@@ -912,13 +888,18 @@
 
     <script>
         $(document).ready(function() {
-            $('#EstacionSeleccionada').select2();
+            $('.select2').select2({
+                width: 'resolve' // ensure the select2 dropdown fits its container
+            });
         });
+    
         $('#EstacionSeleccionada').on('change', function() {
             var estacionSeleccionada = $(this).val();
-            @this.set('EstacionSeleccionada', this.value)
-            // Aquí puedes hacer lo que necesites con el valor seleccionado, como enviarlo a través de Livewire
+            @this.set('EstacionSeleccionada', estacionSeleccionada);
+        });
+        $('#TipoCombustible').on('change', function() {
+            var TipoCombustible = $(this).val();
+            @this.set('TipoCombustible', TipoCombustible);
         });
     </script>
-
 </div>
