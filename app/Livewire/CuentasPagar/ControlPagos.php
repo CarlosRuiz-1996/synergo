@@ -52,8 +52,12 @@ class ControlPagos extends Component
         $uniqueEmisors = $combinedData->unique()->values(); 
 
         $estaciones =  DB::table('EstacionesExcel')->orderBy('NombreEstacion', 'ASC')->get();
-        $datos = $this->showModal ? $this->obtenerDatos() : collect(); // Si el modal está abierto, obtenemos los datos paginados
-        return view('livewire.cuentas-pagar.control-pagos', compact('estaciones','datos','uniqueEmisors'));
+        $datos = $this->showModal ? $this->obtenerDatos() : collect(); 
+        $maxFileSize = ini_get('upload_max_filesize');
+    
+        // Convertir el tamaño máximo de archivo a MB
+        $maxFileSizeInMB = (int) $maxFileSize;// Si el modal está abierto, obtenemos los datos paginados
+        return view('livewire.cuentas-pagar.control-pagos', compact('estaciones','datos','uniqueEmisors','maxFileSizeInMB'));
     }
     
     public function buscar()
