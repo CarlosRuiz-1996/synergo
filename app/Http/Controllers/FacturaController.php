@@ -17,7 +17,7 @@ class FacturaController extends Controller
     {
         // Validar el archivo ZIP
         $request->validate([
-            'archivo_zip' => 'required|mimes:zip|max:10240', // Max 10MB
+            'archivo_zip' => 'required|mimes:zip', // Max 10MB
         ]);
     
         // Guardar el archivo ZIP en el servidor
