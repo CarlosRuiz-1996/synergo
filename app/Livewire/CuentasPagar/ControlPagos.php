@@ -2,6 +2,7 @@
 
 namespace App\Livewire\CuentasPagar;
 
+use App\Exports\reportes\ExcelreporteFacturascargas;
 use App\Exports\reportes\Excelreportepagos;
 use App\Jobs\ProcesarArchivosXml;
 use Illuminate\Support\Facades\DB;
@@ -12,14 +13,19 @@ use App\Livewire\DescargarComprobateXmloPDF;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Livewire\Attributes\Validate;
+use Livewire\WithFileUploads;
 use Livewire\WithoutUrlPagination;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 
 class ControlPagos extends Component
 {
 
     public DescargarComprobateXmloPDF $export;
     use WithPagination, WithoutUrlPagination; 
+    use WithFileUploads;
     public $estacionSeleccionada=[];
     public $fechainicio = '2024-04-01';
     public $fechafin = '2024-04-30';
@@ -34,7 +40,23 @@ class ControlPagos extends Component
     public $connection;
     public $proveedor;
     public $nombre_reporte;
-    
+    #[Validate('required', message: 'El archivo es requerdo para procesar la información.')]
+    #[Validate('mimes:zip', message: 'El documento debe ser un achivo ".ZIP".')]
+    #[Validate('max:102400', message: 'El documento NO debe pesar más de "100MB".')]
+    public $archivo_zip;
+    public $facturas = [];
+    public $showModalFacturas=false;
+    public $ArchivosFallados;
+    public $ArchivosAceptados;
+    public $showModalFacturaspdf=false;
+    public $pdfPath;
+    public $estatusproducto;
+
+    public function mount()
+    {
+        $this->ArchivosFallados = collect();
+        $this->ArchivosAceptados = collect();
+    }
 
     public function render()
     {
@@ -92,40 +114,32 @@ class ControlPagos extends Component
         $startDate = $this->fechainicio ? Carbon::createFromFormat('Y-m-d', $this->fechainicio)->startOfDay() : Carbon::createFromDate(null, 4, 1)->startOfDay();
         $endDate = $this->fechafin ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay() : Carbon::createFromDate(null, 4, 30)->endOfDay();
         $nombreEmisor = $this->proveedor; // o lo que corresponda según tu lógica
-    
+        $estatus=$this->estatusproducto;
         // Suma del total pagado
         $this->monto_pagado = DB::connection($this->connection)->table('COMPROBANTE as c')
             ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
-            ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
-            ->join('DOCTO_RELACIONADO as dr', DB::raw('CAST(dr.idDocumento AS NVARCHAR(MAX))'), '=', DB::raw('CAST(t.UUID AS NVARCHAR(MAX))'))
             ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
             ->whereBetween('c.Fecha', [$startDate, $endDate])
             ->where('c.TipoDeComprobante', 'LIKE', 'I')
-            ->where(function ($query) {
-                $query->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
-                      ->orWhere('conc.descripcion', 'LIKE', 'PEMEX PREMIUM')
-                      ->orWhere('conc.descripcion', 'LIKE', 'PEMEX DIESEL');
-            })
             ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
                 $query->where('e.nombre_emisor', 'LIKE', $nombreEmisor); // Filtro por nombre_emisor si está definido
+            })
+            ->when(!is_null($estatus) && $estatus !== '', function ($query) use ($estatus) {
+                $query->where('c.estatus', $estatus); // Filtro por estatus si está definido
             })
             ->sum('c.Total');
     
         // Contar el número de facturas
         $this->total_facturas = DB::connection($this->connection)->table('COMPROBANTE as c')
             ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
-            ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
-            ->join('DOCTO_RELACIONADO as dr', DB::raw('CAST(dr.idDocumento AS NVARCHAR(MAX))'), '=', DB::raw('CAST(t.UUID AS NVARCHAR(MAX))'))
             ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
             ->whereBetween('c.Fecha', [$startDate, $endDate])
             ->where('c.TipoDeComprobante', 'LIKE', 'I')
-            ->where(function ($query) {
-                $query->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
-                      ->orWhere('conc.descripcion', 'LIKE', 'PEMEX PREMIUM')
-                      ->orWhere('conc.descripcion', 'LIKE', 'PEMEX DIESEL');
-            })
             ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
                 $query->where('e.nombre_emisor', 'LIKE', $nombreEmisor); // Filtro por nombre_emisor si está definido
+            })
+            ->when(!is_null($estatus) && $estatus !== '', function ($query) use ($estatus) {
+                $query->where('c.estatus', $estatus); // Filtro por estatus si está definido
             })
             ->count();
     }
@@ -138,7 +152,7 @@ class ControlPagos extends Component
         // Reiniciar el estado del componente
         $this->nombre_reporte="";
         $this->resetPage();
-        $this->reset(['fechainicio', 'fechafin']);
+        $this->reset(['fechainicio', 'fechafin','estatusproducto']);
         switch ($valor) {
             case 153:
                 $this->connection = 'sqlsrv';
@@ -170,38 +184,37 @@ class ControlPagos extends Component
         $endDate = $this->fechafin ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay() : Carbon::createFromDate(null, 4, 30)->endOfDay();
     
         // Asegúrate de definir $this->nombreEmisor si quieres filtrar por un nombre de emisor específico
-        $nombreEmisor = $this->proveedor; // o lo que corresponda según tu lógica
+        $nombreEmisor = $this->proveedor; 
+        $estatus=$this->estatusproducto;
         $this->monto();
         return DB::connection($this->connection)
-            ->table('COMPROBANTE as c')
-            ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
-            ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
-            ->join('DOCTO_RELACIONADO as dr', DB::raw('CAST(dr.idDocumento AS VARCHAR(MAX))'), '=', DB::raw('CAST(t.UUID AS VARCHAR(MAX))'))
-            ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
-            ->whereBetween('c.Fecha', [$startDate, $endDate])
-            ->where('c.TipoDeComprobante', 'LIKE', 'I')
-            ->where(function ($query) {
-                $query->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
-                      ->orWhere('conc.descripcion', 'LIKE', 'PEMEX PREMIUM')
-                      ->orWhere('conc.descripcion', 'LIKE', 'PEMEX DIESEL');
-            })
-            ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
-                $query->where('e.nombre_emisor', 'LIKE',$nombreEmisor); // Filtro por nombre_emisor si está definido
-            })
-            ->select(
-                'c.id',
-                'c.Fecha',
-                DB::raw("CONCAT(c.Serie, '-', c.folio) as n_factura"),
-                'conc.descripcion as combustible',
-                'conc.cantidad as litros',
-                'c.SubTotal',
-                'c.Total',
-                't.UUID as estatus',
-                'c.TipoDeComprobante',
-                'e.nombre_emisor'
-            )
-            ->orderBy('c.Fecha', 'DESC')
-            ->paginate(5);
+                ->table('COMPROBANTE as c')
+                ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
+                ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
+                ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
+                ->whereBetween('c.Fecha', [$startDate, $endDate])
+                ->where('c.TipoDeComprobante', 'LIKE', 'I')
+                ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
+                    $query->where('e.nombre_emisor', 'LIKE', "%{$nombreEmisor}%"); // Filtro por nombre_emisor si está definido
+                })
+                ->when(!is_null($estatus) && $estatus !== '', function ($query) use ($estatus) {
+                    $query->where('c.estatus', $estatus); // Filtro por estatus si está definido
+                })
+                ->select(
+                    'c.id',
+                    'c.Fecha',
+                    DB::raw("CONCAT(c.Serie, '-', c.folio) as n_factura"),
+                    'conc.descripcion as combustible',
+                    'conc.cantidad as litros',
+                    'c.SubTotal',
+                    'c.Total',
+                    't.UUID as uuid',
+                    'c.TipoDeComprobante',
+                    'e.nombre_emisor',
+                    'c.estatus'
+                )
+                ->orderBy('c.Fecha', 'DESC')
+                ->paginate(5);
     }
     
     
@@ -210,27 +223,80 @@ class ControlPagos extends Component
     //xml
 
     public function descargarXML($id)
-    {
+{
+    // Cambiar la conexión de base de datos
+    $comprobante = DB::connection($this->connection)
+        ->table('TIMBRE_FISCAL_DIGITAL')
+        ->where('idcomprobante', $id)
+        ->first();
 
-        $comprobante = DB::table('TIMBRE_FISCAL_DIGITAL')
-            ->where('idcomprobante', $id) // Aquí reemplaza 'id' por el campo que quieras filtrar y $id por el valor deseado
-            ->first();
+    if (!$comprobante) {
+        return response()->json(['error' => 'Comprobante no encontrado.'], 404);
+    }
 
-        $files = [];
+    // Nombre del archivo XML basado en el UUID del comprobante
+    $filenameXML = strtoupper($comprobante->UUID);
 
-        $filenameXML = strtoupper($comprobante->UUID) . '@1000000000XX0.xml';
+    // Ruta principal donde buscar
+    $baseDir = storage_path('app/public/facturas_extraidas');
 
-        $pathXML = storage_path('app/archivos_descomprimidos/' . $filenameXML);
-        if (file_exists($pathXML)) {
-            $files[] = $pathXML;
-        }
+    // Llamar a la función para buscar el archivo en el directorio y subdirectorios
+    $pathXML = $this->findFileInDirectory($baseDir, $filenameXML);
 
-        if (count($files) === 1) {
-            return response()->download($files[0]);
-        } else {
-            return response()->json(['error' => 'No files selected or files do not exist.'], 404);
+    if ($pathXML) {
+        return response()->download($pathXML);
+    } else {
+        return response()->json(['error' => 'El archivo no se encontró.'], 404);
+    }
+}
+
+private function findFileInDirectory($directory, $searchTerm)
+{
+    $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory));
+
+    // Convertir el término de búsqueda a minúsculas
+    $searchTerm = strtolower($searchTerm);
+
+    foreach ($files as $file) {
+        if ($file->isFile() && strtolower($file->getExtension()) === 'xml') {
+            // Convertir el nombre del archivo a minúsculas para comparación
+            $filename = strtolower($file->getFilename());
+
+            // Verificar si el nombre del archivo contiene el término de búsqueda
+            if (strpos($filename, $searchTerm) !== false) {
+                return $file->getPathname();
+            }
         }
     }
+
+    return null;
+}
+
+private function findFileInDirectorypdf($directory, $searchTerm)
+{
+    $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory));
+
+    // Convertir el término de búsqueda a minúsculas
+    $searchTerm = strtolower($searchTerm);
+
+    foreach ($files as $file) {
+        if ($file->isFile() && strtolower($file->getExtension()) === 'pdf') {
+            // Convertir el nombre del archivo a minúsculas para comparación
+            $filename = strtolower($file->getFilename());
+
+            // Verificar si el nombre del archivo contiene el término de búsqueda
+            if (strpos($filename, $searchTerm) !== false) {
+                return $file->getPathname();
+            }
+        }
+    }
+
+    return null;
+}
+
+
+
+
 
     //detalles
     public $open = false;
@@ -243,67 +309,227 @@ class ControlPagos extends Component
     {
         $this->reset('open');
     }
-    public function procesarArchivos(Request $request)
-    {
-        // Validar el archivo ZIP
-        $request->validate([
-            'archivo_zip' => 'required|mimes:zip|max:102400', // Max 10MB
-        ]);
-    
-        // Guardar el archivo ZIP en el servidor
-        $archivoZip = $request->file('archivo_zip');
-        $rutaArchivoZip = $archivoZip->store('archivos');
-    
-        // Verificar si se guardó correctamente el archivo ZIP
-        if ($rutaArchivoZip) {
-            $rutaAbsolutaArchivoZip = Storage::disk('local')->path($rutaArchivoZip);
 
-            // Asignar permisos de lectura y escritura al archivo
-            chmod($rutaAbsolutaArchivoZip, 0644);
-            // Encolar el trabajo para procesar los archivos XML
-            ProcesarArchivosXml::dispatch($rutaArchivoZip);
-    
-            // Redireccionar con un mensaje de éxito
-            return redirect()->back()->with('success', 'El archivo ZIP se ha cargado correctamente y está encolado para procesamiento.');
-        } else {
-            // En caso de que ocurra un error al guardar el archivo ZIP
-            return redirect()->back()->with('error', 'Hubo un problema al cargar el archivo ZIP. Por favor, inténtalo de nuevo.');
-        }
-    }   
-    
-    public function insertarBase()
-{
-    if (!Storage::disk('public')->exists('datos.json')) {
-        abort(404, 'El archivo JSON no existe.');
+    public function updatedArchivoZip($value)
+    {
+        // Lógica para procesar el archivo zip
+        // Puedes habilitar el botón aquí si deseas
     }
 
-    // Obtener el contenido del archivo JSON
-    $contenidoJson = Storage::disk('public')->get('datos.json');
+    public function procesarArchivos()
+    {
+        $this->validate();
 
-    // Decodificar el JSON a un array asociativo de PHP
-    $datos = json_decode($contenidoJson, true);
+        // Generar un nombre único usando la fecha y hora actual
+        $timestamp = now()->format('Y-m-d_His'); // Formato: YYYYMMDD_HHMMSS
+        $fileName = "archivo_{$timestamp}.zip";
+        // Guardar el archivo en la carpeta 'facturas'
+        $filePath = $this->archivo_zip->storeAs(path: 'facturas', name: $fileName);
+        $this->descomprimirArchivo($filePath);
+    }   
+    private function descomprimirArchivo($filePath)
+    {
+        $fileName = basename($filePath);
+        $localPath = storage_path("app/public/facturas/{$fileName}");
+        $extractFolderName = pathinfo($fileName, PATHINFO_FILENAME); // Nombre de la carpeta basado en el nombre del archivo sin la extensión
+        $extractPath = storage_path("app/public/facturas_extraidas/{$extractFolderName}");
 
+        // Crear la carpeta específica para este archivo si no existe
+        if (!File::exists($extractPath)) {
+            File::makeDirectory($extractPath, 0755, true);
+        }
+
+        $zip = new \ZipArchive;
+        if ($zip->open($localPath) === TRUE) {
+            $zip->extractTo($extractPath);
+            $zip->close();
+
+            // Obtener la lista de archivos extraídos
+            $this->facturas = array_diff(scandir($extractPath), array('.', '..'));
+
+            // Generar el archivo JSON con los datos de los archivos XML
+            $this->generarArchivoJson($extractPath, $extractFolderName);
+        } else {
+            session()->flash('error', 'No se pudo abrir el archivo ZIP.');
+        }
+    }
+
+    private function generarArchivoJson($rutaDirectorioDescomprimido, $extractFolderName)
+    {
+        // Lista de archivos en el directorio descomprimido
+        $archivosDescomprimidos = array_diff(scandir($rutaDirectorioDescomprimido), ['.', '..']);
+
+        // Array para almacenar los datos de los archivos XML
+        $datos = [];
+
+        // Iterar sobre los archivos en el directorio descomprimido
+        foreach ($archivosDescomprimidos as $archivo) {
+            // Validar que el archivo sea un XML
+            if (pathinfo($archivo, PATHINFO_EXTENSION) === 'xml') {
+                // Ruta completa del archivo XML
+                $rutaArchivoXml = $rutaDirectorioDescomprimido . DIRECTORY_SEPARATOR . $archivo;
+
+                try {
+                    // Cargar el archivo XML
+                    $xml = simplexml_load_file($rutaArchivoXml);
+
+                    if ($xml === false) {
+                        throw new \Exception("No se pudo cargar el archivo XML '$archivo'");
+                    }
+
+                    // Verificar que el objeto XML se cargó correctamente
+                    if ($xml !== false) {
+                        $comprobante = $xml->attributes();
+                        $emisor = isset($xml->children('cfdi', true)->Emisor) ? $xml->children('cfdi', true)->Emisor->attributes() : null;
+                        $receptor = isset($xml->children('cfdi', true)->Receptor) ? $xml->children('cfdi', true)->Receptor->attributes() : null;
+                        $conceptos = [];
+
+                        // Iterar sobre todos los Conceptos dentro de Conceptos
+                        foreach ($xml->children('cfdi', true)->Conceptos->Concepto as $concepto) {
+                            $conceptos[] = $concepto->attributes();
+                        }
+
+                        $complemento = isset($xml->children('cfdi', true)->Complemento) ? $xml->children('cfdi', true)->Complemento : null;
+                        $Pagospago = null;
+                        $DoctoRelacionado = null;
+                        $DoctoRelacionado2 = null;
+                        $impuestosP = null;
+                        $totales = null;
+                        $TimbreFiscalDigital = null;
+
+                        // Acceder a otros elementos como PagosPago, DoctoRelacionado, etc. según sea necesario
+                        if ($complemento !== null) {
+                            $complemento2 = $complemento->attributes();
+                            if (isset($complemento->children('pago20', true)->Pagos->Pago)) {
+                                $Pagospago = $complemento->children('pago20', true)->Pagos->Pago->attributes();
+                                if (isset($complemento->children('pago20', true)->Pagos->Pago->DoctoRelacionado)) {
+                                    $DoctoRelacionado = $complemento->children('pago20', true)->Pagos->Pago->DoctoRelacionado->attributes();
+                                    if (isset($complemento->children('pago20', true)->Pagos->Pago->DoctoRelacionado->ImpuestosDR->TrasladosDR->TrasladoDR)) {
+                                        $DoctoRelacionado2 = $complemento->children('pago20', true)->Pagos->Pago->DoctoRelacionado->ImpuestosDR->TrasladosDR->TrasladoDR->attributes();
+                                    }
+                                }
+                                if (isset($complemento->children('pago20', true)->Pagos->Pago->ImpuestosP->TrasladosP->TrasladoP)) {
+                                    $impuestosP = $complemento->children('pago20', true)->Pagos->Pago->ImpuestosP->TrasladosP->TrasladoP->attributes();
+                                }
+                            }
+                            if (isset($complemento->children('pago20', true)->Pagos->Totales)) {
+                                $totales = $complemento->children('pago20', true)->Pagos->Totales->attributes();
+                            }
+                            if (isset($complemento->children('tfd', true)->TimbreFiscalDigital)) {
+                                $TimbreFiscalDigital = $complemento->children('tfd', true)->TimbreFiscalDigital->attributes();
+                            }
+                        }
+
+                        // Convertir el objeto SimpleXMLElement a un array
+                        $datosXml = [
+                            'Comprobante' => $comprobante ? $comprobante : [],
+                            'Emisor' => $emisor ? $emisor : [],
+                            'Receptor' => $receptor ? $receptor : [],
+                            'Conceptos' => $conceptos ? $conceptos : [],
+                            'Complemento' => $complemento2 ? $complemento2 : [],
+                            'PagosPago' => $Pagospago ? $Pagospago : [],
+                            'DoctoRelacionado' => $DoctoRelacionado ? $DoctoRelacionado : [],
+                            'DoctoRelacionado2' => $DoctoRelacionado2 ? $DoctoRelacionado2 : [],
+                            'ImpuestosP' => $impuestosP ? $impuestosP : [],
+                            'Totales' => $totales ? $totales : [],
+                            'TimbreFiscalDigital' => $TimbreFiscalDigital ? $TimbreFiscalDigital : [],
+                        ];
+
+                        // Agregar el array de datos del XML al array principal de datos
+                        $datos[] = $datosXml;
+                    } else {
+                        // Si no se pudo cargar el archivo XML, registra un error en el log
+                        Log::error("No se pudo cargar el archivo XML '$archivo'");
+                    }
+                } catch (\Exception $e) {
+                    // Si ocurre un error al procesar el archivo XML, registra el error en el registro y continúa con el siguiente archivo
+                    Log::error("Error al procesar el archivo XML '$archivo': " . $e->getMessage());
+                }
+            }
+        }
+
+        // Crear la carpeta de json si no existe
+        $jsonFolderPath = storage_path("app/public/json/{$extractFolderName}");
+        if (!File::exists($jsonFolderPath)) {
+            File::makeDirectory($jsonFolderPath, 0755, true);
+        }
+
+        // Convertir el array de datos a formato JSON y guardarlo en un archivo de texto
+        $texto = json_encode($datos, JSON_PRETTY_PRINT);
+        $rutaArchivoTexto = "{$jsonFolderPath}/{$extractFolderName}.json";
+
+        try {
+            // Intentar escribir el archivo de texto
+            file_put_contents($rutaArchivoTexto, $texto);
+            $this->insertarBase($rutaArchivoTexto);
+            // Log para indicar que se ha generado el archivo de texto con los datos de los archivos XML
+            Log::info('Archivo de texto generado con los datos de los archivos XML.');
+        } catch (\Exception $e) {
+            // Manejar cualquier excepción que ocurra al intentar escribir el archivo de texto
+            Log::error('Error al escribir el archivo de texto: ' . $e->getMessage());
+        }
+    }
+
+
+
+    
+    public function insertarBase($rutaArchivoJson)
+    {
+
+        $this->ArchivosFallados = collect();
+        $this->ArchivosAceptados = collect();
+        if (!file_exists($rutaArchivoJson)) {
+            abort(404, 'El archivo JSON no existe.');
+        }
+    
+        // Obtener el contenido del archivo JSON
+        $contenidoJson = file_get_contents($rutaArchivoJson);
+    
+        // Decodificar el JSON a un array asociativo de PHP
+        $datos = json_decode($contenidoJson, true);
+        $registrosExitosos = collect();
+        $registrosFallidos = collect();
     foreach ($datos as $comprobante) {
         // Verificar si el objeto COMPROBANTE está presente y tiene atributos
         if (isset($comprobante['Comprobante']['@attributes']) && !empty($comprobante['Comprobante']['@attributes'])) {
             $folio = $comprobante['Comprobante']['@attributes']['Folio'] ?? null;
 
-            // Verificar si el folio ya existe en la base de datos
+            // Obtener la conexión según el nombre del receptor
+            $connection = 'default'; // Valor predeterminado
+            if (isset($comprobante['Receptor']['@attributes']['Nombre'])) {
+                $nombreReceptor = $comprobante['Receptor']['@attributes']['Nombre'];
+                switch ($nombreReceptor) {
+                    case 'GASOLINERIA DEL FUTURO':
+                        $connection = 'sqlsrv';
+                        break;
+                    case 'GASOLINERIA CORAL':
+                        $connection = 'sqlsrv2';
+                        break;
+                    case 'CORPORATIVO INMOBILIARIO ECUESTRE':
+                        $connection = 'sqlsrv3';
+                        break;
+                }
+            }
+
+            // Verificar si el folio ya existe en la base de datos usando la conexión adecuada
             if ($folio) {
-                $exists = DB::table('COMPROBANTE')->where('folio', $folio)->exists();
+                $exists = DB::connection($connection)->table('COMPROBANTE')
+                ->where('folio', 'LIKE', "%{$folio}%")
+                ->exists();
             
                 if ($exists) {
                     // Si el folio ya existe, continuar con el siguiente registro
+                    $registrosFallidos->push($folio);
                     continue;
                 }
             }
 
             // Iniciar la transacción para garantizar la integridad de los datos
-            DB::beginTransaction();
+            DB::connection($connection)->beginTransaction();
 
             try {
                 // Insertar en la tabla COMPROBANTE
-                $comprobanteId = DB::table('COMPROBANTE')->insertGetId([
+                $comprobanteId = DB::connection($connection)->table('COMPROBANTE')->insertGetId([
                     'Version' => $comprobante['Comprobante']['@attributes']['Version'] ?? null,
                     'Serie' => $comprobante['Comprobante']['@attributes']['Serie'] ?? null,
                     'folio' => $folio,
@@ -317,9 +543,23 @@ class ControlPagos extends Component
                     'NoCertificado' => $comprobante['Comprobante']['@attributes']['NoCertificado'] ?? null,
                 ]);
 
+                // Insertar en la tabla TIMBRE_FISCAL_DIGITAL (si existe y no está vacío)
+                if (isset($comprobante['TimbreFiscalDigital']['@attributes']) && !empty($comprobante['TimbreFiscalDigital']['@attributes'])) {
+                    DB::connection($connection)->table('TIMBRE_FISCAL_DIGITAL')->insert([
+                        'version' => $comprobante['TimbreFiscalDigital']['@attributes']['Version'] ?? null,
+                        'UUID' => $comprobante['TimbreFiscalDigital']['@attributes']['UUID'] ?? null,
+                        'fechaTimbrado' => $comprobante['TimbreFiscalDigital']['@attributes']['FechaTimbrado'] ?? null,
+                        'rfcProvCertif' => $comprobante['TimbreFiscalDigital']['@attributes']['RfcProvCertif'] ?? null,
+                        'selloCFD' => $comprobante['TimbreFiscalDigital']['@attributes']['SelloCFD'] ?? null,
+                        'noCertificadoSAT' => $comprobante['TimbreFiscalDigital']['@attributes']['NoCertificadoSAT'] ?? null,
+                        'selloSAT' => $comprobante['TimbreFiscalDigital']['@attributes']['SelloSAT'] ?? null,
+                        'idcomprobante' => $comprobanteId,
+                    ]);
+                }
+
                 // Insertar en la tabla EMISOR (si existe y no está vacío)
                 if (isset($comprobante['Emisor']['@attributes']) && !empty($comprobante['Emisor']['@attributes'])) {
-                    DB::table('EMISOR')->insert([
+                    DB::connection($connection)->table('EMISOR')->insert([
                         'rfc_emisor' => $comprobante['Emisor']['@attributes']['Rfc'] ?? null,
                         'nombre_emisor' => $comprobante['Emisor']['@attributes']['Nombre'] ?? null,
                         'regimenFiscal' => $comprobante['Emisor']['@attributes']['RegimenFiscal'] ?? null,
@@ -329,7 +569,7 @@ class ControlPagos extends Component
 
                 // Insertar en la tabla RECEPTOR (si existe y no está vacío)
                 if (isset($comprobante['Receptor']['@attributes']) && !empty($comprobante['Receptor']['@attributes'])) {
-                    DB::table('RECEPTOR')->insert([
+                    DB::connection($connection)->table('RECEPTOR')->insert([
                         'rfc_receptor' => $comprobante['Receptor']['@attributes']['Rfc'] ?? null,
                         'nombre_receptor' => $comprobante['Receptor']['@attributes']['Nombre'] ?? null,
                         'usoCFDI' => $comprobante['Receptor']['@attributes']['UsoCFDI'] ?? null,
@@ -350,7 +590,7 @@ class ControlPagos extends Component
 
                     // Iterar sobre cada objeto de conceptos
                     foreach ($conceptos as $concepto) {
-                        DB::table('CONCEPTOS')->insert([
+                        DB::connection($connection)->table('CONCEPTOS')->insert([
                             'claveProdServ' => $concepto['@attributes']['ClaveProdServ'] ?? null,
                             'cantidad' => $concepto['@attributes']['Cantidad'] ?? null,
                             'claveUnidad' => $concepto['@attributes']['ClaveUnidad'] ?? null,
@@ -365,7 +605,7 @@ class ControlPagos extends Component
 
                 // Insertar en la tabla PAGOS_PAGO (si existe y no está vacío)
                 if (isset($comprobante['PagosPago']['@attributes']) && !empty($comprobante['PagosPago']['@attributes'])) {
-                    DB::table('PAGOS_PAGO')->insert([
+                    DB::connection($connection)->table('PAGOS_PAGO')->insert([
                         'fechaPago' => $comprobante['PagosPago']['@attributes']['FechaPago'] ?? null,
                         'formaDePagoP' => $comprobante['PagosPago']['@attributes']['FormaDePagoP'] ?? null,
                         'monedaP' => $comprobante['PagosPago']['@attributes']['MonedaP'] ?? null,
@@ -380,7 +620,7 @@ class ControlPagos extends Component
 
                 // Insertar en la tabla DOCTO_RELACIONADO (si existe y no está vacío)
                 if (isset($comprobante['DoctoRelacionado']['@attributes']) && !empty($comprobante['DoctoRelacionado']['@attributes'])) {
-                    DB::table('DOCTO_RELACIONADO')->insert([
+                    DB::connection($connection)->table('DOCTO_RELACIONADO')->insert([
                         'idDocumento' => $comprobante['DoctoRelacionado']['@attributes']['IdDocumento'] ?? null,
                         'serie' => $comprobante['DoctoRelacionado']['@attributes']['Serie'] ?? null,
                         'folio' => $comprobante['DoctoRelacionado']['@attributes']['Folio'] ?? null,
@@ -397,73 +637,111 @@ class ControlPagos extends Component
 
                 // Insertar en la tabla DOCTO_RELACIONADO2 (si existe y no está vacío)
                 if (isset($comprobante['DoctoRelacionado2']['@attributes']) && !empty($comprobante['DoctoRelacionado2']['@attributes'])) {
-                    DB::table('DOCTO_RELACIONADO2')->insert([
-                        'baseDR' => $comprobante['DoctoRelacionado2']['@attributes']['BaseDR'] ?? null,
-                        'impuestoDR' => $comprobante['DoctoRelacionado2']['@attributes']['ImpuestoDR'] ?? null,
-                        'tipoFactorDR' => $comprobante['DoctoRelacionado2']['@attributes']['TipoFactorDR'] ?? null,
-                        'tasaOCuotaDR' => $comprobante['DoctoRelacionado2']['@attributes']['TasaOCuotaDR'] ?? null,
-                        'importeDR' => $comprobante['DoctoRelacionado2']['@attributes']['ImporteDR'] ?? null,
+                    DB::connection($connection)->table('DOCTO_RELACIONADO2')->insert([
+                        'idDocumento' => $comprobante['DoctoRelacionado2']['@attributes']['IdDocumento'] ?? null,
+                        'serie' => $comprobante['DoctoRelacionado2']['@attributes']['Serie'] ?? null,
+                        'folio' => $comprobante['DoctoRelacionado2']['@attributes']['Folio'] ?? null,
+                        'monedaDR' => $comprobante['DoctoRelacionado2']['@attributes']['MonedaDR'] ?? null,
+                        'equivalenciaDR' => $comprobante['DoctoRelacionado2']['@attributes']['EquivalenciaDR'] ?? null,
+                        'numParcialidad' => $comprobante['DoctoRelacionado2']['@attributes']['NumParcialidad'] ?? null,
+                        'impSaldoAnt' => $comprobante['DoctoRelacionado2']['@attributes']['ImpSaldoAnt'] ?? null,
+                        'impPagado' => $comprobante['DoctoRelacionado2']['@attributes']['ImpPagado'] ?? null,
+                        'impSaldoInsoluto' => $comprobante['DoctoRelacionado2']['@attributes']['ImpSaldoInsoluto'] ?? null,
+                        'objetoImpDR' => $comprobante['DoctoRelacionado2']['@attributes']['ObjetoImpDR'] ?? null,
                         'idcomprobante' => $comprobanteId,
                     ]);
                 }
 
-                // Insertar en la tabla IMPUESTOS_P (si existe y no está vacío)
-                if (isset($comprobante['ImpuestosP']['@attributes']) && !empty($comprobante['ImpuestosP']['@attributes'])) {
-                    DB::table('IMPUESTOS_P')->insert([
-                        'totalImpuestosRetenidos' => $comprobante['ImpuestosP']['@attributes']['TotalImpuestosRetenidos'] ?? null,
-                        'totalImpuestosTrasladados' => $comprobante['ImpuestosP']['@attributes']['TotalImpuestosTrasladados'] ?? null,
-                        'idcomprobante' => $comprobanteId,
-                    ]);
-                }
-
-                // Confirmar la transacción
-                DB::commit();
+                // Si todo se ha insertado correctamente, confirmar la transacción
+                DB::connection($connection)->commit();
+                $registrosExitosos->push($folio);
             } catch (\Exception $e) {
-                // Revertir la transacción en caso de error
-                DB::rollBack();
-                // Manejar el error según sea necesario
+                // Si algo sale mal, deshacer la transacción
+                DB::connection($connection)->rollBack();
+                $registrosFallidos->push($folio);
+                throw $e;
             }
         }
     }
+    $this->ArchivosFallados = collect($registrosFallidos);
+    $this->ArchivosAceptados = collect($registrosExitosos);
+    $this->showModalFacturas = true;
+
 }
+public function exportarExcelFacturas()
+{
+    return Excel::download(new ExcelreporteFacturascargas($this->ArchivosFallados, $this->ArchivosAceptados), 'facturas.xlsx');
+}
+
+
 public function exportarExcel()
 {
     $startDate = $this->fechainicio ? Carbon::createFromFormat('Y-m-d', $this->fechainicio)->startOfDay() : Carbon::createFromDate(null, 4, 1)->startOfDay();
     $endDate = $this->fechafin ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay() : Carbon::createFromDate(null, 4, 30)->endOfDay();
     $nombreEmisor = $this->proveedor;
+    $estatus=$this->estatusproducto;
+    $nombrereporte=$this->nombre_reporte;
     $info=DB::connection($this->connection)
-    ->table('COMPROBANTE as c')
-    ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
-    ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
-    ->join('DOCTO_RELACIONADO as dr', DB::raw('CAST(dr.idDocumento AS VARCHAR(MAX))'), '=', DB::raw('CAST(t.UUID AS VARCHAR(MAX))'))
-    ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
-    ->whereBetween('c.Fecha', [$startDate, $endDate])
-    ->where('c.TipoDeComprobante', 'LIKE', 'I')
-    ->where(function ($query) {
-        $query->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
-              ->orWhere('conc.descripcion', 'LIKE', 'PEMEX PREMIUM')
-              ->orWhere('conc.descripcion', 'LIKE', 'PEMEX DIESEL');
-    })
-    ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
-        $query->where('e.nombre_emisor', 'LIKE',$nombreEmisor); // Filtro por nombre_emisor si está definido
-    })
-    ->select(
-        'c.id',
-        'c.Fecha',
-        DB::raw("CONCAT(c.Serie, '-', c.folio) as n_factura"),
-        'conc.descripcion as combustible',
-        'conc.cantidad as litros',
-        'c.SubTotal',
-        'c.Total',
-        't.UUID as estatus',
-        'c.TipoDeComprobante',
-        'e.nombre_emisor'
-    )
-    ->orderBy('c.Fecha', 'DESC')
-        ->get();
+            ->table('COMPROBANTE as c')
+            ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
+            ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
+            ->Join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
+            ->whereBetween('c.Fecha', [$startDate, $endDate])
+            ->where('c.TipoDeComprobante', 'LIKE', 'I')
+            ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
+                $query->where('e.nombre_emisor', 'LIKE',"%{$nombreEmisor}%"); // Filtro por nombre_emisor si está definido
+            })
+            ->when(!is_null($estatus) && $estatus !== '', function ($query) use ($estatus) {
+                $query->where('c.estatus', $estatus); // Filtro por estatus si está definido
+            })
+            ->select(
+                'c.id',
+                'c.Fecha',
+                DB::raw("CONCAT(c.Serie, '-', c.folio) as n_factura"),
+                'conc.descripcion as combustible',
+                'conc.cantidad as litros',
+                'c.SubTotal',
+                'c.Total',
+                't.UUID as uuid',
+                'c.TipoDeComprobante',
+                'e.nombre_emisor',
+                'c.estatus'
+            )
+            ->orderBy('c.Fecha', 'DESC')->get();
 
         $nombredoc = 'Resumen_del_' . $startDate->format('d-m-Y') . '_a_' . $endDate->format('d-m-Y') .'.xlsx';
-    return Excel::download(new Excelreportepagos($info), $nombredoc);
+    return Excel::download(new Excelreportepagos($info,$nombrereporte,$startDate->format('d-m-Y'),$endDate->format('d-m-Y')), $nombredoc);
 }
+
+
+public function abrirmodalpdf($value)
+{
+    $comprobante = DB::connection($this->connection)
+        ->table('TIMBRE_FISCAL_DIGITAL')
+        ->where('idcomprobante', $value)
+        ->first();
+
+    if (!$comprobante) {
+        return response()->json(['error' => 'Comprobante no encontrado.'], 404);
+    }
+
+    // Nombre del archivo PDF basado en el UUID del comprobante
+    $filenamePDF = strtoupper($comprobante->UUID);
+
+    // Ruta principal donde buscar
+    $baseDir = storage_path('app/public/facturas_extraidas');
+
+    // Llamar a la función para buscar el archivo en el directorio y subdirectorios
+    $pathPDF = $this->findFileInDirectorypdf($baseDir, $filenamePDF);
+
+    if ($pathPDF) {
+        $this->pdfPath = str_replace(storage_path('app/public'), 'storage', $pathPDF); // Ajustar la ruta para el acceso web
+        $this->showModalFacturaspdf = true;
+    } else {
+        return response()->json(['error' => 'El archivo PDF no se encontró.'], 404);
+    }
+}
+
+
 
 }

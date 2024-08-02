@@ -8,27 +8,26 @@ use Maatwebsite\Excel\Concerns\FromView;
 
 class Excelreportepagos implements FromView
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-        protected $data;
-        protected $fechaInicio;
-        protected $fechaFin;
-        protected $invInicial;
-        protected $ventas;
-        protected $CostoPromedio;
-    
-        public function __construct(Collection $data)
-        {
-            $this->data = $data;
-            
-            
-        }
-    
-        public function view(): View
+    protected $data;
+    protected $fechaInicio;
+    protected $fechaFin;
+    protected $nombreReporte;
+
+    public function __construct(Collection $data, $nombreReporte, $fechaInicio, $fechaFin)
+    {
+        $this->data = $data;
+        $this->nombreReporte = $nombreReporte;
+        $this->fechaInicio = $fechaInicio;
+        $this->fechaFin = $fechaFin;
+    }
+
+    public function view(): View
     {
         return view('reportes.Excelreportepagos', [
             'datos' => $this->data,
+            'nombreReporte' => $this->nombreReporte,
+            'fechaInicio' => $this->fechaInicio,
+            'fechaFin' => $this->fechaFin,
         ]);
     }
 }

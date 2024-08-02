@@ -1,14 +1,14 @@
 <table style="border-collapse: collapse; width: 100%;">
     <thead>
         <tr>
-            <th colspan="8" style="background-color: #f0f0f0; font-weight: bold;">Inventario Combustible Total
+            <th colspan="8" style="background-color: #f0f0f0; font-weight: bold;">Reporte Pagos
             </th>
         </tr>
         <tr>
-            <th colspan="8" style="background-color: #f0f0f0; font-weight: bold;">Periodo: del  01/04/2024 al 30/04/2024 </th>
+            <th colspan="8" style="background-color: #f0f0f0; font-weight: bold;">Periodo: del  {{$fechaInicio}} al {{$fechaFin}} </th>
         </tr>
         <tr>
-            <th colspan="8" style="background-color: #f0f0f0; font-weight: bold;">E.S 14159 FUTURO
+            <th colspan="8" style="background-color: #f0f0f0; font-weight: bold;">{{$nombreReporte}}
             </th>
         </tr>
         <tr>
@@ -20,13 +20,13 @@
                     No. Factura
                 </th>
                 <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:200%">
-                    Tipo de combustible
+                    Producto
                 </th>
                 <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:200%">
                     Proveedor
                 </th>
                 <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:200%">
-                    Cantidad en litros
+                    Cantidad
                 </th>
                 <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:200%">
                     Subtotal
@@ -67,7 +67,19 @@
             </td>
 
             <td style="border: 1px solid black; padding: 8px; text-align: center;width:200%">
-                <b>{{ $detalle->estatus ? 'PAGADA' : 'PENDIENTE' }}</b>
+                <b>
+                    @if($detalle->estatus == 1)
+                        Pagada
+                    @elseif($detalle->estatus == 2)
+                        Pendiente
+                    @elseif($detalle->estatus == 3)
+                        Vencida
+                    @elseif($detalle->estatus == 4)
+                        Cargada Recientemente
+                    @else
+                        Desconocido
+                    @endif
+                </b>
             </td>
         </tr>
         @endforeach
