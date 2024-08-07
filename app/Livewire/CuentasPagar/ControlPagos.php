@@ -324,7 +324,7 @@ private function findFileInDirectorypdf($directory, $searchTerm)
         $timestamp = now()->format('Y-m-d_His'); // Formato: YYYYMMDD_HHMMSS
         $fileName = "archivo_{$timestamp}.zip";
         // Guardar el archivo en la carpeta 'facturas'
-        $filePath = $this->archivo_zip->storeAs(path: 'facturas', name: $fileName);
+        $filePath = $this->archivo_zip->storeAs(path: 'public/facturas', name: $fileName);
         $this->descomprimirArchivo($filePath);
     }   
     private function descomprimirArchivo($filePath)
@@ -518,8 +518,28 @@ private function findFileInDirectorypdf($directory, $searchTerm)
                 ->exists();
             
                 if ($exists) {
-                    // Si el folio ya existe, continuar con el siguiente registro
-                    $registrosFallidos->push($folio);
+                    // Si el folio ya existe, agregar cada concepto individualmente a los registros fallidos
+                    if (isset($comprobante['Conceptos'])) {
+                        $conceptos = $comprobante['Conceptos'];
+                        if (!is_array($conceptos)) {
+                            $conceptos = [$conceptos];
+                        }
+
+                        foreach ($conceptos as $concepto) {
+                            $registrosFallidos->push([
+                                'folio' => $folio,
+                                'descripcion' => $concepto['@attributes']['Descripcion'] ?? null,
+                                'nombre_emisor' => $comprobante['Emisor']['@attributes']['Nombre'] ?? null
+                            ]);
+                        }
+                    } else {
+                        // Si no hay conceptos, solo agregar el folio y el nombre del emisor
+                        $registrosFallidos->push([
+                            'folio' => $folio,
+                            'descripcion' => null,
+                            'nombre_emisor' => $comprobante['Emisor']['@attributes']['Nombre'] ?? null
+                        ]);
+                    }
                     continue;
                 }
             }
@@ -653,14 +673,61 @@ private function findFileInDirectorypdf($directory, $searchTerm)
                 }
 
                 // Si todo se ha insertado correctamente, confirmar la transacción
-                DB::connection($connection)->commit();
-                $registrosExitosos->push($folio);
-            } catch (\Exception $e) {
-                // Si algo sale mal, deshacer la transacción
-                DB::connection($connection)->rollBack();
-                $registrosFallidos->push($folio);
-                throw $e;
-            }
+                    DB::connection($connection)->commit();
+
+                    // Agregar el registro exitoso para cada concepto insertado
+                    if (isset($comprobante['Conceptos'])) {
+                        $conceptos = $comprobante['Conceptos'];
+                        if (!is_array($conceptos)) {
+                            $conceptos = [$conceptos];
+                        }
+
+                        foreach ($conceptos as $concepto) {
+                            $registrosExitosos->push([
+                                'folio' => $folio,
+                                'descripcion' => $concepto['@attributes']['Descripcion'] ?? null,
+                                'nombre_emisor' => $comprobante['Emisor']['@attributes']['Nombre'] ?? null
+                            ]);
+                        }
+                    } else {
+                        // Si no hay conceptos, agregar el folio y el nombre del emisor
+                        $registrosExitosos->push([
+                            'folio' => $folio,
+                            'descripcion' => 'Sin conceptos disponibles',
+                            'nombre_emisor' => $comprobante['Emisor']['@attributes']['Nombre'] ?? null
+                        ]);
+                    }
+
+                } catch (\Exception $e) {
+                    // Si ocurre un error, hacer rollback de la transacción
+                    DB::connection($connection)->rollBack();
+                    
+                    // Agregar el registro fallido con el mensaje de error
+                    if (isset($comprobante['Conceptos'])) {
+                        $conceptos = $comprobante['Conceptos'];
+                        if (!is_array($conceptos)) {
+                            $conceptos = [$conceptos];
+                        }
+                
+                        foreach ($conceptos as $concepto) {
+                            $registrosFallidos->push([
+                                'folio' => $folio,
+                                'descripcion' => $concepto['@attributes']['Descripcion'] ?? 'Descripción no disponible',
+                                'nombre_emisor' => $comprobante['Emisor']['@attributes']['Nombre'] ?? 'Nombre no disponible',
+                                'error' => $e->getMessage() // Mensaje de error
+                            ]);
+                        }
+                    } else {
+                        // Si no hay conceptos, registrar el error con folio y nombre del emisor
+                        $registrosFallidos->push([
+                            'folio' => $folio,
+                            'descripcion' => 'Datos del comprobante incompletos o no válidos',
+                            'nombre_emisor' => $comprobante['Emisor']['@attributes']['Nombre'] ?? 'Nombre no disponible',
+                            'error' => $e->getMessage() // Mensaje de error
+                        ]);
+                    }
+                }
+                
         }
     }
     $this->ArchivosFallados = collect($registrosFallidos);

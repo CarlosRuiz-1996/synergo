@@ -172,75 +172,81 @@ public function buscar()
     }
 
     $despachos = DB::connection($connection)->table('COMPROBANTE as comp')
-        ->select(
-            'comp.id AS comp_id',
-            DB::raw("CASE 
-                        WHEN CAST(comp.Fecha AS DATE) = '2024-03-31' THEN CAST('2024-04-01' AS DATE)
-                        ELSE CAST(comp.Fecha AS DATE)
-                    END AS Fecha"),
-            'concPE.idcomprobante',
-            'concPE.valorUnitario',
-            'concPE.cantidad',
-            'concPE.descripcion',
-            DB::raw('(concSI.valorUnitario / concPE.cantidad) AS FLETE_SERVICIO'),
-            DB::raw('ROUND(((concPE.valorUnitario + (concSI.valorUnitario / concPE.cantidad)) * concPE.cantidad), 2) AS TOTAL_CON_FLETE'),
-            DB::raw('ISNULL(cp.ComprasCantidad, 0) AS ComprasCantidad'),
-            DB::raw("(SELECT TOP 1 c.NuFactura 
-                      FROM ComGasolina c 
-                      WHERE CAST(c.Fecha AS DATE) = CASE 
-                                                    WHEN CAST(comp.Fecha AS DATE) = '2024-03-31' THEN '2024-04-01'
+    ->select(
+        'comp.id AS comp_id',
+        DB::raw("CASE 
+                    WHEN CAST(comp.Fecha AS DATE) = '2024-03-31' THEN CAST('2024-04-01' AS DATE)
+                    ELSE CAST(comp.Fecha AS DATE)
+                END AS Fecha"),
+        'concPE.idcomprobante',
+        'concPE.valorUnitario',
+        'concPE.cantidad',
+        'concPE.descripcion',
+        DB::raw('(concSI.valorUnitario / concPE.cantidad) AS FLETE_SERVICIO'),
+        DB::raw('ROUND(((concPE.valorUnitario + (concSI.valorUnitario / concPE.cantidad)) * concPE.cantidad), 2) AS TOTAL_CON_FLETE'),
+        DB::raw('ISNULL(cp.ComprasCantidad, 0) AS ComprasCantidad'),
+        DB::raw("(SELECT TOP 1 c.NuFactura 
+                  FROM ComGasolina c 
+                  WHERE CAST(c.Fecha AS DATE) = CASE 
+                                                WHEN CAST(comp.Fecha AS DATE) = '2024-03-31' THEN '2024-04-01'
+                                                ELSE CAST(comp.Fecha AS DATE)
+                                              END
+                  AND c.Cantidad = concPE.cantidad
+                 ) AS NuFactura")
+    )
+    ->join('CONCEPTOS as concPE', 'concPE.idcomprobante', '=', 'comp.id')
+    ->leftJoin('CONCEPTOS as concSI', function ($join) {
+        $join->on('concSI.idcomprobante', '=', 'comp.id')
+            ->whereRaw("CAST(concSI.descripcion AS nvarchar(max)) = 'Servicio de intermediacion de productos'");
+    })
+    ->leftJoin(DB::raw("(SELECT 
+                            cc.Fecha,
+                            c.NuFactura,
+                            cc.NuFactura AS NuFacturaAjustada,
+                            c.Cantidad,
+                            ISNULL(cc.Cantidad, 0) AS ComprasCantidad,
+                            c.NuCamion
+                        FROM ComGasolina cc
+                        INNER JOIN ComGasolina c ON 
+                            LEFT(CAST(cc.NuFactura AS nvarchar(max)), 
+                                 CASE 
+                                    WHEN LEN(CAST(cc.NuFactura AS nvarchar(max))) > 2 THEN 
+                                        LEN(CAST(cc.NuFactura AS nvarchar(max))) - 2 
+                                    ELSE 
+                                        0 
+                                 END) = CAST(c.NuFactura AS nvarchar(max))
+                            AND c.NuTanque IN ('" . implode("','", $nuCombustibles) . "')
+                            AND cc.NuCamion = '1111'
+                        ) AS cp"), function ($join) {
+        $join->on(DB::raw("CASE 
+                                WHEN cp.NuCamion = '1111' AND CAST(cp.Fecha AS DATE) = '2024-03-31' THEN CAST('2024-04-01' AS DATE)
+                                WHEN cp.NuCamion = '1111' THEN CAST(cp.Fecha AS DATE)
+                                ELSE CAST(cp.Fecha AS DATE)
+                            END"), '=', DB::raw("CASE 
+                                                    WHEN CAST(comp.Fecha AS DATE) = '2024-03-31' THEN CAST('2024-04-01' AS DATE)
                                                     ELSE CAST(comp.Fecha AS DATE)
-                                                  END
-                      AND c.Cantidad = concPE.cantidad
-                     ) AS NuFactura")
-        )
-        ->join('CONCEPTOS as concPE', 'concPE.idcomprobante', '=', 'comp.id')
-        ->leftJoin('CONCEPTOS as concSI', function ($join) {
-            $join->on('concSI.idcomprobante', '=', 'comp.id')
-                ->whereRaw("CAST(concSI.descripcion AS nvarchar(max)) = 'Servicio de intermediacion de productos'");
-        })
-        ->leftJoin(DB::raw("(SELECT 
-                                cc.Fecha,
-                                c.NuFactura,
-                                cc.NuFactura AS NuFacturaAjustada,
-                                c.Cantidad,
-                                ISNULL(cc.Cantidad, 0) AS ComprasCantidad,
-                                c.NuCamion
-                            FROM ComGasolina cc
-                            INNER JOIN ComGasolina c ON 
-                                LEFT(CAST(cc.NuFactura AS nvarchar(max)), LEN(CAST(cc.NuFactura AS nvarchar(max))) - 2) = CAST(c.NuFactura AS nvarchar(max))
-                                 AND c.NuTanque IN ('" . implode("','", $nuCombustibles) . "')
-                                AND cc.NuCamion = '1111'
-                            ) AS cp"), function ($join) {
-            $join->on(DB::raw("CASE 
-                                    WHEN cp.NuCamion = '1111' AND CAST(cp.Fecha AS DATE) = '2024-03-31' THEN CAST('2024-04-01' AS DATE)
-                                    WHEN cp.NuCamion = '1111' THEN CAST(cp.Fecha AS DATE)
-                                    ELSE CAST(cp.Fecha AS DATE)
-                                END"), '=', DB::raw("CASE 
-                                                        WHEN CAST(comp.Fecha AS DATE) = '2024-03-31' THEN CAST('2024-04-01' AS DATE)
-                                                        ELSE CAST(comp.Fecha AS DATE)
-                                                    END"))
-                 ->on('cp.Cantidad', '=', 'concPE.cantidad');
-        })
-        ->leftJoin(DB::raw("(SELECT 
-                                comp.id AS comp_id,
-                                CAST(comp.Fecha AS DATE) AS Fecha,
-                                concPE.idcomprobante,
-                                concPE.valorUnitario,
-                                concPE.cantidad,
-                                ROW_NUMBER() OVER(PARTITION BY CAST(comp.Fecha AS DATE) ORDER BY comp.Fecha) AS RowNumber
-                            FROM COMPROBANTE AS comp
-                            INNER JOIN CONCEPTOS AS concPE ON concPE.idcomprobante = comp.id
-                            WHERE CAST(concPE.descripcion AS nvarchar(max)) IN ('" . implode("','", $combustible) . "')
-                              AND comp.Fecha >= '2024-03-31' AND comp.Fecha <= '2024-05-01'
-                            ) AS CompConRowNumber"), function ($join) {
-            $join->on('CompConRowNumber.comp_id', '=', 'comp.id');
-        })
-        ->whereRaw("CAST(concPE.descripcion AS nvarchar(max)) IN ('" . implode("','", $combustible) . "')")
-        ->whereBetween('comp.Fecha', [$startDate, $endDate])
-        ->orderBy('comp.Fecha')
-        ->orderBy('concPE.idcomprobante')
-        ->get();
+                                                END"))
+             ->on('cp.Cantidad', '=', 'concPE.cantidad');
+    })
+    ->leftJoin(DB::raw("(SELECT 
+                            comp.id AS comp_id,
+                            CAST(comp.Fecha AS DATE) AS Fecha,
+                            concPE.idcomprobante,
+                            concPE.valorUnitario,
+                            concPE.cantidad,
+                            ROW_NUMBER() OVER(PARTITION BY CAST(comp.Fecha AS DATE) ORDER BY comp.Fecha) AS RowNumber
+                        FROM COMPROBANTE AS comp
+                        INNER JOIN CONCEPTOS AS concPE ON concPE.idcomprobante = comp.id
+                        WHERE CAST(concPE.descripcion AS nvarchar(max)) IN ('" . implode("','", $combustible) . "')
+                          AND comp.Fecha >= '2024-03-31' AND comp.Fecha <= '2024-05-01'
+                        ) AS CompConRowNumber"), function ($join) {
+        $join->on('CompConRowNumber.comp_id', '=', 'comp.id');
+    })
+    ->whereRaw("CAST(concPE.descripcion AS nvarchar(max)) IN ('" . implode("','", $combustible) . "')")
+    ->whereBetween('comp.Fecha', [$startDate, $endDate])
+    ->orderBy('comp.Fecha')
+    ->orderBy('concPE.idcomprobante')
+    ->get();
 
     $ventas = DB::connection($connection)->table('ERGVentasGasolina_View as er')
         ->join('CatCombustibles as ct', 'ct.NuCombustible', '=', 'er.NuCombustible')
