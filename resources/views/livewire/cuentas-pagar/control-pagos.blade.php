@@ -361,13 +361,17 @@
                     <thead class="bg-gray-100">
                         <tr>
                             <th class="border px-4 py-2">Folio</th>
+                            <th class="border px-4 py-2">Concepto</th>
+                            <th class="border px-4 py-2">Emisor</th>
                             <th class="border px-4 py-2">Mensaje</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($ArchivosFallados as $folio)
+                        @foreach($ArchivosFallados as $factura)
                         <tr>
-                            <td class="border px-4 py-2">{{ $folio }}</td>
+                            <td class="border px-4 py-2">{{ $factura['folio'] }}</td>
+                            <td class="border px-4 py-2">{{ $factura['descripcion'] }}</td>
+                            <td class="border px-4 py-2">{{ $factura['nombre_emisor'] }}</td>
                             <td class="border px-4 py-2">Factura con este folio ya existe, y fue omitida.</td>
                         </tr>
                         @endforeach
@@ -383,13 +387,17 @@
                     <thead class="bg-gray-100">
                         <tr>
                             <th class="border px-4 py-2">Folio</th>
+                            <th class="border px-4 py-2">Concepto</th>
+                            <th class="border px-4 py-2">Emisor</th>
                             <th class="border px-4 py-2">Mensaje</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($ArchivosAceptados as $folio)
+                        @foreach($ArchivosAceptados as $factura)
                         <tr>
-                            <td class="border px-4 py-2">{{ $folio }}</td>
+                            <td class="border px-4 py-2">{{ $factura['folio'] }}</td>
+                            <td class="border px-4 py-2">{{ $factura['descripcion'] }}</td>
+                            <td class="border px-4 py-2">{{ $factura['nombre_emisor'] }}</td>
                             <td class="border px-4 py-2">Factura registrada correctamente</td>
                         </tr>
                         @endforeach
@@ -407,8 +415,6 @@
         </button>
     </x-slot>
 </x-dialog-modal>
-
-
 
 <!-- Modal de facturas cargadas -->
 <x-dialog-modal id="modal-facturasPDF" maxWidth="4xl" wire:model="showModalFacturaspdf">
