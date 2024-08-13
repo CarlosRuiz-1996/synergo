@@ -27,7 +27,7 @@
                     </div>
                     <div class="menu-column mb-8 ml-4">
                         <ul class="menu ml-4">
-                            <li style="padding-left:80px" class="menu-item text-lg" data-submenu="submenu-9"><i class="fas fa-coins ml-6"></i>Tesorería</li>
+                            <li style="padding-left:80px" class="menu-item text-lg" data-submenu="submenu-9" ><i class="fas fa-coins ml-6"></i><a href="{{route('cuentas.tesoreria')}}">Tesorería</a></li>
                             <li style="padding-left:80px" class="menu-item text-lg" data-submenu="submenu-10"><i class="fas fa-user-tie ml-6"></i>Administrativo</li>
                             <li style="padding-left:80px" class="menu-item text-lg" data-submenu="submenu-11"><i class="fas fa-chart-pie ml-6"></i>Reporte</li>
                             <li style="padding-left:80px" class="menu-item text-lg" data-submenu="submenu-12"><i class="fas fa-tachometer-alt ml-6"></i>Dashboard</li>

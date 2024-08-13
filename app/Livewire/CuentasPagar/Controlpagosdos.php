@@ -20,7 +20,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 
-class ControlPagos extends Component
+class Controlpagosdos extends Component
 {
 
     public DescargarComprobateXmloPDF $export;
@@ -77,7 +77,7 @@ class ControlPagos extends Component
 
         $estaciones =  DB::table('EstacionesExcel')->orderBy('NombreEstacion', 'ASC')->get();
         $datos = $this->showModal ? $this->obtenerDatos() : collect(); // Si el modal está abierto, obtenemos los datos paginados
-        return view('livewire.cuentas-pagar.control-pagos', compact('estaciones','datos','uniqueEmisors'));
+        return view('livewire.cuentas-pagar.controlpagosdos', compact('estaciones','datos','uniqueEmisors'));
     }
     
     public function buscar()
@@ -897,6 +897,22 @@ public function abrirmodalpdf($value)
         return response()->json(['error' => 'El archivo PDF no se encontró.'], 404);
     }
 }
+
+public function enviaraTesoreria($id){
+    DB::connection($this->connection)
+        ->table('COMPROBANTE')
+        ->where('id', $id)
+        ->update(['estatus' => 2]);
+}
+public function enviaraTesoreriaTodos($id,$coneccion){
+    DB::connection($coneccion)
+        ->table('COMPROBANTE')
+        ->where('id', $id)
+        ->update(['estatus' => 2]);
+    $this->buscar();
+}
+
+
 
 
 

@@ -50,83 +50,6 @@
                             wire:click='buscar'>Buscar</button>
                     </div>
                 </div>
-
-                <!-- Columna 2: Formulario para subir archivo ZIP -->
-                <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true"
-                    x-on:livewire-upload-finish="uploading = false" x-on:livewire-upload-cancel="uploading = false"
-                    x-on:livewire-upload-error="uploading = false"
-                    x-on:livewire-upload-progress="progress = $event.detail.progress"
-                    class="p-4 bg-gray-800 rounded-lg shadow-md">
-
-                    <!-- File Input -->
-                    <div class="flex flex-col space-y-4">
-                        <div class="flex flex-col space-y-2">
-                            <label for="archivo_zip" class="text-white text-lg font-semibold">Selecciona un archivo
-                                ZIP</label>
-                            <input type="file" name="archivo_zip" id="archivo_zip"
-                                class="border border-gray-600 rounded-lg bg-gray-700 text-white p-2 focus:outline-none focus:border-blue-500"
-                                wire:model="archivo_zip">
-                        </div>
-
-                        <!-- Progress Bar -->
-                        <div x-show="uploading" class="flex flex-col items-center space-y-2">
-                            <div class="w-full bg-gray-600 rounded-full h-2.5">
-                                <div class="bg-blue-500 h-full rounded-full" x-bind:style="{ width: progress + '%' }">
-                                </div>
-                            </div>
-                            <span class="text-white text-sm">Cargando... <span
-                                    x-text="Math.round(progress) + '%'"></span></span>
-                        </div>
-                        <div wire:loading wire:target="procesarArchivos">
-                            <div class="relative pt-1">
-                                <div class="flex mb-2 items-center justify-between">
-                                    <div>
-                                        <p class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-center text-blue-600 bg-blue-200">
-                                            Procesando infomación...
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>                    
-                        @if(session('success'))
-                        <div class="alert alert-success text-center">
-                            {{ session('success') }}
-                        </div>
-                        @endif
-
-                        @if(session('error'))
-                        <div class="alert alert-danger text-center">
-                            {{ session('error') }}
-                        </div>
-                        @endif
-
-                        @if ($errors->any())
-                        <div class="alert alert-danger text-center">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @endif
-
-                        <!-- Upload Button -->
-                        <div class="flex justify-center">
-                            <button
-                                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                                x-bind:disabled="uploading" x-bind:class="{'opacity-50 cursor-not-allowed': uploading}"
-                                wire:click="procesarArchivos">
-                                <span x-show="!uploading">Subir ZIP</span>
-                                <span x-show="uploading">Cargando...</span>
-                            </button>
-                        </div>
-                        
-                    </div>
-                </div>
-
-
-
-
             </div>
             
             <div class="overflow-x-auto shadow-md rounded-lg mt-2">
@@ -236,6 +159,13 @@
                                         <i class="fas fa-file-code text-green-500"></i>
                                     </span>
                                 </button>
+                                @if($result->estatus == 2)
+                                <button wire:click='enviaraTesoreriaTodos({{ $result->id }},"{{$connection}}")' title="aceptar pago">
+                                    <span class="mr-1">
+                                        <i class="fas fa-coins text-yellow-500"></i>
+                                    </span>
+                                </button>
+                                    @endif
                             </td>
                         </tr>
                         @endforeach
@@ -291,18 +221,6 @@
                     <div class="flex flex-col space-y-2 flex-grow">
                         <label for="fechaFin" class="text-black">Fecha de fin</label>
                         <input type="date" wire:model='fechafin' class="p-2 border border-gray-300 rounded w-full">
-                    </div>
-                    <div class="flex flex-col space-y-2 flex-grow">
-                        <label for="estatusproducto" class="text-black">Estatus</label>
-                        <select wire:model="estatusproducto" id="estatusproducto" name="estatusproducto"
-                                class="border border-gray-300 rounded select2 w-full"
-                                placeholder="Selecciona una estación">
-                                <option value="">Selecciona un estatus...</option>
-                                <option value="1">Pagada</option>
-                                <option value="2">Pendiente</option>
-                                <option value="3">Vencida</option>
-                                <option value="4">Cargada Recientemente</option>
-                            </select>
                     </div>
                     <!-- Botón de búsqueda -->
                     <div class="flex flex-col flex-grow">
@@ -434,6 +352,13 @@
                                             <i class="fas fa-file-code text-green-500"></i>
                                         </span>
                                     </button>
+                                    @if($detalle->estatus == 2)
+                                    <button wire:click='enviaraTesoreria({{ $detalle->id }})' title="aceptar pago">
+                                        <span class="mr-1">
+                                            <i class="fas fa-coins text-yellow-500"></i>
+                                        </span>
+                                    </button>
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach

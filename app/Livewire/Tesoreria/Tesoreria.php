@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Livewire\CuentasPagar;
+namespace App\Livewire\Tesoreria;
+
+use Livewire\Component;
 
 use App\Exports\reportes\ExcelreporteFacturascargas;
 use App\Exports\reportes\Excelreportepagos;
 use App\Jobs\ProcesarArchivosXml;
 use Illuminate\Support\Facades\DB;
-use Livewire\Component;
 use Carbon\Carbon;
 use Livewire\WithPagination;
 use App\Livewire\DescargarComprobateXmloPDF;
@@ -19,8 +20,7 @@ use Livewire\WithoutUrlPagination;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
-
-class ControlPagos extends Component
+class Tesoreria extends Component
 {
 
     public DescargarComprobateXmloPDF $export;
@@ -50,12 +50,13 @@ class ControlPagos extends Component
     public $ArchivosAceptados;
     public $showModalFacturaspdf=false;
     public $pdfPath;
-    public $estatusproducto;
+    public $estatusproducto=2;
     public $sinseleccionarestacion=false;
     public $estaciondtodos=[];
 
     public function mount()
     {
+        $this->estatusproducto=2;
         $this->ArchivosFallados = collect();
         $this->ArchivosAceptados = collect();
     }
@@ -77,7 +78,7 @@ class ControlPagos extends Component
 
         $estaciones =  DB::table('EstacionesExcel')->orderBy('NombreEstacion', 'ASC')->get();
         $datos = $this->showModal ? $this->obtenerDatos() : collect(); // Si el modal está abierto, obtenemos los datos paginados
-        return view('livewire.cuentas-pagar.control-pagos', compact('estaciones','datos','uniqueEmisors'));
+        return view('livewire.tesoreria.tesoreria', compact('estaciones','datos','uniqueEmisors'));
     }
     
     public function buscar()
@@ -898,6 +899,23 @@ public function abrirmodalpdf($value)
     }
 }
 
+public function enviaraTesoreria($id){
+    DB::connection($this->connection)
+        ->table('COMPROBANTE')
+        ->where('id', $id)
+        ->update(['estatus' => 1]);
+}
+public function enviaraTesoreriaTodos($id,$coneccion){
+    DB::connection($coneccion)
+        ->table('COMPROBANTE')
+        ->where('id', $id)
+        ->update(['estatus' => 1]);
+    $this->buscar();
+}
+
+
+
 
 
 }
+

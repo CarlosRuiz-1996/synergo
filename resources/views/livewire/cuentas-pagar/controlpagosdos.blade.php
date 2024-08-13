@@ -236,6 +236,13 @@
                                         <i class="fas fa-file-code text-green-500"></i>
                                     </span>
                                 </button>
+                                @if($result->estatus == 4)
+                                    <button wire:click='enviaraTesoreriaTodos({{ $result->id }},"{{$connection}}")' title="Pasar a validación">
+                                        <span class="mr-1">
+                                            <i class="fas fa-coins text-yellow-500"></i>
+                                        </span>
+                                    </button>
+                                    @endif
                             </td>
                         </tr>
                         @endforeach
@@ -434,6 +441,13 @@
                                             <i class="fas fa-file-code text-green-500"></i>
                                         </span>
                                     </button>
+                                    @if($detalle->estatus == 4)
+                                    <button wire:click='enviaraTesoreria({{ $detalle->id }})' title="Pasar a validación">
+                                        <span class="mr-1">
+                                            <i class="fas fa-coins text-yellow-500"></i>
+                                        </span>
+                                    </button>
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach

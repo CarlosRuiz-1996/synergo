@@ -2,10 +2,12 @@
 
 use App\Livewire\Catalogos\Estaciones;
 use App\Livewire\CuentasPagar\ControlPagos;
+use App\Livewire\CuentasPagar\Controlpagosdos;
 use App\Livewire\Reportes\InventarioCombustible;
 use App\Livewire\Reportes\InventarioCombustibleConsigna;
 use App\Livewire\Reportes\InventarioCombustibletotal;
 use App\Livewire\Reportes\VentasConsignas;
+use App\Livewire\Tesoreria\Tesoreria;
 use App\Livewire\UserCrud;
 use Livewire\Livewire;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +33,8 @@ Route::middleware([
     Route::get('reportes/inventarioCombustibletotal', InventarioCombustibletotal::class)->name('reportes.inventarioCombustibletotal');
     Route::get('reportes/inventarioCombustibleconsigna', InventarioCombustibleConsigna::class)->name('reportes.inventarioCombustibleconsigna');
     Route::get('/usuarios', UserCrud::class)->name('usuarios');
+    Route::get('cuentas/pagardos', Controlpagosdos::class)->name('cuentas.pagardos');
+    Route::get('cuentas/tesoreria', Tesoreria::class)->name('cuentas.tesoreria');
 
     
 
