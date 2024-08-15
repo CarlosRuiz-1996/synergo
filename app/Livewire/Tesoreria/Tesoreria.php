@@ -94,33 +94,41 @@ class Tesoreria extends Component
                 // Si no hay estaciones seleccionadas pero hay proveedor, busca en las tres conexiones
                 $connections = ['sqlsrv', 'sqlsrv2', 'sqlsrv3'];
                 foreach ($connections as $connection) {
-                    $results = DB::connection($connection)
-                        ->table('COMPROBANTE as c')
-                        ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
-                        ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
-                        ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id')
-                        ->whereBetween('c.Fecha', [$startDate, $endDate])
-                        ->where('c.TipoDeComprobante', 'LIKE', 'I')
-                        ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
-                            $query->where('e.nombre_emisor', 'LIKE', "%{$nombreEmisor}%");
-                        })
-                        ->when(!is_null($estatus) && $estatus !== '', function ($query) use ($estatus) {
-                            $query->where('c.estatus', $estatus);
-                        })
-                        ->select(
-                            'c.id',
-                            'c.Fecha',
-                            DB::raw("CONCAT(c.Serie, '-', c.folio) as n_factura"),
-                            'conc.descripcion as combustible',
-                            'conc.cantidad as litros',
-                            'c.SubTotal',
-                            'c.Total',
-                            't.UUID as uuid',
-                            'c.TipoDeComprobante',
-                            'e.nombre_emisor',
-                            'c.estatus'
-                        )
-                        ->orderBy('c.Fecha', 'DESC')->get();
+                    $results = DB::connection($this->connection)
+                    ->table('COMPROBANTE as c')
+                    ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
+                    ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
+                    ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
+                    ->whereBetween('c.Fecha', [$startDate, $endDate])
+                    ->where('c.TipoDeComprobante', 'LIKE', 'I')
+                    ->where(function ($q) {
+                        $q->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
+                          ->orWhere('conc.descripcion', 'LIKE', 'PEMEX PREMIUM')
+                          ->orWhere('conc.descripcion', 'LIKE', 'PEMEX DIESEL');
+                    })
+                    ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
+                        $query->where('e.nombre_emisor', 'LIKE', "%{$nombreEmisor}%"); // Filtro por nombre_emisor si está definido
+                    })
+                    ->when(!is_null($estatus) && $estatus !== '', function ($query) use ($estatus) {
+                        $query->where('c.estatus', $estatus); // Filtro por estatus si está definido
+                    })
+                    ->select(
+                        'c.id',
+                        'c.Fecha',
+                        DB::raw("CONCAT(c.Serie, '-', c.folio) as n_factura"),
+                        'conc.descripcion as combustible',
+                        'conc.cantidad as litros',
+                        'c.SubTotal',
+                        'c.Total',
+                        't.UUID as uuid',
+                        'c.TipoDeComprobante',
+                        'e.nombre_emisor',
+                        'c.estatus',
+                        DB::raw("(SELECT TOP 1 Razon FROM Estaciones) as razon")
+                    )
+                    ->orderBy('c.Fecha', 'DESC')
+                    ->get();
+                
     
                     $this->estaciondtodos[$connection] = $results;
                     $this->sinseleccionarestacion = true;
@@ -155,34 +163,48 @@ class Tesoreria extends Component
             $endDate = $this->fechafin ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay() : Carbon::createFromDate(null, 4, 30)->endOfDay();
             $nombreEmisor = $this->proveedor;
             $estatus = $this->estatusproducto;
-    
-            // Suma del total pagado para la estación actual
-            $monto_pagado = DB::connection($connection)->table('COMPROBANTE as c')
-                ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
-                ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
-                ->whereBetween('c.Fecha', [$startDate, $endDate])
-                ->where('c.TipoDeComprobante', 'LIKE', 'I')
-                ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
-                    $query->where('e.nombre_emisor', 'LIKE', $nombreEmisor); // Filtro por nombre_emisor si está definido
-                })
-                ->when(!is_null($estatus) && $estatus !== '', function ($query) use ($estatus) {
-                    $query->where('c.estatus', $estatus); // Filtro por estatus si está definido
-                })
-                ->sum('c.Total');
-    
-            // Contar el número de facturas para la estación actual
-            $total_facturas = DB::connection($connection)->table('COMPROBANTE as c')
-                ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
-                ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
-                ->whereBetween('c.Fecha', [$startDate, $endDate])
-                ->where('c.TipoDeComprobante', 'LIKE', 'I')
-                ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
-                    $query->where('e.nombre_emisor', 'LIKE', $nombreEmisor); // Filtro por nombre_emisor si está definido
-                })
-                ->when(!is_null($estatus) && $estatus !== '', function ($query) use ($estatus) {
-                    $query->where('c.estatus', $estatus); // Filtro por estatus si está definido
-                })
-                ->count();
+     // Suma del total pagado para la estación actual
+     $monto_pagado =DB::connection($connection)
+     ->table('COMPROBANTE as c')
+     ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
+     ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
+     ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id') // Unir con CONCEPTOS
+     ->whereBetween('c.Fecha', [$startDate, $endDate])
+     ->where('c.TipoDeComprobante', 'LIKE', 'I')
+     ->where(function ($q) {
+         $q->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
+           ->orWhere('conc.descripcion', 'LIKE', 'PEMEX PREMIUM')
+           ->orWhere('conc.descripcion', 'LIKE', 'PEMEX DIESEL');
+     })
+     ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
+         $query->where('e.nombre_emisor', 'LIKE', "%{$nombreEmisor}%"); // Filtro por nombre_emisor si está definido
+     })
+     ->when(!is_null($estatus) && $estatus !== '', function ($query) use ($estatus) {
+         $query->where('c.estatus', $estatus); // Filtro por estatus si está definido
+     })
+     ->sum('c.Total');
+
+
+     // Contar el número de facturas para la estación actual
+     $total_facturas = DB::connection($connection)
+     ->table('COMPROBANTE as c')
+     ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
+     ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
+     ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id') // Unir con CONCEPTOS
+     ->whereBetween('c.Fecha', [$startDate, $endDate])
+     ->where('c.TipoDeComprobante', 'LIKE', 'I')
+     ->where(function ($q) {
+         $q->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
+           ->orWhere('conc.descripcion', 'LIKE', 'PEMEX PREMIUM')
+           ->orWhere('conc.descripcion', 'LIKE', 'PEMEX DIESEL');
+     })
+     ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
+         $query->where('e.nombre_emisor', 'LIKE', "%{$nombreEmisor}%"); // Filtro por nombre_emisor si está definido
+     })
+     ->when(!is_null($estatus) && $estatus !== '', function ($query) use ($estatus) {
+         $query->where('c.estatus', $estatus); // Filtro por estatus si está definido
+     })
+     ->count();
     
             // Agregar los montos y el total de facturas a los datos de la estación
             foreach ($data as $item) {
@@ -206,32 +228,45 @@ class Tesoreria extends Component
         $nombreEmisor = $this->proveedor; // o lo que corresponda según tu lógica
         $estatus=$this->estatusproducto;
         // Suma del total pagado
-        $this->monto_pagado = DB::connection($this->connection)->table('COMPROBANTE as c')
-            ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
-            ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
-            ->whereBetween('c.Fecha', [$startDate, $endDate])
-            ->where('c.TipoDeComprobante', 'LIKE', 'I')
-            ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
-                $query->where('e.nombre_emisor', 'LIKE', $nombreEmisor); // Filtro por nombre_emisor si está definido
-            })
-            ->when(!is_null($estatus) && $estatus !== '', function ($query) use ($estatus) {
-                $query->where('c.estatus', $estatus); // Filtro por estatus si está definido
-            })
-            ->sum('c.Total');
+        $this->monto_pagado = DB::connection($this->connection)
+        ->table('COMPROBANTE as c')
+        ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
+        ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
+        ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id') // Unir con CONCEPTOS
+        ->whereBetween('c.Fecha', [$startDate, $endDate])
+        ->where('c.TipoDeComprobante', 'LIKE', 'I')
+        ->where(function ($q) {
+            $q->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
+              ->orWhere('conc.descripcion', 'LIKE', 'PEMEX PREMIUM')
+              ->orWhere('conc.descripcion', 'LIKE', 'PEMEX DIESEL');
+        })
+        ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
+            $query->where('e.nombre_emisor', 'LIKE', "%{$nombreEmisor}%"); // Filtro por nombre_emisor si está definido
+        })
+        ->when(!is_null($estatus) && $estatus !== '', function ($query) use ($estatus) {
+            $query->where('c.estatus', $estatus); // Filtro por estatus si está definido
+        })
+        ->sum('c.Total');
     
-        // Contar el número de facturas
-        $this->total_facturas = DB::connection($this->connection)->table('COMPROBANTE as c')
-            ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
-            ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
-            ->whereBetween('c.Fecha', [$startDate, $endDate])
-            ->where('c.TipoDeComprobante', 'LIKE', 'I')
-            ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
-                $query->where('e.nombre_emisor', 'LIKE', $nombreEmisor); // Filtro por nombre_emisor si está definido
-            })
-            ->when(!is_null($estatus) && $estatus !== '', function ($query) use ($estatus) {
-                $query->where('c.estatus', $estatus); // Filtro por estatus si está definido
-            })
-            ->count();
+    $this->total_facturas = DB::connection($this->connection)
+        ->table('COMPROBANTE as c')
+        ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
+        ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
+        ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id') // Unir con CONCEPTOS
+        ->whereBetween('c.Fecha', [$startDate, $endDate])
+        ->where('c.TipoDeComprobante', 'LIKE', 'I')
+        ->where(function ($q) {
+            $q->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
+              ->orWhere('conc.descripcion', 'LIKE', 'PEMEX PREMIUM')
+              ->orWhere('conc.descripcion', 'LIKE', 'PEMEX DIESEL');
+        })
+        ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
+            $query->where('e.nombre_emisor', 'LIKE', "%{$nombreEmisor}%"); // Filtro por nombre_emisor si está definido
+        })
+        ->when(!is_null($estatus) && $estatus !== '', function ($query) use ($estatus) {
+            $query->where('c.estatus', $estatus); // Filtro por estatus si está definido
+        })
+        ->count();
     }
     
 
@@ -278,33 +313,38 @@ class Tesoreria extends Component
         $estatus=$this->estatusproducto;
         $this->monto();
         return DB::connection($this->connection)
-                ->table('COMPROBANTE as c')
-                ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
-                ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
-                ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
-                ->whereBetween('c.Fecha', [$startDate, $endDate])
-                ->where('c.TipoDeComprobante', 'LIKE', 'I')
-                ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
-                    $query->where('e.nombre_emisor', 'LIKE', "%{$nombreEmisor}%"); // Filtro por nombre_emisor si está definido
-                })
-                ->when(!is_null($estatus) && $estatus !== '', function ($query) use ($estatus) {
-                    $query->where('c.estatus', $estatus); // Filtro por estatus si está definido
-                })
-                ->select(
-                    'c.id',
-                    'c.Fecha',
-                    DB::raw("CONCAT(c.Serie, '-', c.folio) as n_factura"),
-                    'conc.descripcion as combustible',
-                    'conc.cantidad as litros',
-                    'c.SubTotal',
-                    'c.Total',
-                    't.UUID as uuid',
-                    'c.TipoDeComprobante',
-                    'e.nombre_emisor',
-                    'c.estatus'
-                )
-                ->orderBy('c.Fecha', 'DESC')
-                ->paginate(5);
+        ->table('COMPROBANTE as c')
+        ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
+        ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
+        ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
+        ->whereBetween('c.Fecha', [$startDate, $endDate])
+        ->where('c.TipoDeComprobante', 'LIKE', 'I')
+        ->where(function ($q) {
+            $q->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
+              ->orWhere('conc.descripcion', 'LIKE', 'PEMEX PREMIUM')
+              ->orWhere('conc.descripcion', 'LIKE', 'PEMEX DIESEL');
+        })
+        ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
+            $query->where('e.nombre_emisor', 'LIKE', "%{$nombreEmisor}%"); // Filtro por nombre_emisor si está definido
+        })
+        ->when(!is_null($estatus) && $estatus !== '', function ($query) use ($estatus) {
+            $query->where('c.estatus', $estatus); // Filtro por estatus si está definido
+        })
+        ->select(
+            'c.id',
+            'c.Fecha',
+            DB::raw("CONCAT(c.Serie, '-', c.folio) as n_factura"),
+            'conc.descripcion as combustible',
+            'conc.cantidad as litros',
+            'c.SubTotal',
+            'c.Total',
+            't.UUID as uuid',
+            'c.TipoDeComprobante',
+            'e.nombre_emisor',
+            'c.estatus',
+            DB::raw("(SELECT TOP 1 Razon FROM Estaciones) as razon")
+        )
+        ->orderBy('c.Fecha', 'DESC')->paginate(5);
     }
     
     
@@ -862,7 +902,8 @@ public function exportarExcel()
                 't.UUID as uuid',
                 'c.TipoDeComprobante',
                 'e.nombre_emisor',
-                'c.estatus'
+                'c.estatus',
+                DB::raw("(SELECT TOP 1 Razon FROM Estaciones) as razon")
             )
             ->orderBy('c.Fecha', 'DESC')->get();
 

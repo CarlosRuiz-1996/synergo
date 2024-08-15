@@ -7,7 +7,7 @@
                 <a href="{{ route('dashboard') }}" title="ATRAS" class="me-2">
                     <i class="fa fa-arrow-left"></i>
                 </a>
-                Control de pagos
+                Recepción de pagos
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
                 <!-- Columna 1: Select y botón de búsqueda -->
@@ -71,6 +71,10 @@
                             Producto
                         </th>
                         <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                        Estación
+                    </th>
+                        <th scope="col"
                             class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                             Proveedor
                         </th>
@@ -109,6 +113,9 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {{ $result->combustible }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ $result->razon }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {{ $result->nombre_emisor }}
@@ -265,6 +272,10 @@
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                    Estación
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                                     Proveedor
                                 </th>
                                 <th scope="col"
@@ -302,6 +313,9 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     {{ $detalle->combustible }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $detalle->razon }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     {{ $detalle->nombre_emisor }}

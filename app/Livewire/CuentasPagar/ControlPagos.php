@@ -117,7 +117,8 @@ class ControlPagos extends Component
                             't.UUID as uuid',
                             'c.TipoDeComprobante',
                             'e.nombre_emisor',
-                            'c.estatus'
+                            'c.estatus',
+                            DB::raw("(SELECT TOP 1 Razon FROM Estaciones) as razon")
                         )
                         ->orderBy('c.Fecha', 'DESC')->get();
     
@@ -300,7 +301,8 @@ class ControlPagos extends Component
                     't.UUID as uuid',
                     'c.TipoDeComprobante',
                     'e.nombre_emisor',
-                    'c.estatus'
+                    'c.estatus',
+                    DB::raw("(SELECT TOP 1 Razon FROM Estaciones) as razon")
                 )
                 ->orderBy('c.Fecha', 'DESC')
                 ->paginate(5);
@@ -861,7 +863,8 @@ public function exportarExcel()
                 't.UUID as uuid',
                 'c.TipoDeComprobante',
                 'e.nombre_emisor',
-                'c.estatus'
+                'c.estatus',
+                DB::raw("(SELECT TOP 1 Razon FROM Estaciones) as razon")
             )
             ->orderBy('c.Fecha', 'DESC')->get();
 

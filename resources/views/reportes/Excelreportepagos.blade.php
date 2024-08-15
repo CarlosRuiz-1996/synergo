@@ -23,6 +23,9 @@
                     Producto
                 </th>
                 <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:200%">
+                    Estación
+                </th>
+                <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:200%">
                     Proveedor
                 </th>
                 <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:200%">
@@ -51,6 +54,9 @@
             </td>
             <td style="border: 1px solid black; padding: 8px; text-align: center;width:200%">
                 {{ $detalle->combustible }}
+            </td>
+            <td style="border: 1px solid black; padding: 8px; text-align: center;width:350%">
+                {{ $detalle->razon }}
             </td>
             <td style="border: 1px solid black; padding: 8px; text-align: center;width:350%">
                 {{ $detalle->nombre_emisor }}
