@@ -52,11 +52,11 @@
                 </div>
             </div>
             
-            <div class="overflow-x-auto shadow-md rounded-lg mt-2">
-           <!-- Tabla para mostrar estaciondtodos si sinseleccionarestacion está en true -->
-            @if ($sinseleccionarestacion)
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-100">
+            <div class="overflow-x-auto shadow-md rounded-lg mt-2 max-h-96">
+                @if ($sinseleccionarestacion)
+                <div style="overflow-y: auto; max-height: 500px; border: 1px solid #e5e7eb; margin-top: 10px;">
+                    <table class="min-w-full divide-y divide-gray-200" style="height: 25%">
+                        <thead style="position: sticky; top: 0; background-color: #f3f4f6; z-index: 1;">
                     <tr>
                         <th scope="col"
                             class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
@@ -111,13 +111,13 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {{ $result->n_factura }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td class="px-6 py-4 text-sm text-gray-500" style="word-break: break-word;">
                                 {{ $result->combustible }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td class="px-6 py-4 text-sm text-gray-500" style="word-break: break-word;">
                                 {{ $result->razon }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td class="px-6 py-4 text-sm text-gray-500" style="word-break: break-word;">
                                 {{ $result->nombre_emisor }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -131,10 +131,10 @@
                                 {{ number_format($result->Total, 2) }}
                             </td>
 
-                            <td class="px-6 py-4 whitespace-nowrap text-sm {{ 
+                            <td class="px-6 py-4  text-sm {{ 
                                 $result->estatus == 1 ? 'text-green-500' : 
                                 ($result->estatus == 2 ? 'text-yellow-500' : 
-                                ($result->estatus == 3 ? 'text-red-500' : 'text-gray-500')) }}">
+                                ($result->estatus == 3 ? 'text-red-500' : 'text-gray-500')) }}" style="word-break: break-word;">
                                 <b>
                                     @if($result->estatus == 1)
                                         Pagada
@@ -194,7 +194,7 @@
                                 <h2><b>Razón Social: {{ $item->Razon }}</b></h2>
                                 <h2><b>RFC: {{ $item->RFC }}</b></h2>
                                 <h2><b>Dirección: {{ $item->Direccion }}, {{ $item->Colonia }}, {{ $item->Estado }}, {{ $item->CP }}</b></h2>
-                                <h2><b>Monto Pagado: {{ number_format($item->monto_pagado, 2) }}</b></h2>
+                                <h2><b>Monto: {{ number_format($item->monto_pagado, 2) }}</b></h2>
                                 <h2><b>Total de Facturas: {{ $item->total_facturas }}</b></h2>
                             </div>
                             <div class="col-span-1 flex items-center justify-center">
@@ -245,7 +245,7 @@
                 </div>
                 <div class="flex justify-between items-center shadow-md rounded-lg mt-2 bg-gray-200">
                     <div class="text-center w-full">
-                        <span class="font-bold">Monto Pagado:</span>
+                        <span class="font-bold">Monto:</span>
                         <div class="text-lg mt-1 text-green-600">$ {{ number_format($monto_pagado, 2) }}</div>
                     </div>
                     <div class="text-center  w-full">
@@ -253,49 +253,49 @@
                         <div class="text-lg text-green-600 mt-1"> {{ $total_facturas}}</div>
                     </div>
                 </div>
-                <div class="overflow-x-auto shadow-md rounded-lg mt-2">
+                <div style="overflow-y: auto; max-height: 500px; border: 1px solid #e5e7eb; margin-top: 10px;">
                     @if (count($datos) > 0)
-                    <table class="w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-100">
+                        <table class="min-w-full divide-y divide-gray-200" style="height: 25%">
+                            <thead style="position: sticky; top: 0; background-color: #f3f4f6; z-index: 1;">
                             <tr>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                    class="px-4 py-3 text-left  text-xs text-gray-700 uppercase tracking-wider">
                                     Fecha
                                 </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                    class="px-4 py-3 text-left  text-xs text-gray-700 uppercase tracking-wider">
                                     No. Factura
                                 </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                    class="px-4 py-3 text-left  text-xs text-gray-700 uppercase tracking-wider">
                                     Producto
                                 </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                    class="px-4 py-3 text-left  text-xs text-gray-700 uppercase tracking-wider">
                                     Estación
                                 </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                    class="px-4 py-3 text-left  text-xs text-gray-700 uppercase tracking-wider">
                                     Proveedor
                                 </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                    class="px-4 py-3 text-left  text-xs text-gray-700 uppercase tracking-wider">
                                     Cantidad
                                 </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                    class="px-4 py-3 text-left  text-xs text-gray-700 uppercase tracking-wider">
                                     Subtotal
                                 </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                    class="px-4 py-3 text-left  text-xs text-gray-700 uppercase tracking-wider">
                                     Total
                                 </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                    class="px-4 py-3 text-left  text-xs text-gray-700 uppercase tracking-wider">
                                     Estatus del pago
                                 </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                    class="px-4 py-3 text-left  text-xs text-gray-700 uppercase tracking-wider">
                                     Ver
                                 </th>
                             </tr>
@@ -304,37 +304,37 @@
 
                             @foreach ($datos as $detalle)
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                     {{ \Carbon\Carbon::parse($detalle->Fecha)->format('Y-m-d') }}
 
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                                     {{ $detalle->n_factura }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td class="px-4 py-4 text-sm text-gray-500" style="word-break: break-word;">
                                     {{ $detalle->combustible }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td class="px-4 py-4 text-sm text-gray-500" style="word-break: break-word;">
                                     {{ $detalle->razon }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td class="px-4 py-4 text-sm text-gray-500" style="word-break: break-word;">
                                     {{ $detalle->nombre_emisor }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                                     {{ number_format($detalle->litros, 2) }}
 
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                                     {{ number_format($detalle->SubTotal, 2) }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                                     {{ number_format($detalle->Total, 2) }}
                                 </td>
 
-                                <td class="px-6 py-4 whitespace-nowrap text-sm {{ 
+                                <td class="px-4 py-4 text-sm {{ 
                                     $detalle->estatus == 1 ? 'text-green-500' : 
                                     ($detalle->estatus == 2 ? 'text-yellow-500' : 
-                                    ($detalle->estatus == 3 ? 'text-red-500' : 'text-gray-500')) }}">
+                                    ($detalle->estatus == 3 ? 'text-red-500' : 'text-gray-500')) }}" style="word-break: break-word;">
                                     <b>
                                         @if($detalle->estatus == 1)
                                             Pagada
@@ -350,7 +350,7 @@
                                     </b>
                                 </td>
 
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                                     @if ($detalle->TipoDeComprobante != 'P')
                                     <button
                                         wire:click="abrirmodalpdf({{ $detalle->id }})"

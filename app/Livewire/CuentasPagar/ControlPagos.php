@@ -98,7 +98,6 @@ class ControlPagos extends Component
                         ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
                         ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
                         ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id')
-                        ->whereBetween('c.Fecha', [$startDate, $endDate])
                         ->where('c.TipoDeComprobante', 'LIKE', 'I')
                         ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
                             $query->where('e.nombre_emisor', 'LIKE', "%{$nombreEmisor}%");

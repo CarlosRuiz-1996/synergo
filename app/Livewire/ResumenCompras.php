@@ -31,6 +31,7 @@ public $showModalInventarioCombustible=false;
 public $showModalInventarioCombustibletotal = false; 
 public $showModalInventarioCombustibleconsigna = false; 
 public $showModalResumen = false;
+public $novisible=false;
 
 //variables de tabla
 public $datos;
@@ -282,10 +283,12 @@ public function buscar()
     }
 
     // Verificar si alguna de las variables es null
-    if (is_null($results)) {
+    if (is_null($results) || $ventas->isEmpty() || $despachos->isEmpty()) {
+        $this->novisible=false;
         Session::flash('error', 'Ingrese el Primer dia y el ultimo dia del mes.');
         return redirect()->back();
     } else {
+        $this->novisible=true;
         $this->datos = $despachos;
         $this->fechaInicio = $fechareal;
         $this->fechaFin = $endDate->toDateString();
@@ -495,15 +498,21 @@ public function totales()
 {
     $fechareal = $this->fechainicio ? Carbon::createFromFormat('Y-m-d', $this->fechainicio)->startOfDay() : Carbon::createFromDate(null, 4, 1)->startOfDay();
     $endDate = $this->fechafin ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay() : Carbon::createFromDate(null, 4, 30)->endOfDay();
-    // Obtiene la fecha un día antes de startDate
     $startDate = $fechareal->copy()->subDay();
+
+    // Definir las conexiones
+    $connections = ['sqlsrv', 'sqlsrv2', 'sqlsrv3'];
+    
+    // Inicializar una colección para almacenar los resultados combinados
+    $combinedResults = collect();
+    
     // Consulta SQL
     $query = "DECLARE @startDate DATE = ?;
               DECLARE @endDate DATE = ?;
 
               SELECT 
                   CAST(con.descripcion AS NVARCHAR(MAX)) AS descripcion, 
-                  AVG(con.valorUnitario) AS PromedioValorUnitario,
+                  AVG(con.valorUnitario) AS valorUnitario, -- Cambié el nombre del alias a 'valorUnitario' para evitar conflicto
                   ISNULL(MAX(comgas.TotalCantidad), 0) AS TotalCantidad,
                   ISNULL((
                       SELECT SUM(vta.entregue - vta.recibi)
@@ -534,15 +543,31 @@ public function totales()
               WHERE 
                   con.claveUnidad LIKE 'LTR'
                   AND CONVERT(DATE, com.Fecha) BETWEEN @startDate AND @endDate
+                  AND CAST(con.descripcion AS NVARCHAR(MAX)) IN ('PEMEX MAGNA', 'PEMEX PREMIUM', 'PEMEX DIESEL')
               GROUP BY 
                   CAST(con.descripcion AS NVARCHAR(MAX));";
 
-    // Ejecutar la consulta SQL
-    $resultados = DB::select($query, [$startDate, $endDate]);
+    // Ejecutar la consulta en cada conexión
+    foreach ($connections as $connection) {
+        $results = DB::connection($connection)->select($query, [$startDate, $endDate]);
+        // Combinar los resultados
+        $combinedResults = $combinedResults->merge(collect($results));
+    }
 
-    // Retorna los resultados
-    return $resultados;
+    // Realizar las agregaciones sobre los resultados combinados
+    $aggregatedResults = $combinedResults->groupBy('descripcion')->map(function ($group) {
+        return [
+            'descripcion' => $group->first()->descripcion,
+            'PromedioValorUnitario' => $group->avg('valorUnitario'),
+            'TotalCantidad' => $group->sum('TotalCantidad'),
+            'SumaEntregueRecibi' => $group->sum('SumaEntregueRecibi'),
+        ];
+    });
+
+    // Devolver el resultado combinado y agregado
+    return $aggregatedResults;
 }
+
 public function insertarBase()
 {
     if (!Storage::disk('public')->exists('datos.json')) {

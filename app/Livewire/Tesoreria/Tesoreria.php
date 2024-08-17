@@ -94,12 +94,40 @@ class Tesoreria extends Component
                 // Si no hay estaciones seleccionadas pero hay proveedor, busca en las tres conexiones
                 $connections = ['sqlsrv', 'sqlsrv2', 'sqlsrv3'];
                 foreach ($connections as $connection) {
-                    $results = DB::connection($this->connection)
+                    if($nombreEmisor!="INMOBILIARIA DAMORA - CRANE"){
+                        $results = DB::connection($connection)
+                        ->table('COMPROBANTE as c')
+                        ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
+                        ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
+                        ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id')
+                        ->where('c.TipoDeComprobante', 'LIKE', 'I')
+                        ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
+                            $query->where('e.nombre_emisor', 'LIKE', "%{$nombreEmisor}%");
+                        })
+                        ->when(!is_null($estatus) && $estatus !== '', function ($query) use ($estatus) {
+                            $query->where('c.estatus', $estatus);
+                        })
+                        ->select(
+                            'c.id',
+                            'c.Fecha',
+                            DB::raw("CONCAT(c.Serie, '-', c.folio) as n_factura"),
+                            'conc.descripcion as combustible',
+                            'conc.cantidad as litros',
+                            'c.SubTotal',
+                            'c.Total',
+                            't.UUID as uuid',
+                            'c.TipoDeComprobante',
+                            'e.nombre_emisor',
+                            'c.estatus',
+                            DB::raw("(SELECT TOP 1 Razon FROM Estaciones) as razon")
+                        )
+                        ->orderBy('c.Fecha', 'DESC')->get();
+                    }else{
+                    $results = DB::connection($connection)
                     ->table('COMPROBANTE as c')
                     ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
                     ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
                     ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
-                    ->whereBetween('c.Fecha', [$startDate, $endDate])
                     ->where('c.TipoDeComprobante', 'LIKE', 'I')
                     ->where(function ($q) {
                         $q->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
@@ -128,7 +156,7 @@ class Tesoreria extends Component
                     )
                     ->orderBy('c.Fecha', 'DESC')
                     ->get();
-                
+                    }
     
                     $this->estaciondtodos[$connection] = $results;
                     $this->sinseleccionarestacion = true;
@@ -312,6 +340,35 @@ class Tesoreria extends Component
         $nombreEmisor = $this->proveedor; 
         $estatus=$this->estatusproducto;
         $this->monto();
+        if($nombreEmisor!="INMOBILIARIA DAMORA - CRANE"){
+            return DB::connection($this->connection)
+            ->table('COMPROBANTE as c')
+            ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
+            ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
+            ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id')
+            ->where('c.TipoDeComprobante', 'LIKE', 'I')
+            ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
+                $query->where('e.nombre_emisor', 'LIKE', "%{$nombreEmisor}%");
+            })
+            ->when(!is_null($estatus) && $estatus !== '', function ($query) use ($estatus) {
+                $query->where('c.estatus', $estatus);
+            })
+            ->select(
+                'c.id',
+                'c.Fecha',
+                DB::raw("CONCAT(c.Serie, '-', c.folio) as n_factura"),
+                'conc.descripcion as combustible',
+                'conc.cantidad as litros',
+                'c.SubTotal',
+                'c.Total',
+                't.UUID as uuid',
+                'c.TipoDeComprobante',
+                'e.nombre_emisor',
+                'c.estatus',
+                DB::raw("(SELECT TOP 1 Razon FROM Estaciones) as razon")
+            )
+            ->orderBy('c.Fecha', 'DESC')->paginate(5);
+        }else{
         return DB::connection($this->connection)
         ->table('COMPROBANTE as c')
         ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
@@ -345,6 +402,7 @@ class Tesoreria extends Component
             DB::raw("(SELECT TOP 1 Razon FROM Estaciones) as razon")
         )
         ->orderBy('c.Fecha', 'DESC')->paginate(5);
+        }
     }
     
     
@@ -878,6 +936,35 @@ public function exportarExcel()
     $nombreEmisor = $this->proveedor;
     $estatus=$this->estatusproducto;
     $nombrereporte=$this->nombre_reporte;
+    if($nombreEmisor!="INMOBILIARIA DAMORA - CRANE"){
+        $info=DB::connection($this->connection)
+        ->table('COMPROBANTE as c')
+        ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
+        ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
+        ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id')
+        ->where('c.TipoDeComprobante', 'LIKE', 'I')
+        ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
+            $query->where('e.nombre_emisor', 'LIKE', "%{$nombreEmisor}%");
+        })
+        ->when(!is_null($estatus) && $estatus !== '', function ($query) use ($estatus) {
+            $query->where('c.estatus', $estatus);
+        })
+        ->select(
+            'c.id',
+            'c.Fecha',
+            DB::raw("CONCAT(c.Serie, '-', c.folio) as n_factura"),
+            'conc.descripcion as combustible',
+            'conc.cantidad as litros',
+            'c.SubTotal',
+            'c.Total',
+            't.UUID as uuid',
+            'c.TipoDeComprobante',
+            'e.nombre_emisor',
+            'c.estatus',
+            DB::raw("(SELECT TOP 1 Razon FROM Estaciones) as razon")
+        )
+        ->orderBy('c.Fecha', 'DESC')->get();
+    }else{
     $info=DB::connection($this->connection)
             ->table('COMPROBANTE as c')
             ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
@@ -906,7 +993,7 @@ public function exportarExcel()
                 DB::raw("(SELECT TOP 1 Razon FROM Estaciones) as razon")
             )
             ->orderBy('c.Fecha', 'DESC')->get();
-
+            }
         $nombredoc = 'Resumen_del_' . $startDate->format('d-m-Y') . '_a_' . $endDate->format('d-m-Y') .'.xlsx';
     return Excel::download(new Excelreportepagos($info,$nombrereporte,$startDate->format('d-m-Y'),$endDate->format('d-m-Y')), $nombredoc);
 }

@@ -56,15 +56,15 @@
                             <tbody class="bg-white">
                                 @foreach ($totalesValores as $resultado)
                                     <tr>
-                                        <td class="border border-gray-200 px-2 py-1">{{ $resultado->descripcion }}</td>
-                                        <td class="border border-gray-200 px-2 py-1">{{ $resultado->PromedioValorUnitario }}</td>
-                                        <td class="border border-gray-200 px-2 py-1">{{ $resultado->TotalCantidad }}</td>
-                                        <td class="border border-gray-200 px-2 py-1">{{ $resultado->SumaEntregueRecibi }}</td>
+                                        <td class="border border-gray-200 px-2 py-1">{{ $resultado['descripcion'] }}</td>
+                                        <td class="border border-gray-200 px-2 py-1">{{ number_format($resultado['PromedioValorUnitario'], 2) }}</td>
+                                        <td class="border border-gray-200 px-2 py-1">{{ number_format($resultado['TotalCantidad'], 2) }}</td>
+                                        <td class="border border-gray-200 px-2 py-1">{{ number_format($resultado['SumaEntregueRecibi'], 2) }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
-                    </div>
+                    </div>                    
                 </div>
             </div>
             
@@ -423,17 +423,19 @@
         </div>
         
         @if (session('error'))
-<div class="flex justify-center">
+<div class="flex justify-center mt-3">
     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative w-1/2" role="alert">
        <p> <strong class="font-bold">Lo sentimos, no se puede generar el reporte en el periodo seleccionado.</strong>
         <span class="block sm:inline">{{ session('error') }}</span></p>
     </div>
 </div>
 @endif
+@if($novisible)
 <div class="flex flex-col space-y-3 flex-grow pl-2">
     <button class="bg-blue-500 text-white py-2 mt-6 rounded hover:bg-blue-700 w-full"
         wire:click='exportarExcel'>Exportar Excel</button>
 </div>
+
 @if($invInicial !=null)
 
 <div class="overflow-x-auto mt-3 rounded-lg shadow-md" style="max-height: 400px;">
@@ -864,6 +866,7 @@
     
 </div>
 </div>
+@endif
 @endif
     </x-slot>
 

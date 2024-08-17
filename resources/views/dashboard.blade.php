@@ -14,7 +14,7 @@
                             <li class="menu-item text-lg" data-submenu="submenu-5"><i class="fas fa-wallet mr-2"></i>Establecer Presupuesto</li>
                             <li class="menu-item text-lg" data-submenu="submenu-6"><i class="fas fa-file-invoice-dollar mr-2"></i>Presupuesto de Gastos</li>
                             <li class="menu-item text-lg" data-submenu="submenu-7">
-                                <a href="{{route('cuentas.pagar')}}">
+                                <a href="{{route('cuentas.pagardos')}}">
                                     <i class="fas fa-file-alt mr-2"></i>Cuentas Por Pagar
                                 </a>
                             </li>
