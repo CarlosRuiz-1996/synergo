@@ -191,7 +191,6 @@ class Controlpagosdos extends Component
             $endDate = $this->fechafin ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay() : Carbon::createFromDate(null, 4, 30)->endOfDay();
             $nombreEmisor = $this->proveedor;
             $estatus = $this->estatusproducto;
-    
             // Suma del total pagado para la estación actual
             $monto_pagado =DB::connection($connection)
             ->table('COMPROBANTE as c')
@@ -257,6 +256,37 @@ class Controlpagosdos extends Component
         $nombreEmisor = $this->proveedor; // o lo que corresponda según tu lógica
         $estatus=$this->estatusproducto;
         // Suma del total pagado
+        if($nombreEmisor!="INMOBILIARIA DAMORA - CRANE"){
+            $this->monto_pagado = DB::connection($this->connection)
+            ->table('COMPROBANTE as c')
+            ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
+            ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
+            ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id') // Unir con CONCEPTOS
+            ->whereBetween('c.Fecha', [$startDate, $endDate])
+            ->where('c.TipoDeComprobante', 'LIKE', 'I')
+            ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
+                $query->where('e.nombre_emisor', 'LIKE', "%{$nombreEmisor}%"); // Filtro por nombre_emisor si está definido
+            })
+            ->when(!is_null($estatus) && $estatus !== '', function ($query) use ($estatus) {
+                $query->where('c.estatus', $estatus); // Filtro por estatus si está definido
+            })
+            ->sum('c.Total');
+        
+        $this->total_facturas = DB::connection($this->connection)
+            ->table('COMPROBANTE as c')
+            ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
+            ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id') // Unir con EMISOR
+            ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id') // Unir con CONCEPTOS
+            ->whereBetween('c.Fecha', [$startDate, $endDate])
+            ->where('c.TipoDeComprobante', 'LIKE', 'I')
+            ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
+                $query->where('e.nombre_emisor', 'LIKE', "%{$nombreEmisor}%"); // Filtro por nombre_emisor si está definido
+            })
+            ->when(!is_null($estatus) && $estatus !== '', function ($query) use ($estatus) {
+                $query->where('c.estatus', $estatus); // Filtro por estatus si está definido
+            })
+            ->count();
+        }else{
         $this->monto_pagado = DB::connection($this->connection)
         ->table('COMPROBANTE as c')
         ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
@@ -296,7 +326,7 @@ class Controlpagosdos extends Component
             $query->where('c.estatus', $estatus); // Filtro por estatus si está definido
         })
         ->count();
-    
+        }
     }
     
 
