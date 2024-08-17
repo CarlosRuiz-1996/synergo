@@ -199,11 +199,6 @@ class Controlpagosdos extends Component
             ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id') // Unir con CONCEPTOS
             ->whereBetween('c.Fecha', [$startDate, $endDate])
             ->where('c.TipoDeComprobante', 'LIKE', 'I')
-            ->where(function ($q) {
-                $q->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
-                  ->orWhere('conc.descripcion', 'LIKE', 'PEMEX PREMIUM')
-                  ->orWhere('conc.descripcion', 'LIKE', 'PEMEX DIESEL');
-            })
             ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
                 $query->where('e.nombre_emisor', 'LIKE', "%{$nombreEmisor}%"); // Filtro por nombre_emisor si está definido
             })
@@ -221,11 +216,6 @@ class Controlpagosdos extends Component
             ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id') // Unir con CONCEPTOS
             ->whereBetween('c.Fecha', [$startDate, $endDate])
             ->where('c.TipoDeComprobante', 'LIKE', 'I')
-            ->where(function ($q) {
-                $q->where('conc.descripcion', 'LIKE', 'PEMEX MAGNA')
-                  ->orWhere('conc.descripcion', 'LIKE', 'PEMEX PREMIUM')
-                  ->orWhere('conc.descripcion', 'LIKE', 'PEMEX DIESEL');
-            })
             ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
                 $query->where('e.nombre_emisor', 'LIKE', "%{$nombreEmisor}%"); // Filtro por nombre_emisor si está definido
             })
@@ -378,6 +368,7 @@ class Controlpagosdos extends Component
             ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
             ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
             ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id')
+            ->whereBetween('c.Fecha', [$startDate, $endDate])
             ->where('c.TipoDeComprobante', 'LIKE', 'I')
             ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
                 $query->where('e.nombre_emisor', 'LIKE', "%{$nombreEmisor}%");
@@ -974,6 +965,7 @@ public function exportarExcel()
         ->join('TIMBRE_FISCAL_DIGITAL as t', 't.idcomprobante', '=', 'c.id')
         ->join('CONCEPTOS as conc', 'conc.idcomprobante', '=', 'c.id')
         ->join('EMISOR as e', 'e.idcomprobante', '=', 'c.id')
+        ->whereBetween('c.Fecha', [$startDate, $endDate])
         ->where('c.TipoDeComprobante', 'LIKE', 'I')
         ->when($nombreEmisor, function ($query) use ($nombreEmisor) {
             $query->where('e.nombre_emisor', 'LIKE', "%{$nombreEmisor}%");
