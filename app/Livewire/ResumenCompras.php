@@ -477,7 +477,13 @@ public function exportarExcel()
                             c.NuCamion
                         FROM ComGasolina cc
                         INNER JOIN ComGasolina c ON 
-                            LEFT(CAST(cc.NuFactura AS nvarchar(max)), LEN(CAST(cc.NuFactura AS nvarchar(max))) - 2) = CAST(c.NuFactura AS nvarchar(max))
+                           LEFT(CAST(cc.NuFactura AS nvarchar(max)), 
+                                 CASE 
+                                    WHEN LEN(CAST(cc.NuFactura AS nvarchar(max))) > 2 THEN 
+                                        LEN(CAST(cc.NuFactura AS nvarchar(max))) - 2 
+                                    ELSE 
+                                        0 
+                                 END) = CAST(c.NuFactura AS nvarchar(max))
                              AND c.NuTanque IN ('" . implode("','", $nuCombustibles) . "')
                             AND cc.NuCamion = '1111'
                         ) AS cp"), function ($join) {
