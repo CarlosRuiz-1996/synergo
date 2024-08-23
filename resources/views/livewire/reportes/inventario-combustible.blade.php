@@ -2,7 +2,7 @@
     <!-- resources/views/livewire/ventas-component.blade.php -->
  <div class="flex justify-center min-h-full relative bg-cover bg-center">
      <div class="w-full md:w-4/4 m-1">
-         <h1 class="text-white text-2xl font-bold mb-5">Invntario Combustible</h1>
+         <h1 class="text-white text-2xl font-bold mb-5">Inventario Combustible</h1>
          
          <!-- Formulario para filtros -->
              <div class="flex mb-4">

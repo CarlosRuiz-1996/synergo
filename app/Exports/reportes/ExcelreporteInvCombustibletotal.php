@@ -17,11 +17,12 @@ class ExcelreporteInvCombustibletotal implements FromView
         protected $invInicial;
         protected $ventas;
         protected $CostoPromedio;
+        protected $valorestacionnombre;
     
-        public function __construct(Collection $data)
+        public function __construct(Collection $data,$valorestacionnombre)
         {
             $this->data = $data;
-            
+            $this->valorestacionnombre=$valorestacionnombre;
             
         }
     
@@ -29,6 +30,7 @@ class ExcelreporteInvCombustibletotal implements FromView
     {
         return view('reportes.ExcelreporteInvCombustibletotal', [
             'datos' => $this->data,
+            'estacion' => $this->valorestacionnombre,
         ]);
     }
 }

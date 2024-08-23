@@ -18,11 +18,23 @@ class ComprasConsignas extends Component
     public $fechafin;
     public $combustible;
     public $valorModal;
+    public $coneccion;
 
     public function mount($valorModal)
     {
         $this->valorModal = $valorModal;
+        $this->coneccion= 'sqlsrv';
     }
+
+    protected $listeners = ['valorEnviado'];
+
+   
+
+    public function valorEnviado($valor)
+    {
+        $this->coneccion = $valor;
+    }
+
     public function render()
     {
          // Obtiene las fechas de inicio y fin de los filtros del formulario o valores predeterminados
@@ -35,7 +47,7 @@ class ComprasConsignas extends Component
         $endDate = $this->fechafin ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay() : Carbon::createFromDate(null, 4, 30)->endOfDay();
     
         // Realiza la consulta a la base de datos utilizando los filtros
-        return $despachos = DB::table('comgasolina')
+        return $despachos = DB::connection($this->coneccion)->table('comgasolina')
         ->join('CatTanques', 'CatTanques.NuTanque', '=', 'comgasolina.NuTanque')
         ->join('CatCombustibles', 'CatCombustibles.NuCombustible', '=', 'CatTanques.NuCombustible')
         ->select('comgasolina.NuRec', 'comgasolina.Fecha', 'comgasolina.NuFactura', 'comgasolina.NuTanque', 'comgasolina.Cantidad', 'comgasolina.Importe', 'CatCombustibles.Descripcion')
@@ -53,7 +65,7 @@ class ComprasConsignas extends Component
         $endDate = $this->fechafin ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay() : Carbon::createFromDate(null, 4, 30)->endOfDay();
     
         // Realiza la consulta a la base de datos utilizando los filtros
-        $despachos =  DB::table('comgasolina')
+        $despachos =   DB::connection($this->coneccion)->table('comgasolina')
         ->join('CatTanques', 'CatTanques.NuTanque', '=', 'comgasolina.NuTanque')
         ->join('CatCombustibles', 'CatCombustibles.NuCombustible', '=', 'CatTanques.NuCombustible')
         ->select('comgasolina.NuRec', 'comgasolina.Fecha', 'comgasolina.NuFactura', 'comgasolina.NuTanque', 'comgasolina.Cantidad', 'comgasolina.Importe', 'CatCombustibles.Descripcion')
@@ -62,8 +74,10 @@ class ComprasConsignas extends Component
         ->whereBetween('comgasolina.Fecha', [$startDate->toDateString(), $endDate->toDateString()])
         ->orderBy('comgasolina.Fecha', 'asc')
         ->get();
+        $estacions=DB::connection($this->coneccion)->table('Estaciones')->first();
+        $valorestacionnombre="E.S  ".$estacions->NuES."  ".$estacions->Razon;
 
-        return Excel::download(new ExportsComprasConsignas($despachos, $startDate->toDateString(), $endDate->toDateString()), 'ComprasConsignacion.xlsx');
+        return Excel::download(new ExportsComprasConsignas($despachos, $startDate->toDateString(), $endDate->toDateString(),$valorestacionnombre), 'ComprasConsignacion.xlsx');
                         
     }
     

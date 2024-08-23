@@ -10,7 +10,16 @@ use Maatwebsite\Excel\Facades\Excel;
 class InventarioCombustibleConsigna extends Component
 {
     public $selectedMonth;
+    public $coneccion;
 
+    protected $listeners = ['abrirModaltotalCona'];
+
+   
+
+    public function abrirModaltotalCona($valor)
+    {
+        $this->coneccion = $valor;
+    }
     public function render()
     {
         $inv = $this->encontrarInventario();
@@ -146,7 +155,7 @@ ORDER BY fr.NuCombustible, CASE WHEN fr.Descripcion IS NOT NULL THEN 0 ELSE 1 EN
 
         ";
         
-        $resultados = DB::select($query);
+        $resultados = DB::connection($this->coneccion)->select($query);
 
         return $resultados;
     }
@@ -280,10 +289,12 @@ LEFT JOIN FinalInventory fi
 ORDER BY fr.NuCombustible, CASE WHEN fr.Descripcion IS NOT NULL THEN 0 ELSE 1 END, fr.FechaInicio;
 
         ";
-           $resultados = DB::select($query);
+           $resultados = DB::connection($this->coneccion)->select($query);
            $colección = collect($resultados);
            $nombredoc = 'Inventariocombustible.xlsx';
-       return Excel::download(new ExcelreporteInvCombustibleconsigna($colección), $nombredoc);
+           $estacions=DB::connection($this->coneccion)->table('Estaciones')->first();
+           $valorestacionnombre="E.S  ".$estacions->NuES."  ".$estacions->Razon;
+       return Excel::download(new ExcelreporteInvCombustibleconsigna($colección,$valorestacionnombre), $nombredoc);
         }
     }
 }

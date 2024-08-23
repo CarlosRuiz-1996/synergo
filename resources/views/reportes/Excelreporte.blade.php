@@ -7,7 +7,7 @@
             <th colspan="8" style="background-color: #f0f0f0; font-weight: bold;">Reporte de {{$fechaInicio}} al {{$fechaFin}}</th>
         </tr>
         <tr>
-            <th colspan="8" style="background-color: #f0f0f0; font-weight: bold;">E.S 14159 FUTURO</th>
+            <th colspan="8" style="background-color: #f0f0f0; font-weight: bold;">{{$estaciones}}</th>
         </tr>
         <tr>
             <th style="border: 1px solid black;background-color: #706e6e;color: #f0f0f0 ;padding: 8px; text-align: center;width:150%">Clave Producto</th>

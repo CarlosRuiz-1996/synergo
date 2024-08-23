@@ -111,11 +111,11 @@
                                                 <i class="fas fa-gas-pump text-xs"></i>
                                             </div>
                                             @elseif($reportesSeleccion==3)
-                                            <div  wire:click="abrirModalResumen(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                            <div  wire:click="abrirModalResumen(3)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                 <i class="fas fa-gas-pump text-xs"></i>
                                             </div>
                                             @elseif($reportesSeleccion==2)
-                                            <div  wire:click="abrirModalResumen(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                            <div  wire:click="abrirModalResumen(2)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                 <i class="fas fa-gas-pump text-xs"></i>
                                             </div>
                                             @else
@@ -132,12 +132,12 @@
                                                 </div>
                                             @elseif($reportesSeleccion == 3)
                                                 <div wire:click="abrirModal(3)" class="ml-2"
-                                                    style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                    style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                             @elseif($reportesSeleccion == 2)
                                                 <div wire:click="abrirModal(2)" class="ml-2"
-                                                    style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                    style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @else
@@ -152,11 +152,11 @@
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @elseif($reportesSeleccion==3)
-                                                <div  wire:click="abrirModalVentasConsignas(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModalVentasConsignas(3)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @elseif($reportesSeleccion==2)
-                                                <div  wire:click="abrirModalVentasConsignas(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModalVentasConsignas(2)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @else
@@ -171,11 +171,11 @@
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @elseif($reportesSeleccion==3)
-                                                <div  wire:click="abrirmodalInventarioCom(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirmodalInventarioCom(3)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @elseif($reportesSeleccion==2)
-                                                <div  wire:click="abrirmodalInventarioCom(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirmodalInventarioCom(2)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @else
@@ -190,11 +190,11 @@
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @elseif($reportesSeleccion==3)
-                                                <div  wire:click="abrirModaltotal(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModaltotal(3)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @elseif($reportesSeleccion==2)
-                                                <div  wire:click="abrirModaltotal(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModaltotal(2)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @else
@@ -209,11 +209,11 @@
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @elseif($reportesSeleccion==3)
-                                                <div  wire:click="abrirModaltotalCon(3)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModaltotalCon(3)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                                 @elseif($reportesSeleccion==2)
-                                                <div  wire:click="abrirModaltotalCon(2)" class="ml-2" style="background-color: #000000; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                                                <div  wire:click="abrirModaltotalCon(2)" class="ml-2" style="background-color: #ad456a; color: #ffffff; width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
                                                     <i class="fas fa-gas-pump text-xs"></i>
                                                 </div>
                                             @else
@@ -452,7 +452,7 @@
                 <th colspan="27" style="background-color: #f0f0f0; font-weight: bold;;text-align: start;">Reporte de {{\Carbon\Carbon::parse($fechaInicio)->format('Y-m-d')}} al {{$fechaFin}}</th>
             </tr>
             <tr>
-                <th colspan="27" style="background-color: #f0f0f0; font-weight: bold;;text-align: start;">E.S 14159 FUTURO</th>
+                <th colspan="27" style="background-color: #f0f0f0; font-weight: bold;;text-align: start;">{{$estacioness}}</th>
             </tr>
             <tr>
                 <th class="border border-black bg-gray-700 text-white text-center px-4 py-2">Producto</th>

@@ -32,6 +32,7 @@ public $showModalInventarioCombustibletotal = false;
 public $showModalInventarioCombustibleconsigna = false; 
 public $showModalResumen = false;
 public $novisible=false;
+public $estacioness;
 
 //variables de tabla
 public $datos;
@@ -56,7 +57,23 @@ public function abrirModal($valor)
         $this->showModal2 = false; 
         $this->showModal3 = false;  
     }
-   
+    if ($this->EstacionSeleccionada == "" ) {
+        return null;
+    }
+    switch ($this->EstacionSeleccionada) {
+        case 153:
+            $connection = 'sqlsrv';
+            break;
+        case 143:
+            $connection = 'sqlsrv3';
+            break;
+        case 141:
+            $connection = 'sqlsrv2';
+            break;
+        default:
+            return null; // Si no es ninguna de las estaciones, retorna null
+    }
+    $this->dispatch('valorEnviado', $connection);
 }
 public function abrirModalResumen($valor)
 {
@@ -79,17 +96,85 @@ public function abrirModalVentasConsignas($valor)
         $this->showModalventaConsigna2 = false; 
         $this->showModalventaConsigna3 = false;  
     }
+    if ($this->EstacionSeleccionada == "" ) {
+        return null;
+    }
+    switch ($this->EstacionSeleccionada) {
+        case 153:
+            $connection = 'sqlsrv';
+            break;
+        case 143:
+            $connection = 'sqlsrv3';
+            break;
+        case 141:
+            $connection = 'sqlsrv2';
+            break;
+        default:
+            return null; // Si no es ninguna de las estaciones, retorna null
+    }
+    $this->dispatch('valorEnviadoventaconsignas', $connection);
    
 }
 
 public function abrirmodalInventarioCom($valor){
-    $this->showModalInventarioCombustible = true;  
+    $this->showModalInventarioCombustible = true;
+    if ($this->EstacionSeleccionada == "" ) {
+        return null;
+    }
+    switch ($this->EstacionSeleccionada) {
+        case 153:
+            $connection = 'sqlsrv';
+            break;
+        case 143:
+            $connection = 'sqlsrv3';
+            break;
+        case 141:
+            $connection = 'sqlsrv2';
+            break;
+        default:
+            return null; // Si no es ninguna de las estaciones, retorna null
+    }
+    $this->dispatch('abrirmodalInventarioComa', $connection);
 }
 public function abrirModaltotal($valor){
-    $this->showModalInventarioCombustibletotal = true;  
+    $this->showModalInventarioCombustibletotal = true; 
+    if ($this->EstacionSeleccionada == "" ) {
+        return null;
+    }
+    switch ($this->EstacionSeleccionada) {
+        case 153:
+            $connection = 'sqlsrv';
+            break;
+        case 143:
+            $connection = 'sqlsrv3';
+            break;
+        case 141:
+            $connection = 'sqlsrv2';
+            break;
+        default:
+            return null; // Si no es ninguna de las estaciones, retorna null
+    }
+    $this->dispatch('abrirModaltotala', $connection); 
 }
 public function abrirModaltotalCon($valor){
     $this->showModalInventarioCombustibleconsigna = true;  
+    if ($this->EstacionSeleccionada == "" ) {
+        return null;
+    }
+    switch ($this->EstacionSeleccionada) {
+        case 153:
+            $connection = 'sqlsrv';
+            break;
+        case 143:
+            $connection = 'sqlsrv3';
+            break;
+        case 141:
+            $connection = 'sqlsrv2';
+            break;
+        default:
+            return null; // Si no es ninguna de las estaciones, retorna null
+    }
+    $this->dispatch('abrirModaltotalCona', $connection);
 }
 
 
@@ -281,6 +366,7 @@ public function buscar()
             ];
         }
     }
+    $estacions=DB::connection($connection)->table('Estaciones')->first();
 
     // Verificar si alguna de las variables es null
     if (is_null($results) || $ventas->isEmpty() || $despachos->isEmpty()) {
@@ -288,6 +374,7 @@ public function buscar()
         Session::flash('error', 'Ingrese el Primer dia y el ultimo dia del mes.');
         return redirect()->back();
     } else {
+        $this->estacioness="E.S  ".$estacions->NuES."  ".$estacions->Razon;
         $this->novisible=true;
         $this->datos = $despachos;
         $this->fechaInicio = $fechareal;
@@ -317,6 +404,22 @@ public function exportarExcel()
     $nuCombustibles = [];
     $CostoPromedio =0.0;
     $nombreProducto ="";
+    if ($this->EstacionSeleccionada == "" ) {
+        return null;
+    }
+    switch ($this->EstacionSeleccionada) {
+        case 153:
+            $connection = 'sqlsrv';
+            break;
+        case 143:
+            $connection = 'sqlsrv3';
+            break;
+        case 141:
+            $connection = 'sqlsrv2';
+            break;
+        default:
+            return null; // Si no es ninguna de las estaciones, retorna null
+    }
     foreach ($combustible as $tipo) {
         switch ($tipo) {
             case 'PEMEX MAGNA':
@@ -337,7 +440,7 @@ public function exportarExcel()
             // Agregar más casos según sea necesario
         }
     }
-    $despachos = DB::table('COMPROBANTE as comp')
+    $despachos = DB::connection($connection)->table('COMPROBANTE as comp')
     ->select(
         'comp.id AS comp_id',
         DB::raw("CASE 
@@ -411,7 +514,7 @@ public function exportarExcel()
 
 
 
-        $ventas = DB::table('ERGVentasGasolina_View as er')
+        $ventas = DB::connection($connection)->table('ERGVentasGasolina_View as er')
         ->join('CatCombustibles as ct', 'ct.NuCombustible', '=', 'er.NuCombustible')
         ->select('er.*', 'ct.Descripcion')
         ->whereBetween('er.Fecha', ['2024-04-01', $endDate])
@@ -421,13 +524,13 @@ public function exportarExcel()
 
         if ($fechareal->day == 1 && $endDate->day == $endDate->daysInMonth) {
             // Consulta a ERInventarioCombustibleReglaxEStablaVentas_View cuando es el primer y último día del mes
-            $results = DB::table('ERInventarioCombustibleReglaxEStablaVentas_View')
+            $results = DB::connection($connection)->table('ERInventarioCombustibleReglaxEStablaVentas_View')
                 ->whereIn('NuCombustible', $nuCombustibles)
                 ->whereBetween('Fecha', ['2024-04-01', $endDate->toDateTimeString()])
                 ->first();
         } else {
             // Obtiene el valor de litros del día anterior al primer día del mes seleccionado
-            $litrosAnterior = DB::table('ERCalculaRegla_View')
+            $litrosAnterior = DB::connection($connection)->table('ERCalculaRegla_View')
                 ->select('Litros')
                 ->whereDate('Fecha', $startDate->toDateString())
                 ->whereIn('NuCombustible', $nuCombustibles)
@@ -441,6 +544,8 @@ public function exportarExcel()
                 ];
             }
         }
+        $estacions=DB::connection($connection)->table('Estaciones')->first();
+        $valorestacionnombre="E.S  ".$estacions->NuES."  ".$estacions->Razon;
 
          // Verificar si alguna de las variables es null
         if ($despachos->isEmpty() || $ventas->isEmpty() || is_null($results)) {
@@ -449,7 +554,7 @@ public function exportarExcel()
         }
 
         $nombredoc = 'Resumen_del_' . $startDate->format('d-m-Y') . '_a_' . $endDate->format('d-m-Y') .'_'. $nombreProducto.''. '.xlsx';
-    return Excel::download(new ExportResumenCompras($despachos, $fechareal, $endDate->toDateString(), $results,$ventas,$CostoPromedio,$nombreProducto), $nombredoc);
+    return Excel::download(new ExportResumenCompras($despachos, $fechareal, $endDate->toDateString(), $results,$ventas,$CostoPromedio,$nombreProducto,$valorestacionnombre), $nombredoc);
 }
 
 

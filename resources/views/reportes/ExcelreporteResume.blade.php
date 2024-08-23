@@ -8,7 +8,7 @@
             <th colspan="8" style="background-color: #f0f0f0; font-weight: bold;">Reporte de {{$fechaInicio}} al {{$fechaFin}}</th>
         </tr>
         <tr>
-            <th colspan="8" style="background-color: #f0f0f0; font-weight: bold;">E.S 14159 FUTURO</th>
+            <th colspan="8" style="background-color: #f0f0f0; font-weight: bold;">{{$nombreestacion}}</th>
         </tr>
         <tr>
                 <!--compras-->

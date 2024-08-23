@@ -18,10 +18,12 @@ class ExportInvCombustible implements FromView
         protected $invInicial;
         protected $ventas;
         protected $CostoPromedio;
+        protected $estacion;
     
-        public function __construct(Collection $data)
+        public function __construct(Collection $data,$estacion)
         {
             $this->data = $data;
+            $this->estacion = $estacion;
             
             
         }
@@ -30,6 +32,7 @@ class ExportInvCombustible implements FromView
     {
         return view('reportes.ExcelreporteInvCombustible', [
             'datos' => $this->data,
+            'estacion' => $this->estacion,
         ]);
     }
 }

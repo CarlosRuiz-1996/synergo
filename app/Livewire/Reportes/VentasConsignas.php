@@ -17,10 +17,17 @@ class VentasConsignas extends Component
     public $fechainicio;
     public $fechafin;
     public $tipoCombustible;
+    public $coneccion;
+    protected $listeners = ['valorEnviadoventaconsignas'];
 
     public function mount($valorModal)
     {
     $this->tipoCombustible=$valorModal;
+    }
+
+    public function valorEnviadoventaconsignas($valor)
+    {
+        $this->coneccion = $valor;
     }
     public function render()
     {
@@ -34,7 +41,7 @@ class VentasConsignas extends Component
         $endDate = $this->fechafin ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay() : Carbon::createFromDate(null, 4, 30)->endOfDay();
     
         // Realiza la consulta a la base de datos utilizando los filtros
-        return $despachos = DB::table('Despachos')
+        return $despachos = DB::connection($this->coneccion)->table('Despachos')
                         ->join('CatCombustibles', 'Despachos.NuCombustible', '=', 'CatCombustibles.NuCombustible')
                         ->select('Despachos.*', 'CatCombustibles.Descripcion')
                         ->whereBetween('Despachos.FecIni', [$startDate, $endDate])
@@ -49,14 +56,17 @@ class VentasConsignas extends Component
         $endDate = $this->fechafin ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay() : Carbon::createFromDate(null, 4, 30)->endOfDay();
     
         // Realiza la consulta a la base de datos utilizando los filtros
-        $despachos = DB::table('Despachos')
+        $despachos = DB::connection($this->coneccion)->table('Despachos')
                         ->join('CatCombustibles', 'Despachos.NuCombustible', '=', 'CatCombustibles.NuCombustible')
                         ->select('Despachos.*', 'CatCombustibles.Descripcion')
                         ->whereBetween('Despachos.FecIni', [$startDate, $endDate])
                         ->where('CatCombustibles.NuCombustible', $this->tipoCombustible)
                         ->orderBy('Despachos.FecIni', 'asc')->get(); // Pagina de 10 registros por página
+                        $estacions=DB::connection($this->coneccion)->table('Estaciones')->first();
+                        $valorestacionnombre="E.S  ".$estacions->NuES."  ".$estacions->Razon;
 
-                        return Excel::download(new VentasReporte($despachos, $startDate, $endDate), 'ventas.xlsx');
+
+                        return Excel::download(new VentasReporte($despachos, $startDate, $endDate,$valorestacionnombre), 'ventas.xlsx');
                         
     }
 }

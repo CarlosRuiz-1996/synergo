@@ -11,6 +11,18 @@ class InventarioCombustibletotal extends Component
 {
     public $selectedMonth;
 
+    
+    public $coneccion;
+
+    protected $listeners = ['abrirModaltotala'];
+
+   
+
+    public function abrirModaltotala($valor)
+    {
+        $this->coneccion = $valor;
+    }
+
     public function render()
     {
         $inv = $this->encontrarInventario();
@@ -144,8 +156,7 @@ LEFT JOIN FinalInventory fi
 ORDER BY fr.NuCombustible, CASE WHEN fr.Descripcion IS NOT NULL THEN 0 ELSE 1 END, fr.FechaInicio;
         ";
         
-        $resultados = DB::select($query);
-
+        $resultados = DB::connection($this->coneccion)->select($query);
         return $resultados;
     }
 
@@ -276,10 +287,12 @@ LEFT JOIN FinalInventory fi
     ON fr.NuCombustible = fi.NuCombustible
 ORDER BY fr.NuCombustible, CASE WHEN fr.Descripcion IS NOT NULL THEN 0 ELSE 1 END, fr.FechaInicio;
         ";
-           $resultados = DB::select($query);
+           $resultados = DB::connection($this->coneccion)->select($query);
            $colección = collect($resultados);
            $nombredoc = 'Inventariocombustible.xlsx';
-       return Excel::download(new ExcelreporteInvCombustibletotal($colección), $nombredoc);
+           $estacions=DB::connection($this->coneccion)->table('Estaciones')->first();
+           $valorestacionnombre="E.S  ".$estacions->NuES."  ".$estacions->Razon;
+       return Excel::download(new ExcelreporteInvCombustibletotal($colección,$valorestacionnombre), $nombredoc);
         }
     }
 }

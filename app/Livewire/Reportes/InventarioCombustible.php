@@ -10,12 +10,22 @@ use Maatwebsite\Excel\Facades\Excel;
 class InventarioCombustible extends Component
 {
     public $selectedMonth;
-
+    public $coneccion;
+    protected $listeners = ['abrirmodalInventarioComa'];
     public function render()
     {
         $inv = $this->encontrarInventario();
         return view('livewire.reportes.inventario-combustible', compact('inv'));
     }
+   
+
+   
+
+    public function abrirmodalInventarioComa($valor)
+    {
+        $this->coneccion = $valor;
+    }
+
 
     public function encontrarInventario()
     {
@@ -145,7 +155,7 @@ class InventarioCombustible extends Component
         ORDER BY fr.NuCombustible, CASE WHEN fr.Descripcion IS NOT NULL THEN 0 ELSE 1 END, fr.FechaInicio;
         ";
         
-        $resultados = DB::select($query);
+        $resultados = DB::connection($this->coneccion)->select($query);
 
         return $resultados;
     }
@@ -278,10 +288,12 @@ class InventarioCombustible extends Component
             ON fr.NuCombustible = fi.NuCombustible
         ORDER BY fr.NuCombustible, CASE WHEN fr.Descripcion IS NOT NULL THEN 0 ELSE 1 END, fr.FechaInicio;
         ";
-           $resultados = DB::select($query);
+          $resultados = DB::connection($this->coneccion)->select($query);
            $colección = collect($resultados);
            $nombredoc = 'Inventariocombustible.xlsx';
-       return Excel::download(new ExportInvCombustible($colección), $nombredoc);
+           $estacions=DB::connection($this->coneccion)->table('Estaciones')->first();
+           $valorestacionnombre="E.S  ".$estacions->NuES."  ".$estacions->Razon;
+       return Excel::download(new ExportInvCombustible($colección,$valorestacionnombre), $nombredoc);
         }
     }
 }

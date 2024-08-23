@@ -14,12 +14,14 @@ class ComprasConsignas implements FromView
         protected $data;
         protected $fechaInicio;
         protected $fechaFin;
+        protected $estaciones;
     
-        public function __construct(Collection $data, $fechaInicio, $fechaFin)
+        public function __construct(Collection $data, $fechaInicio, $fechaFin,$estacion)
         {
             $this->data = $data;
             $this->fechaInicio = date('Y-m-d', strtotime($fechaInicio));
             $this->fechaFin = date('Y-m-d', strtotime($fechaFin));
+            $this->estaciones = $estacion;
             
             
         }
@@ -30,6 +32,7 @@ class ComprasConsignas implements FromView
             'datos' => $this->data,
             'fechaInicio' => $this->fechaInicio,
             'fechaFin' => $this->fechaFin,
+            'nombreestacion' => $this->estaciones,
         ]);
     }
     }

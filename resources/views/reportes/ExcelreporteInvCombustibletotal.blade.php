@@ -8,7 +8,7 @@
             <th colspan="8" style="background-color: #f0f0f0; font-weight: bold;">Periodo: del  01/04/2024 al 30/04/2024 </th>
         </tr>
         <tr>
-            <th colspan="8" style="background-color: #f0f0f0; font-weight: bold;">E.S 14159 FUTURO
+            <th colspan="8" style="background-color: #f0f0f0; font-weight: bold;">{{$estacion}}
             </th>
         </tr>
         <tr>
