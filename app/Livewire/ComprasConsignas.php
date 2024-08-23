@@ -15,7 +15,7 @@ class ComprasConsignas extends Component
 
     use WithPagination;
     public $fechainicio='2024-04-01';
-    public $fechafin;
+    public $fechafin='2024-04-30';
     public $combustible;
     public $valorModal;
     public $coneccion;
@@ -42,7 +42,7 @@ class ComprasConsignas extends Component
          // Retorna la vista con los resultados de la consulta
          return view('livewire.compras-consignas', compact('despachos'));
     }
-    public function buscar(){
+         public function buscar(){
         $startDate = $this->fechainicio ? Carbon::createFromFormat('Y-m-d', $this->fechainicio)->startOfDay() : Carbon::createFromDate(null, 4, 1)->startOfDay();
         $endDate = $this->fechafin ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay() : Carbon::createFromDate(null, 4, 30)->endOfDay();
     

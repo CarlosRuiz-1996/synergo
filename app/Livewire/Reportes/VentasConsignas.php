@@ -37,29 +37,43 @@ class VentasConsignas extends Component
          return view('livewire.reportes.ventas-consignas', compact('despachos'));
     }
     public function buscar(){
-        $startDate = $this->fechainicio ? Carbon::createFromFormat('Y-m-d', $this->fechainicio)->startOfDay() : Carbon::createFromDate(null, 4, 1)->startOfDay();
-        $endDate = $this->fechafin ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay() : Carbon::createFromDate(null, 4, 30)->endOfDay();
+        $startDate = $this->fechainicio 
+        ? Carbon::createFromFormat('Y-m-d', $this->fechainicio)->startOfDay()->setTimezone('America/Mexico_City')
+        : Carbon::createFromDate(null, 4, 1)->startOfDay()->setTimezone('America/Mexico_City');
+    
+    $endDate = $this->fechafin 
+        ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay()->setTimezone('America/Mexico_City')
+        : Carbon::createFromDate(null, 4, 30)->endOfDay()->setTimezone('America/Mexico_City');
+    
     
         // Realiza la consulta a la base de datos utilizando los filtros
         return $despachos = DB::connection($this->coneccion)->table('Despachos')
                         ->join('CatCombustibles', 'Despachos.NuCombustible', '=', 'CatCombustibles.NuCombustible')
                         ->select('Despachos.*', 'CatCombustibles.Descripcion')
-                        ->whereBetween('Despachos.FecIni', [$startDate, $endDate])
+                        ->where('Despachos.FecIni', '>=', $startDate)
+                        ->where('Despachos.FecIni', '<=', $endDate)
                         ->where('CatCombustibles.NuCombustible', $this->tipoCombustible)
-                        ->orderBy('Despachos.FecIni', 'asc')->paginate(10); // Pagina de 10 registros por página
+                        ->orderBy('Despachos.FecIni', 'asc')->paginate(10); // 
                        
     
     }
     public function exportarExcel()
     {
-        $startDate = $this->fechainicio ? Carbon::createFromFormat('Y-m-d', $this->fechainicio)->startOfDay() : Carbon::createFromDate(null, 4, 1)->startOfDay();
-        $endDate = $this->fechafin ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay() : Carbon::createFromDate(null, 4, 30)->endOfDay();
+        $startDate = $this->fechainicio 
+    ? Carbon::createFromFormat('Y-m-d', $this->fechainicio)->startOfDay()->setTimezone('America/Mexico_City')
+    : Carbon::createFromDate(null, 4, 1)->startOfDay()->setTimezone('America/Mexico_City');
+
+$endDate = $this->fechafin 
+    ? Carbon::createFromFormat('Y-m-d', $this->fechafin)->endOfDay()->setTimezone('America/Mexico_City')
+    : Carbon::createFromDate(null, 4, 30)->endOfDay()->setTimezone('America/Mexico_City');
+
     
         // Realiza la consulta a la base de datos utilizando los filtros
         $despachos = DB::connection($this->coneccion)->table('Despachos')
                         ->join('CatCombustibles', 'Despachos.NuCombustible', '=', 'CatCombustibles.NuCombustible')
                         ->select('Despachos.*', 'CatCombustibles.Descripcion')
-                        ->whereBetween('Despachos.FecIni', [$startDate, $endDate])
+                        ->where('Despachos.FecIni', '>=', $startDate)
+                        ->where('Despachos.FecIni', '<=', $endDate)
                         ->where('CatCombustibles.NuCombustible', $this->tipoCombustible)
                         ->orderBy('Despachos.FecIni', 'asc')->get(); // Pagina de 10 registros por página
                         $estacions=DB::connection($this->coneccion)->table('Estaciones')->first();
