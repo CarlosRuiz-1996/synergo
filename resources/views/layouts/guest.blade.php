@@ -10,6 +10,8 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;700&display=swap" rel="stylesheet">
+
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -17,17 +19,10 @@
     <!-- Styles -->
     @livewireStyles
 </head>
-<body class="flex flex-col h-screen" >
-    <div class="flex-grow font-sans text-gray-900 antialiased">
+<body class="flex flex-col h-screen">
+    <div class="flex-grow font-sans text-gray-900 antialiased" style="background-color: #f1f5f9">
         {{ $slot }}
     </div>
-
-    <footer class="bg-gray-100 text-white">
-        <div class="container mx-auto text-center">
-            <img src="{{ asset('img/logo-transparente.png') }}" alt="Footer Image" class="mx-auto max-h-20">
-        </div>
-    </footer>
-
     @livewireScripts
 </body>
 </html>
