@@ -55,7 +55,7 @@
             <div class="overflow-x-auto shadow-md rounded-lg mt-2 max-h-96">
                 @if ($sinseleccionarestacion)
                 <div style="overflow-y: auto; max-height: 500px; border: 1px solid #e5e7eb; margin-top: 10px;">
-                    <table class="min-w-full divide-y divide-gray-200" style="height: 25%">
+                    <table class="w-full divide-y divide-gray-200" style="height: 25%">
                         <thead style="position: sticky; top: 0; background-color: #f3f4f6; z-index: 1;">
                     <tr>
                         <th scope="col"
@@ -255,7 +255,7 @@
                 </div>
                 <div style="overflow-y: auto; max-height: 500px; border: 1px solid #e5e7eb; margin-top: 10px;">
                     @if (count($datos) > 0)
-                        <table class="min-w-full divide-y divide-gray-200" style="height: 25%">
+                        <table class="w-full divide-y divide-gray-200" style="height: 25%">
                             <thead style="position: sticky; top: 0; background-color: #f3f4f6; z-index: 1;">
                             <tr>
                                 <th scope="col"
@@ -300,7 +300,7 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="bg-white divide-y divide-gray-200 w-full">
 
                             @foreach ($datos as $detalle)
                             <tr>
