@@ -1,9 +1,8 @@
 <div>
-    <div class="flex justify-center min-h-screen bg-cover bg-center"
-        style="background-image: url('{{ asset('img/bg.png') }}');">
-        <div class="w-full max-w-lg"
-            style="width: 100%; max-width: 100%; background-color: rgba(157, 175, 191, 0.483); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border-radius: 1rem; padding: 1.5rem; margin-top: 2rem; margin-bottom: 1.5rem; margin-left: 1.25rem; margin-right: 1.25rem; backdrop-filter: blur(5px);">
-            <h2 class="text-2xl font-bold text-white mb-4">
+    <div class="flex justify-center min-h-screen bg-cover bg-center max-h-full ">
+        <div class="w-full max-w-lg max-h-full"
+            style="width: 100%; max-width: 100%; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border-radius: 1rem; padding: 1.5rem; margin-top: 2rem; margin-bottom: 1.5rem; margin-left: 1.25rem; margin-right: 1.25rem; backdrop-filter: blur(5px);">
+            <h2 class="text-2xl font-bold text-gray-700 mb-4">
                 <a href="{{ route('dashboard') }}" title="ATRAS" class="me-2">
                     <i class="fa fa-arrow-left"></i>
                 </a>
@@ -15,7 +14,7 @@
                     <!-- Select múltiple de estaciones -->
                     <div wire:ignore>
                         <div class="flex flex-col">
-                            <label for="estacion" class="text-white">Selecciona una estación de servicio</label>
+                            <label for="estacion" class="text-gray-700">Selecciona una estación de servicio</label>
                             <select multiple wire:model="estacionSeleccionada" id="estacion" name="estacion"
                                 class="border border-gray-300 rounded select2 w-full"
                                 placeholder="Selecciona una estación">
@@ -31,7 +30,7 @@
                     <!-- Select múltiple de proveedores -->
                     <div wire:ignore>
                         <div class="flex flex-col">
-                            <label for="proveedor" class="text-white">Selecciona un proveedor</label>
+                            <label for="proveedor" class="text-gray-700">Selecciona un proveedor</label>
                             <select wire:model="proveedor" id="proveedor" name="proveedor"
                                 class="border border-gray-300 rounded select2 w-full"
                                 placeholder="Selecciona un proveedor">
@@ -232,13 +231,13 @@
                     <!-- Botón de búsqueda -->
                     <div class="flex flex-col flex-grow">
                         <label for="fechaFin"
-                            class="text-white mt-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            class="text-gray-700 mt-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                         <button class="bg-blue-500 text-white py-2 rounded hover:bg-blue-700 w-full mt-2"
                             wire:click='obtenerDatosdos'>Buscar</button>
                     </div>
                     <div class="flex flex-col space-y-2 flex-grow pl-2">
                         <label for="fechaFin"
-                            class="text-white mt-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            class="text-gray-700 mt-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                         <button class="text-white py-2 mt-2 rounded w-full" style="background-color: green;"
                             wire:click='exportarExcel'>Exportar Excel</button>
                     </div>
@@ -406,7 +405,7 @@
     </x-slot>
 
     <x-slot name="content">
-        <button class="bg-green-500 hover:bg-green-300 text-white font-bold py-2 px-4 rounded"
+        <button class="bg-green-500 hover:bg-green-300 text-gray-700 font-bold py-2 px-4 rounded"
             wire:click='exportarExcelFacturas'>Exportar</button>
         <div class="mt-2 max-h-96 overflow-y-auto"> <!-- Ajuste para hacer scrollable el contenido -->
             <!-- Tabla para facturas rechazadas -->
@@ -465,7 +464,7 @@
 
     <x-slot name="footer">
         <button wire:click="$set('showModalFacturas', false)"
-            class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+            class="bg-gray-500 hover:bg-gray-700 text-gray-700 font-bold py-2 px-4 rounded">
             Cerrar
         </button>
     </x-slot>
@@ -491,7 +490,7 @@
 
     <x-slot name="footer">
         <button wire:click="$set('showModalFacturaspdf', false)"
-            class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+            class="bg-gray-500 hover:bg-gray-700 text-gray-700 font-bold py-2 px-4 rounded">
             Cerrar
         </button>
     </x-slot>
