@@ -1,89 +1,81 @@
 <x-app-layout>
-    <div class="flex items-center justify-center min-h-screen" style="background-image: url('{{ asset('img/bg.png') }}'); background-size: cover; background-position: center;">
-        <div class="">
-            <!-- Sidebar -->
-            <div class="w-full md:w-4/4">
-                <div class="flex flex-col items-center justify-center mb-4">
-                    <img class="h-auto max-w-full mb-4" src="{{ asset('img/logo-transparente.png') }}" width="400" alt="logo" style="filter: brightness(0) invert(1);">
+    <div class="bg-gray-100 min-h-screen p-6">
+        <!-- Encabezado -->
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold text-gray-800">Dashboard Gasolineras</h1>
+            <input type="text" placeholder="Buscar..." class="px-4 py-2 border rounded-lg shadow-sm">
+        </div>
+
+        <!-- Tarjetas de estadísticas -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <!-- Total de Ventas -->
+            <div class="bg-white p-6 rounded-lg shadow-lg flex items-center">
+                <i class="fas fa-dollar-sign text-4xl text-green-500"></i>
+                <div class="ml-4">
+                    <h2 class="text-gray-600 text-lg">Total Ventas</h2>
+                    <p class="text-2xl font-semibold">$1,250,000</p>
                 </div>
-                <div class="menu-grid text-white">
-                    <div class="menu-column mb-8">
-                        <ul class="menu">
-                            <li class="menu-item text-lg" data-submenu="submenu-3"><i class="fas fa-address-card mr-2"></i><a href="{{route('usuarios')}}">Catálogo de Perfiles</a></li>
-                            <li class="menu-item text-lg" data-submenu="submenu-4"><i class="fas fa-search-dollar mr-2"></i><a href="{{ route('reporte.reporteResumenCompras') }}">Consulta Determinacion de costo promedio</a></li>
-                            <li class="menu-item text-lg" data-submenu="submenu-5"><i class="fas fa-wallet mr-2"></i>Establecer Presupuesto</li>
-                            <li class="menu-item text-lg" data-submenu="submenu-6"><i class="fas fa-file-invoice-dollar mr-2"></i>Presupuesto de Gastos</li>
-                            <li class="menu-item text-lg" data-submenu="submenu-7">
-                                <a href="{{route('cuentas.pagardos')}}">
-                                    <i class="fas fa-file-alt mr-2"></i>Cuentas Por Pagar
-                                </a>
-                            </li>
-                            <li class="menu-item text-lg" data-submenu="submenu-8">
-                                <a href="{{route('catalogos.estaciones')}}">
-                                    <i class="fas fa-gas-pump mr-2"></i>Estaciones
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="menu-column mb-8 ml-4">
-                        <ul class="menu ml-4">
-                            <li style="padding-left:80px" class="menu-item text-lg" data-submenu="submenu-9" ><i class="fas fa-coins ml-6"></i><a href="{{route('cuentas.tesoreria')}}">Tesorería</a></li>
-                            <li style="padding-left:80px" class="menu-item text-lg" data-submenu="submenu-10"><i class="fas fa-user-tie ml-6"></i>Administrativo</li>
-                            <li style="padding-left:80px" class="menu-item text-lg" data-submenu="submenu-11"><i class="fas fa-chart-pie ml-6"></i>Reporte</li>
-                            <li style="padding-left:80px" class="menu-item text-lg" data-submenu="submenu-12"><i class="fas fa-tachometer-alt ml-6"></i>Dashboard</li>
-                            <li style="padding-left:80px" class="menu-item text-lg" data-submenu="submenu-13"><i class="fas fa-boxes ml-6"></i>Inventario</li>
-                        </ul>
-                    </div>
+            </div>
+            
+            <!-- Estaciones Activas -->
+            <div class="bg-white p-6 rounded-lg shadow-lg flex items-center">
+                <i class="fas fa-gas-pump text-4xl text-blue-500"></i>
+                <div class="ml-4">
+                    <h2 class="text-gray-600 text-lg">Estaciones Activas</h2>
+                    <p class="text-2xl font-semibold">12</p>
+                </div>
+            </div>
+            
+            <!-- Inventario de Combustible -->
+            <div class="bg-white p-6 rounded-lg shadow-lg flex items-center">
+                <i class="fas fa-chart-line text-4xl text-orange-500"></i>
+                <div class="ml-4">
+                    <h2 class="text-gray-600 text-lg">Inventario Disponible</h2>
+                    <p class="text-2xl font-semibold">320,000 L</p>
                 </div>
             </div>
         </div>
+
+        <!-- Sección de Gráficos y Tabla -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Gráfica de Ventas (espacio para Chart.js) -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">Gráfica de Ventas</h2>
+                <div class="h-48 bg-gray-200 flex items-center justify-center">
+                    <span class="text-gray-500">[Gráfica aquí]</span>
+                </div>
+            </div>
+
+            <!-- Últimas Transacciones -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">Últimas Transacciones</h2>
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="p-2 text-left text-gray-600">Fecha</th>
+                            <th class="p-2 text-left text-gray-600">Concepto</th>
+                            <th class="p-2 text-right text-gray-600">Monto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t">
+                            <td class="p-2">10 Feb 2025</td>
+                            <td class="p-2">Compra de Combustible</td>
+                            <td class="p-2 text-right">$50,000</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="p-2">9 Feb 2025</td>
+                            <td class="p-2">Mantenimiento</td>
+                            <td class="p-2 text-right">$15,000</td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="p-2">8 Feb 2025</td>
+                            <td class="p-2">Pago de Nómina</td>
+                            <td class="p-2 text-right">$120,000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-    <style>
-        .menu-grid {
-            display: flex;
-        }
-
-        .menu-column {
-            flex: 1;
-            margin-right: 20px;
-        }
-
-        .menu {
-            list-style: none;
-            padding: 0;
-        }
-
-        .menu-item {
-            margin-bottom: 10px;
-            cursor: pointer;
-        }
-
-        .submenu-items {
-            list-style: none;
-            padding-left: 20px;
-            display: none;
-        }
-
-        .submenu-item {
-            margin-bottom: 5px;
-        }
-
-        .show {
-            display: block !important;
-        }
-    </style>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const menuItems = document.querySelectorAll('.menu-item');
-            menuItems.forEach(item => {
-                item.addEventListener("click", function() {
-                    const submenuId = item.getAttribute('data-submenu');
-                    const submenu = document.getElementById(submenuId);
-                    if (submenu) {
-                        submenu.classList.toggle('show');
-                    }
-                });
-            });
-        });
-    </script>
 </x-app-layout>

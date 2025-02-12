@@ -246,7 +246,7 @@
     </div>
 
 
-    <x-dialog-modal id="modal-compras" maxWidth="4xl" wire:model="showModal">
+    <x-dialog-modal id="modal-compras" maxWidth="2xl" wire:model="showModal">
         <x-slot name="title" class="bg-gray-500">
             Reporte Consigna
         </x-slot>

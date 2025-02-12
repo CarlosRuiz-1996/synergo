@@ -1,25 +1,47 @@
 <div>
-    <div class="flex justify-center min-h-screen bg-cover bg-center"
-        style="background-image: url('{{ asset('img/bg.png') }}');">
-        <div class="w-full max-w-lg"
+    <div class="flex justify-center min-h-full mb-4 max-w-full bg-gray-100">
+        <div class="w-full max-w-xl max-h-full"
             style="width: 100%; 
                max-width: 100%; 
-               background-color: rgba(157, 175, 191, 0.483); 
                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
                border-radius: 1rem; 
                padding: 1.5rem; 
                margin-top: 2rem; 
-               margin-bottom: 1.5rem; 
+               margin-bottom: 5rem; 
                margin-left: 1.25rem; 
-               margin-right: 1.25rem; 
-               backdrop-filter: blur(5px);">
+               margin-right: 1.25rem;">
 
-            <h2 class="text-2xl font-bold text-white mb-4">
+            <h2 class="text-2xl font-bold text-gray-700 dark:text-gray-700 mb-4">
                 <a href="{{ route('dashboard') }}" title="ATRAS" class="me-2">
                     <i class="fa fa-arrow-left"></i>
                 </a>
                 Catalogos de estaciones
             </h2>
+          <div class="py-6 px-4 bg-gray-200 rounded-lg flex space-x-4">
+                <!-- Consulta de Reporte -->
+                <select class="w-1/3 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Tipo de Reporte</option>
+                    <option value="magna">Gastos</option>
+                    <option value="premium">Consignas</option>
+                    <option value="diesel">Otros</option>
+                </select>
+
+                <!-- Tipo de Combustible -->
+                <select class="w-1/3 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Selecciona Combustible</option>
+                    <option value="magna">Magna</option>
+                    <option value="premium">Premium</option>
+                    <option value="diesel">Diésel</option>
+                </select>
+
+                <!-- Gastos -->
+                <select class="w-1/3 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Selecciona tipo de Gastos</option>
+                    <option value="magna">Entradas</option>
+                    <option value="premium">Salidas</option>
+                    <option value="diesel">Otros</option>
+                </select>
+            </div>
 
 
             <div class=" py-6 px-4 bg-gray-200 flex">
@@ -33,8 +55,8 @@
                             text-gray-900 text-sm rounded-lg 
                             focus:ring-blue-500 focus:border-blue-500 
                             dark:border-gray-600 dark:placeholder-gray-400 
-                            dark:text-white dark:focus:ring-blue-500 
-                            dark:focus:border-blue-500"
+                            dark:text-black dark:focus:ring-blue-500 
+                            dark:focus:border-blue-500 mx-2"
                         wire:model.live='list'>
                         @foreach ($entrada as $item)
                             <option value="{{ $item }}">{{ $item }}</option>

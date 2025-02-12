@@ -49,26 +49,167 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Styles -->
     @livewireStyles
-</head>
-
-<body class="font-sans antialiased">
-    <x-banner />
-
-    <div class="min-h-screen bg-gray-100">
-        <!-- Page Content -->
-        <main>
-            {{ $slot }}
-        </main>
+ </head>
+    <body class="font-sans antialiased">
+    <header class="bg-gray-800 text-white p-4 fixed top-0 left-0 w-full z-10">
+    <!-- Logo -->
+     <div class="flex justify-between items-center">
+    <div class="flex items-center space-x-2">
+        <span class="text-2xl font-bold tracking-wide">SYNER<span class="text-gray-400">GO</span></span>
     </div>
 
-    @stack('modals')
+    <!-- Precios de combustibles (flex-wrap para móviles) -->
+    <div class="flex flex-wrap justify-center space-x-2 sm:space-x-4 text-sm">
+        <span class="text-green-400">$20.38 <span class="text-white">Magna</span></span>
+        <span class="text-red-500">$22.30 <span class="text-white">Premium</span></span>
+        <span class="text-gray-300">$21.30 <span class="text-white">Diésel</span></span>
+        <span class="text-gray-300">$20.85 <span class="text-white">Dólar</span></span>
+    </div>
 
-    @livewireScripts
-    <footer class="bg-gray-100 text-white">
-        <div class="container mx-auto text-center">
-            <img src="{{ asset('img/logo-transparente.png') }}" alt="Footer Image" class="mx-auto max-h-20">
+    <!-- Barra de búsqueda (responsive) -->
+    <div class="relative w-full sm:w-auto mt-2 sm:mt-0">
+        <input type="text" placeholder="Buscar..." 
+            class="w-full sm:w-auto pl-10 pr-4 py-2 rounded-full bg-gray-800 text-white focus:outline-none focus:ring focus:ring-gray-600">
+        <svg class="absolute left-3 top-2.5 w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M15 10a5 5 0 11-10 0 5 5 0 0110 0z"/>
+        </svg>
+    </div>
+    </div>
+</header>
+
+        <x-banner />
+ <div class="flex pt-18">
+        <div class="min-h-screen bg-gray-100 h-screen fixed top-18 w-screen pt-18  mt-16">
+            <div x-data="{ open: false }" x-cloak class="flex h-screen pt-18 bg-gray-100">
+                <!-- Sidebar -->
+                <div :class="{'w-64': open, 'w-16': !open}" class="bg-gray-800 text-white h-full transition-all duration-300 ease-in-out fixed md:relative z-10">
+                    <!-- Toggle Button -->
+                    <div class="flex justify-between p-4">
+                        <button @click="open = !open" class="text-white">
+                            <!-- Ícono de abrir el menú -->
+                            <svg x-show="!open" x-cloak x-transition:enter="transform transition ease-in-out duration-300"
+                                x-transition:enter-start="rotate-0" x-transition:enter-end="rotate-180" 
+                                class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            </svg>
+                            <!-- Ícono de cerrar el menú -->
+                            <svg x-show="open" x-cloak x-transition:enter="transform transition ease-in-out duration-300"
+                                x-transition:enter-start="rotate-180" x-transition:enter-end="rotate-0" 
+                                class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                       <!-- Información del usuario, solo se muestra cuando está expandido -->
+                       <div x-show="open" class="text-center w-full overflow-hidden mb-2">
+                            <div class="text-sm font-semibold text-center px-2 truncate capitalize" title="{{ Auth::user()->name }}">
+                                {{ Auth::user()->name }}
+                            </div>
+                            <div class="text-xs text-center px-2 truncate" title="{{ Auth::user()->email }}">
+                                {{ Auth::user()->email }}
+                            </div>
+                        </div>
+
+                    
+
+                    <!-- Sidebar Links -->
+                    <div class="space-y-2">
+                        <a  href="{{ route('dashboard') }}" class="flex items-center px-4 py-3 text-white hover:bg-gray-700 transition-all duration-200 ease-in-out">
+                            <i class="fas fa-cogs mr-4"></i>
+                            <span class="break-words whitespace-normal flex-1" x-show="open" 
+                                x-transition:enter="transition-opacity ease-in-out duration-300" 
+                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
+                                x-transition:leave="transition-opacity ease-in-out duration-300" 
+                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+                                Panel
+                            </span>
+                        </a>
+                        <a href="{{route('catalogos.estaciones')}}" class="flex items-center px-4 py-3 text-white hover:bg-gray-700 transition-all duration-200 ease-in-out">
+                            <i class="fas fa-gas-pump mr-4"></i>
+                            <span class="break-words whitespace-normal flex-1" x-show="open" 
+                                x-transition:enter="transition-opacity ease-in-out duration-300" 
+                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
+                                x-transition:leave="transition-opacity ease-in-out duration-300" 
+                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+                                Estaciones
+                            </span>
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-white hover:bg-gray-700 transition-all duration-200 ease-in-out">
+                            <i class="fas fa-chart-line mr-4"></i>
+                            <span class="break-words whitespace-normal flex-1" x-show="open" 
+                                x-transition:enter="transition-opacity ease-in-out duration-300" 
+                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
+                                x-transition:leave="transition-opacity ease-in-out duration-300" 
+                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+                                Finanzas
+                            </span>
+                        </a>
+                        <a href="{{route('cuentas.tesoreria')}}" class="flex items-center px-4 py-3 text-white hover:bg-gray-700 transition-all duration-200 ease-in-out">
+                        <i class="fas fa-coins mr-4"></i>
+                            <span class="break-words whitespace-normal flex-1" x-show="open" 
+                                x-transition:enter="transition-opacity ease-in-out duration-300" 
+                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
+                                x-transition:leave="transition-opacity ease-in-out duration-300" 
+                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+                                Tesorería
+                            </span>
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-white hover:bg-gray-700 transition-all duration-200 ease-in-out">
+                            <i class="fas fa-tools mr-4"></i>
+                            <span class="break-words whitespace-normal flex-1" x-show="open" 
+                                x-transition:enter="transition-opacity ease-in-out duration-300" 
+                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
+                                x-transition:leave="transition-opacity ease-in-out duration-300" 
+                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+                                Administración
+                            </span>
+                        </a>
+                        <a href="{{ route('profile.show') }}"  class="flex items-center px-4 py-3 text-white hover:bg-gray-700 transition-all duration-200 ease-in-out">
+                            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM12 14c-4.41 0-8 2.69-8 6v2h16v-2c0-3.31-3.59-6-8-6z"></path>
+                            </svg>
+                            <span class="break-words whitespace-normal flex-1" x-show="open" 
+                                x-transition:enter="transition-opacity ease-in-out duration-300" 
+                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
+                                x-transition:leave="transition-opacity ease-in-out duration-300" 
+                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+                                Perfil
+                            </span>
+                        </a>
+                        <form method="POST" action="{{ route('logout') }}" x-data>
+                        @csrf
+                        <a href="{{ route('logout') }}"
+                                   @click.prevent="$root.submit();" class="flex items-center px-4 py-3 text-white hover:bg-gray-700 transition-all duration-200 ease-in-out">
+                            <svg class="h-6 w-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H3M14 5v3h-4V5h4z"></path>
+                            </svg>
+                            <span class="break-words whitespace-normal flex-1" x-show="open" 
+                                x-transition:enter="transition-opacity ease-in-out duration-300" 
+                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
+                                x-transition:leave="transition-opacity ease-in-out duration-300" 
+                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+                               Cerrar Sesion
+                            </span>
+                        </a>
+                        </form>
+                        
+
+
+                        
+                    </div>
+                </div>
+
+                <!-- Page Content -->
+               <main class="flex-1 px-4 py-6 sm:px-6 lg:px-1 overflow-auto h-full w-full ml-16 md:ml-0 transition-all duration-300 ease-in-out">
+                    {{ $slot }}
+                </main>
+
+            </div>
         </div>
-    </footer>
-</body>
+</div>
 
+        @stack('modals')
+
+        @livewireScripts
+    </body>
 </html>
