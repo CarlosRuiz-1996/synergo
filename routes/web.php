@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CajasController;
+use App\Http\Controllers\CatalogosController;
 use App\Http\Controllers\descargarComprobateXmloPDF;
 use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\login;
@@ -30,7 +31,8 @@ Route::middleware([
 
     Route::get('/descargaComprobante', [descargarComprobateXmloPDF::class, 'descargarComprobateXmloPDF'])->name('reporte.descargarComprobateXmloPDF');
     Route::get('/login2', [login::class, 'index'])->name('login2.index');
-    
+    Route::get('/catalogos', [CatalogosController::class, 'index'])->name('ctg.index');
+
     
 });
 
