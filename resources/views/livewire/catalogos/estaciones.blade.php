@@ -77,7 +77,7 @@
                     @if ($estaciones)
 
                         <table class="w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-100">
+                            <thead style="background-color:#333333">
                                 <tr>
                                     {{-- <th scope="col"
                                         class="w-24 px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider
@@ -96,7 +96,7 @@
                                         @endif
                                     </th> --}}
                                     <th scope="col"
-                                        class="px-3 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider
+                                        class="px-3 py-3 text-center text-xs font-medium text-white text-bold uppercase tracking-wider
                                         cursor-pointer"
                                         wire:click="order('NumeroSistemaContable')">
                                         <p>Num.Sistema Contable
@@ -113,7 +113,7 @@
                                         </p>
                                     </th>
                                     <th scope="col"
-                                    class="w-32 px-3 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider cursor-pointer"
+                                    class="w-32 px-3 py-3 text-center text-xs font-medium text-white text-bold uppercase tracking-wider cursor-pointer"
                                     wire:click="order('Estacion')">
                                     <div class="flex items-center">
                                         <span>Estación</span>
@@ -130,7 +130,7 @@
                                 </th>
 
                                     <th scope="col"
-                                        class="px-3 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider
+                                        class="px-3 py-3 text-center text-xs font-medium text-white text-bold uppercase tracking-wider
                                         cursor-pointer"
                                         wire:click="order('NombreEstacion')">
                                         Nombre Estacion
@@ -147,7 +147,7 @@
                                     </th>
 
                                     <th scope="col"
-                                        class="px-3 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider
+                                        class="px-3 py-3 text-center text-xs font-medium text-white text-bold uppercase tracking-wider
                                         cursor-pointer"
                                         wire:click="order('DireccionFiscal')">
                                         Direccion Fiscal
@@ -165,7 +165,7 @@
 
 
                                     <th scope="col"
-                                        class="px-6 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                        class="px-6 py-3 text-center text-xs font-medium text-white text-bold uppercase tracking-wider">
                                         Detalles
                                     </th>
                                 </tr>
