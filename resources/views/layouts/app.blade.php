@@ -143,7 +143,7 @@
                             </span>
                         </a>
                         <a href="{{route('catalogos.estaciones')}}" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 ease-in-out">
-                            <img src="{{ asset('img/icono_estación.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
+                            <img src="{{ asset('img/Icono_estación.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
                             <span class="break-words whitespace-normal flex-1" x-show="open" 
                                 x-transition:enter="transition-opacity ease-in-out duration-300" 
                                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
@@ -153,7 +153,7 @@
                             </span>
                         </a>
                         <a href="#" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 ease-in-out">
-                            <img src="{{ asset('img/icono_finanzas.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
+                            <img src="{{ asset('img/Icono_finanzas.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
                             <span class="break-words whitespace-normal flex-1" x-show="open" 
                                 x-transition:enter="transition-opacity ease-in-out duration-300" 
                                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
@@ -163,7 +163,7 @@
                             </span>
                         </a>
                         <a href="{{route('cuentas.tesoreria')}}" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 ease-in-out">
-                       <img src="{{ asset('img/icono_tesoreria.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
+                       <img src="{{ asset('img/Icono_tesoreria.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
                             <span class="break-words whitespace-normal flex-1" x-show="open" 
                                 x-transition:enter="transition-opacity ease-in-out duration-300" 
                                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
@@ -173,7 +173,7 @@
                             </span>
                         </a>
                         <a href="#" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 ease-in-out">
-                             <img src="{{ asset('img/icono_administración.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
+                             <img src="{{ asset('img/Icono_administración.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
                             <span class="break-words whitespace-normal flex-1" x-show="open" 
                                 x-transition:enter="transition-opacity ease-in-out duration-300" 
                                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
