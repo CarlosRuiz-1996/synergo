@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::connection('sqlsrv_synergo')->create('ctg_tipos', function (Blueprint $table) {
+        Schema::create('ctg_estados', function (Blueprint $table) {
             $table->id();
-            $table->integer('tipo'); // ID principal
-            $table->string('descripcion', 255);
-            $table->timestamps();
+            $table->string('estado');
         });
     }
 
@@ -24,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::connection('sqlsrv_synergo')->dropIfExists('ctg_tipos');
+        Schema::dropIfExists('ctg_estados');
     }
 };

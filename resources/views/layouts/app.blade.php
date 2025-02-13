@@ -164,6 +164,16 @@
                                 Administración
                             </span>
                         </a>
+                        <a href="#" class="flex items-center px-4 py-3 text-white hover:bg-gray-700 transition-all duration-200 ease-in-out">
+                            <i class="fa-solid fa-rectangle-list mr-4"></i> 
+                            <span class="break-words whitespace-normal flex-1" x-show="open" 
+                                x-transition:enter="transition-opacity ease-in-out duration-300" 
+                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
+                                x-transition:leave="transition-opacity ease-in-out duration-300" 
+                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+                                Catalogos
+                            </span>
+                        </a>
                         <a href="{{ route('profile.show') }}"  class="flex items-center px-4 py-3 text-white hover:bg-gray-700 transition-all duration-200 ease-in-out">
                             <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM12 14c-4.41 0-8 2.69-8 6v2h16v-2c0-3.31-3.59-6-8-6z"></path>
