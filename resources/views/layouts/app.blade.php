@@ -51,51 +51,69 @@
     @livewireStyles
  </head>
     <body class="font-sans antialiased">
-    <header class="bg-gray-800 text-white p-4 fixed top-0 left-0 w-full z-10">
+<header class="text-black pt-4 fixed top-0 left-0 w-full z-10 bg-white shadow-md">
     <!-- Logo -->
-     <div class="flex justify-between items-center">
-    <div class="flex items-center space-x-2">
-        <span class="text-2xl font-bold tracking-wide">SYNER<span class="text-gray-400">GO</span></span>
+    <div class="flex justify-between items-center ml-8 mb-2">
+        <!--
+        <div class="flex items-center space-x-2">
+            <span class="text-2xl font-bold tracking-wide">
+                SYNER<span class="text-gray-400 text-xs align-super">.GO</span>
+            </span>
+        </div>
+        -->
+          <img src="{{ asset('img/Logotipo Synergo.png') }}" class="mr-4 md:w-34 md:h-6 w-34 h-12 inline">
     </div>
 
-    <!-- Precios de combustibles (flex-wrap para móviles) -->
-    <div class="flex flex-wrap justify-center space-x-2 sm:space-x-4 text-sm">
-        <span class="text-green-400">$20.38 <span class="text-white">Magna</span></span>
-        <span class="text-red-500">$22.30 <span class="text-white">Premium</span></span>
-        <span class="text-gray-300">$21.30 <span class="text-white">Diésel</span></span>
-        <span class="text-gray-300">$20.85 <span class="text-white">Dólar</span></span>
-    </div>
+    <!-- Barra gris ocupando todo el ancho -->
+    <div class="w-full py-2" style="background-color:#333">
+        <div class="flex items-center justify-between w-full px-4 md:px-8">
+            
+            <!-- Espacio vacío para mantener alineación -->
+            <div class="flex-1"></div>
 
-    <!-- Barra de búsqueda (responsive) -->
-    <div class="relative w-full sm:w-auto mt-2 sm:mt-0">
-        <input type="text" placeholder="Buscar..." 
-            class="w-full sm:w-auto pl-10 pr-4 py-2 rounded-full bg-gray-800 text-white focus:outline-none focus:ring focus:ring-gray-600">
-        <svg class="absolute left-3 top-2.5 w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M15 10a5 5 0 11-10 0 5 5 0 0110 0z"/>
-        </svg>
-    </div>
+            <!-- Precios de combustibles centrados -->
+            <div class="flex-1 flex flex-wrap justify-center space-x-4 text-sm text-white">
+                <span style="color:#8CC63F" class="font-bold">$20.38 <span class="text-white">Magna</span></span>
+                <span style="color:#FF0000" class="font-bold">$22.30 <span class="text-white">Premium</span></span>
+                <span class="text-gray-300 font-bold">$21.30 <span class="text-white">Diésel</span></span>
+                <span class="text-gray-300 font-bold">$20.85 <span class="text-white">Dólar</span></span>
+            </div>
+
+            <!-- Barra de búsqueda ocupando toda la tercera columna -->
+            <div class="relative flex-1 flex justify-center">
+                <input type="text" placeholder="Buscar..." 
+                    class="w-full max-w-md md:max-w-lg lg:max-w-xl min-w-[200px] pl-12 md:pl-14 pr-4 py-2 rounded-full bg-white text-gray-800 focus:outline-none focus:ring focus:ring-gray-500 shadow">
+                <svg class="absolute left-4 md:left-5 lg:left-6 xl:left-14 top-1/2 -translate-y-1/2 w-5 md:w-6 h-5 md:h-6 text-gray-500" 
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M21 21l-4.35-4.35M15 10a5 5 0 11-10 0 5 5 0 0110 0z"/>
+                </svg>
+            </div>
+
+        </div>
     </div>
 </header>
 
+
         <x-banner />
- <div class="flex pt-18">
+ <div class="flex " style="margin-top:2.5rem">
         <div class="min-h-screen bg-gray-100 h-screen fixed top-18 w-screen pt-18  mt-16">
             <div x-data="{ open: false }" x-cloak class="flex h-screen pt-18 bg-gray-100">
                 <!-- Sidebar -->
-                <div :class="{'w-64': open, 'w-16': !open}" class="bg-gray-800 text-white h-full transition-all duration-300 ease-in-out fixed md:relative z-10">
+                <div :class="{'w-64': open, 'w-16': !open}" style="background-color:#E6E6E6" class="text-black h-full transition-all duration-300 ease-in-out fixed md:relative z-10">
                     <!-- Toggle Button -->
                     <div class="flex justify-between p-4">
-                        <button @click="open = !open" class="text-white">
+                        <button @click="open = !open" class="text-black">
                             <!-- Ícono de abrir el menú -->
                             <svg x-show="!open" x-cloak x-transition:enter="transform transition ease-in-out duration-300"
                                 x-transition:enter-start="rotate-0" x-transition:enter-end="rotate-180" 
-                                class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                class="h-12 w-12 md:h-6 md:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                             </svg>
                             <!-- Ícono de cerrar el menú -->
                             <svg x-show="open" x-cloak x-transition:enter="transform transition ease-in-out duration-300"
                                 x-transition:enter-start="rotate-180" x-transition:enter-end="rotate-0" 
-                                class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                class="h-12 w-12 md:h-6 md:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
                         </button>
@@ -114,8 +132,8 @@
 
                     <!-- Sidebar Links -->
                     <div class="space-y-2">
-                        <a  href="{{ route('dashboard') }}" class="flex items-center px-4 py-3 text-white hover:bg-gray-700 transition-all duration-200 ease-in-out">
-                            <i class="fas fa-cogs mr-4"></i>
+                        <a  href="{{ route('dashboard') }}" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 ease-in-out">
+                            <img src="{{ asset('img/icocno_panel.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
                             <span class="break-words whitespace-normal flex-1" x-show="open" 
                                 x-transition:enter="transition-opacity ease-in-out duration-300" 
                                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
@@ -124,8 +142,8 @@
                                 Panel
                             </span>
                         </a>
-                        <a href="{{route('catalogos.estaciones')}}" class="flex items-center px-4 py-3 text-white hover:bg-gray-700 transition-all duration-200 ease-in-out">
-                            <i class="fas fa-gas-pump mr-4"></i>
+                        <a href="{{route('catalogos.estaciones')}}" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 ease-in-out">
+                            <img src="{{ asset('img/icono_estación.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
                             <span class="break-words whitespace-normal flex-1" x-show="open" 
                                 x-transition:enter="transition-opacity ease-in-out duration-300" 
                                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
@@ -134,8 +152,8 @@
                                 Estaciones
                             </span>
                         </a>
-                        <a href="#" class="flex items-center px-4 py-3 text-white hover:bg-gray-700 transition-all duration-200 ease-in-out">
-                            <i class="fas fa-chart-line mr-4"></i>
+                        <a href="#" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 ease-in-out">
+                            <img src="{{ asset('img/icono_finanzas.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
                             <span class="break-words whitespace-normal flex-1" x-show="open" 
                                 x-transition:enter="transition-opacity ease-in-out duration-300" 
                                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
@@ -144,8 +162,8 @@
                                 Finanzas
                             </span>
                         </a>
-                        <a href="{{route('cuentas.tesoreria')}}" class="flex items-center px-4 py-3 text-white hover:bg-gray-700 transition-all duration-200 ease-in-out">
-                        <i class="fas fa-coins mr-4"></i>
+                        <a href="{{route('cuentas.tesoreria')}}" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 ease-in-out">
+                       <img src="{{ asset('img/icono_tesoreria.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
                             <span class="break-words whitespace-normal flex-1" x-show="open" 
                                 x-transition:enter="transition-opacity ease-in-out duration-300" 
                                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
@@ -154,8 +172,8 @@
                                 Tesorería
                             </span>
                         </a>
-                        <a href="#" class="flex items-center px-4 py-3 text-white hover:bg-gray-700 transition-all duration-200 ease-in-out">
-                            <i class="fas fa-tools mr-4"></i>
+                        <a href="#" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 ease-in-out">
+                             <img src="{{ asset('img/icono_administración.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
                             <span class="break-words whitespace-normal flex-1" x-show="open" 
                                 x-transition:enter="transition-opacity ease-in-out duration-300" 
                                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
@@ -164,18 +182,8 @@
                                 Administración
                             </span>
                         </a>
-                        <a href="#" class="flex items-center px-4 py-3 text-white hover:bg-gray-700 transition-all duration-200 ease-in-out">
-                            <i class="fa-solid fa-rectangle-list mr-4"></i> 
-                            <span class="break-words whitespace-normal flex-1" x-show="open" 
-                                x-transition:enter="transition-opacity ease-in-out duration-300" 
-                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
-                                x-transition:leave="transition-opacity ease-in-out duration-300" 
-                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
-                                Catalogos
-                            </span>
-                        </a>
-                        <a href="{{ route('profile.show') }}"  class="flex items-center px-4 py-3 text-white hover:bg-gray-700 transition-all duration-200 ease-in-out">
-                            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <a href="{{ route('profile.show') }}"  class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 ease-in-out">
+                            <svg class="mr-2 h-12 w-12 md:h-6 md:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM12 14c-4.41 0-8 2.69-8 6v2h16v-2c0-3.31-3.59-6-8-6z"></path>
                             </svg>
                             <span class="break-words whitespace-normal flex-1" x-show="open" 
@@ -189,8 +197,8 @@
                         <form method="POST" action="{{ route('logout') }}" x-data>
                         @csrf
                         <a href="{{ route('logout') }}"
-                                   @click.prevent="$root.submit();" class="flex items-center px-4 py-3 text-white hover:bg-gray-700 transition-all duration-200 ease-in-out">
-                            <svg class="h-6 w-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                   @click.prevent="$root.submit();" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 ease-in-out">
+                            <svg class="h-12 w-12 mr-2 md:h-6 md:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H3M14 5v3h-4V5h4z"></path>
                             </svg>
                             <span class="break-words whitespace-normal flex-1" x-show="open" 
