@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CajasController;
 use App\Http\Controllers\CatalogosController;
 use App\Http\Controllers\descargarComprobateXmloPDF;
@@ -33,7 +34,8 @@ Route::middleware([
     Route::get('/login2', [login::class, 'index'])->name('login2.index');
     Route::get('/catalogos', [CatalogosController::class, 'index'])->name('ctg.index');
 
-    
+
+    Route::get('administrador', [AdminController::class, 'index'])->name('admin.home');
 });
 
 // livewire

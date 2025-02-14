@@ -39,6 +39,7 @@
     <script type="text/javascript" charset="utf8"
         src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -172,7 +173,7 @@
                                 Tesorería
                             </span>
                         </a>
-                        <a href="#" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 ease-in-out">
+                        <a href="{{route('admin.home')}}" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 ease-in-out">
                              <img src="{{ asset('img/icono_administración.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
                             <span class="break-words whitespace-normal flex-1" x-show="open" 
                                 x-transition:enter="transition-opacity ease-in-out duration-300" 
