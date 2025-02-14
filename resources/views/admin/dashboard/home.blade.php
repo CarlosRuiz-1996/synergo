@@ -11,33 +11,40 @@
         <!-- Sección de Gráficos y Tabla -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Top 10 ventas / estaciones (espacio para Chart.js) -->
-            <div class="bg-white p-6 rounded-lg shadow-lg">
-                <h2 class="text-xl font-semibold text-gray-700 mb-4">Top 10 ventas / estaciones</h2>
+            <div class="bg-white p-6 rounded-lg shadow-lg flex flex-col">
                 <div class="h-48 bg-gray-200 flex items-center justify-center">
                     <canvas id="top10"></canvas>
-
+                </div>
+                <div class="bg-black text-white text-center py-2 mt-4 rounded-b-lg">
+                    <h2 class="text-xl font-semibold">Top 10 ventas / estaciones</h2>
                 </div>
             </div>
             <!-- Evolución costo promedio (espacio para Chart.js) -->
             <div class="bg-white p-6 rounded-lg shadow-lg">
-                <h2 class="text-xl font-semibold text-gray-700 mb-4">Evolución costo promedio</h2>
                 <div class="h-48 bg-gray-200 flex items-center justify-center">
                     <canvas id="costo_promedio"></canvas>
+                </div>
+                <div class="bg-black text-white text-center py-2 mt-4 rounded-b-lg">
+                    <h2 class="text-xl font-semibold">Evolución costo promedio</h2>
                 </div>
             </div>
             <!-- Historial de ventas Ganancia estimada (espacio para Chart.js) -->
             <div class="bg-white p-6 rounded-lg shadow-lg">
-                <h2 class="text-xl font-semibold text-gray-700 mb-4">Historial de ventas Ganancia estimada
-                </h2>
+                
                 <div class="h-48 bg-gray-200 flex items-center justify-center">
                     <canvas id="historial"></canvas>
+                </div>
+                <div class="bg-black text-white text-center py-2 mt-4 rounded-b-lg">
+                    <h2 class="text-xl font-semibold">Historial de ventas Ganancia estimada</h2>
                 </div>
             </div>
             <!-- Ganancia estimada (espacio para Chart.js) -->
             <div class="bg-white p-6 rounded-lg shadow-lg">
-                <h2 class="text-xl font-semibold text-gray-700 mb-4">Ganancia estimada</h2>
                 <div class="h-48 bg-gray-200 flex items-center justify-center">
                     <canvas id="ganancia"></canvas>
+                </div>
+                <div class="bg-black text-white text-center py-2 mt-4 rounded-b-lg">
+                    <h2 class="text-xl font-semibold">Ganancia estimada</h2>
                 </div>
             </div>
 

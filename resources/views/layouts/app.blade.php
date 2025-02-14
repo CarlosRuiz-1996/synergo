@@ -272,6 +272,17 @@
                                 Perfil
                             </span>
                         </a>
+                        <a href="{{ route('ctg.index') }}"  class="flex items-center px-4 py-8 text-black hover:bg-white cronos-bold transition-all duration-200 ease-in-out">
+                            
+                            <i class="fa-solid fa-rectangle-list mr-2"></i>
+                            <span class="break-words whitespace-normal flex-1" x-show="open" 
+                                x-transition:enter="transition-opacity ease-in-out duration-300" 
+                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
+                                x-transition:leave="transition-opacity ease-in-out duration-300" 
+                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+                                Catalogos
+                            </span>
+                        </a>
                         <form method="POST" action="{{ route('logout') }}" x-data>
                         @csrf
                         <a href="{{ route('logout') }}"
