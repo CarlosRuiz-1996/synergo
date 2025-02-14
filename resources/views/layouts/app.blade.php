@@ -48,6 +48,83 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <style>
+/* Definición de las fuentes */
+@font-face {
+    font-family: 'CronosPro-Bold';
+    src: url('/fonts/CronosPro-Bold.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'CronosPro-BoldIt';
+    src: url('/fonts/CronosPro-BoldIt.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'CronosPro-Italic';
+    src: url('/fonts/CronosPro-Italic.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'CronosPro-Lt';
+    src: url('/fonts/CronosPro-Lt.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'CronosPro-LtIt';
+    src: url('/fonts/CronosPro-LtIt.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'CronosPro-Regular';
+    src: url('/fonts/CronosPro-Regular.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'CronosPro-Semibold';
+    src: url('/fonts/CronosPro-Semibold.otf') format('truetype');
+}
+
+@font-face {
+    font-family: 'CronosPro-SemiboldIt';
+    src: url('/fonts/CronosPro-SemiboldIt.otf') format('truetype');
+}
+
+/* Opcional: Crear clases para usar las fuentes */
+.cronos-bold {
+    font-family: 'CronosPro-Bold', sans-serif;
+}
+
+.cronos-bold-it {
+    font-family: 'CronosPro-BoldIt', sans-serif;
+}
+
+.cronos-italic {
+    font-family: 'CronosPro-Italic', sans-serif;
+}
+
+.cronos-light {
+    font-family: 'CronosPro-Lt', sans-serif;
+}
+
+.cronos-light-it {
+    font-family: 'CronosPro-LtIt', sans-serif;
+}
+
+.cronos-regular {
+    font-family: 'CronosPro-Regular', sans-serif;
+}
+
+.cronos-semibold {
+    font-family: 'CronosPro-Semibold', sans-serif;
+}
+
+.cronos-semibold-it {
+    font-family: 'CronosPro-SemiboldIt', sans-serif;
+}
+
+
+    </style>
     <!-- Styles -->
     @livewireStyles
  </head>
@@ -74,10 +151,10 @@
 
             <!-- Precios de combustibles centrados -->
             <div class="flex-1 flex flex-wrap justify-center space-x-4 text-sm text-white">
-                <span style="color:#8CC63F" class="font-bold">$20.38 <span class="text-white">Magna</span></span>
-                <span style="color:#FF0000" class="font-bold">$22.30 <span class="text-white">Premium</span></span>
-                <span class="text-gray-300 font-bold">$21.30 <span class="text-white">Diésel</span></span>
-                <span class="text-gray-300 font-bold">$20.85 <span class="text-white">Dólar</span></span>
+                <span style="color:#8CC63F" class="font-bold">$20.38 <span class="text-white cronos-regular">Magna</span></span>
+                <span style="color:#FF0000" class="font-bold">$22.30 <span class="text-white cronos-regular">Premium</span></span>
+                <span class="text-gray-300 font-bold">$21.30 <span class="text-white cronos-regular">Diésel</span></span>
+                <span class="text-gray-300 font-bold">$20.85 <span class="text-white cronos-regular">Dólar</span></span>
             </div>
 
             <!-- Barra de búsqueda ocupando toda la tercera columna -->
@@ -121,10 +198,10 @@
                     </div>
                        <!-- Información del usuario, solo se muestra cuando está expandido -->
                        <div x-show="open" class="text-center w-full overflow-hidden mb-2">
-                            <div class="text-sm font-semibold text-center px-2 truncate capitalize" title="{{ Auth::user()->name }}">
+                            <div class="text-sm font-semibold text-center px-2 truncate capitalize cronos-bold" title="{{ Auth::user()->name }}">
                                 {{ Auth::user()->name }}
                             </div>
-                            <div class="text-xs text-center px-2 truncate" title="{{ Auth::user()->email }}">
+                            <div class="text-xs text-center px-2 truncate cronos-bold" title="{{ Auth::user()->email }}">
                                 {{ Auth::user()->email }}
                             </div>
                         </div>
@@ -133,7 +210,7 @@
 
                     <!-- Sidebar Links -->
                     <div class="space-y-2">
-                        <a  href="{{ route('dashboard') }}" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 ease-in-out">
+                        <a  href="{{ route('dashboard') }}" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all cronos-bold duration-200 ease-in-out">
                             <img src="{{ asset('img/icocno_panel.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
                             <span class="break-words whitespace-normal flex-1" x-show="open" 
                                 x-transition:enter="transition-opacity ease-in-out duration-300" 
@@ -143,8 +220,8 @@
                                 Panel
                             </span>
                         </a>
-                        <a href="{{route('catalogos.estaciones')}}" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 ease-in-out">
-                            <img src="{{ asset('img/icono_estación.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
+                        <a href="{{route('catalogos.estaciones')}}" class="flex items-center px-4 py-8 text-black hover:bg-white cronos-bold transition-all duration-200 ease-in-out">
+                            <img src="{{ asset('img/Icono_estación.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
                             <span class="break-words whitespace-normal flex-1" x-show="open" 
                                 x-transition:enter="transition-opacity ease-in-out duration-300" 
                                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
@@ -153,8 +230,8 @@
                                 Estaciones
                             </span>
                         </a>
-                        <a href="#" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 ease-in-out">
-                            <img src="{{ asset('img/icono_finanzas.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
+                        <a href="#" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 cronos-bold ease-in-out">
+                            <img src="{{ asset('img/Icono_finanzas.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
                             <span class="break-words whitespace-normal flex-1" x-show="open" 
                                 x-transition:enter="transition-opacity ease-in-out duration-300" 
                                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
@@ -163,8 +240,8 @@
                                 Finanzas
                             </span>
                         </a>
-                        <a href="{{route('cuentas.tesoreria')}}" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 ease-in-out">
-                       <img src="{{ asset('img/icono_tesoreria.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
+                        <a href="{{route('cuentas.tesoreria')}}" class="flex items-center px-4 py-8 text-black hover:bg-white cronos-bold transition-all duration-200 ease-in-out">
+                       <img src="{{ asset('img/Icono_tesoreria.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
                             <span class="break-words whitespace-normal flex-1" x-show="open" 
                                 x-transition:enter="transition-opacity ease-in-out duration-300" 
                                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
@@ -173,8 +250,8 @@
                                 Tesorería
                             </span>
                         </a>
-                        <a href="{{route('admin.home')}}" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 ease-in-out">
-                             <img src="{{ asset('img/icono_administración.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
+                        <a href="{{route('admin.home')}}" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 cronos-bold ease-in-out">
+                             <img src="{{ asset('img/Icono_administración.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
                             <span class="break-words whitespace-normal flex-1" x-show="open" 
                                 x-transition:enter="transition-opacity ease-in-out duration-300" 
                                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
@@ -183,7 +260,7 @@
                                 Administración
                             </span>
                         </a>
-                        <a href="{{ route('profile.show') }}"  class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 ease-in-out">
+                        <a href="{{ route('profile.show') }}"  class="flex items-center px-4 py-8 text-black hover:bg-white cronos-bold transition-all duration-200 ease-in-out">
                             <svg class="mr-2 h-12 w-12 md:h-6 md:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM12 14c-4.41 0-8 2.69-8 6v2h16v-2c0-3.31-3.59-6-8-6z"></path>
                             </svg>
@@ -198,7 +275,7 @@
                         <form method="POST" action="{{ route('logout') }}" x-data>
                         @csrf
                         <a href="{{ route('logout') }}"
-                                   @click.prevent="$root.submit();" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 ease-in-out">
+                                   @click.prevent="$root.submit();" class="flex items-center px-4 py-8 text-black cronos-bold hover:bg-white transition-all duration-200 ease-in-out">
                             <svg class="h-12 w-12 mr-2 md:h-6 md:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H3M14 5v3h-4V5h4z"></path>
                             </svg>
