@@ -116,6 +116,19 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE3', 'false'),
         ],
 
+        'sqlsrv_synergo' => [
+            'driver' => 'sqlsrv',
+            'host' => env('DB_HOST_SYNG', 'localhost'),
+            'port' => env('DB_PORT_SYNG', '1433'),
+            'database' => env('DB_DATABASE_SYNG', 'forge'),
+            'username' => env('DB_USERNAME_SYNG', 'forge'),
+            'password' => env('DB_PASSWORD_SYNG', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+         
+        ],
+
     ],
 
     'migrations' => [

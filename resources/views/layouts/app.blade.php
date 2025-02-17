@@ -39,6 +39,7 @@
     <script type="text/javascript" charset="utf8"
         src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])

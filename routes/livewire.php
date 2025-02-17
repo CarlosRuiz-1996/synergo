@@ -11,6 +11,7 @@ use App\Livewire\Tesoreria\Tesoreria;
 use App\Livewire\UserCrud;
 use Livewire\Livewire;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Catalogos\Aceites;
 
 // livewire
 Livewire::setUpdateRoute(function ($handle) {
@@ -35,6 +36,7 @@ Route::middleware([
     Route::get('/usuarios', UserCrud::class)->name('usuarios');
     Route::get('cuentas/pagardos', Controlpagosdos::class)->name('cuentas.pagardos');
     Route::get('cuentas/tesoreria', Tesoreria::class)->name('cuentas.tesoreria');
+    Route::get('catalogos/aceites',Aceites::class)->name('ctg.aceites');
 
     
 
