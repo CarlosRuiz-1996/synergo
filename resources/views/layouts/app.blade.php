@@ -150,10 +150,10 @@
 
             <!-- Precios de combustibles centrados -->
             <div class="flex-1 flex flex-wrap justify-center space-x-4 text-sm text-white">
-                <span style="color:#8CC63F" class="font-bold">$20.38 <span class="text-white cronos-regular">Magna</span></span>
-                <span style="color:#FF0000" class="font-bold">$22.30 <span class="text-white cronos-regular">Premium</span></span>
-                <span class="text-gray-300 font-bold">$21.30 <span class="text-white cronos-regular">Diésel</span></span>
-                <span class="text-gray-300 font-bold">$20.85 <span class="text-white cronos-regular">Dólar</span></span>
+                <span style="color:#8CC63F" class="font-bold">$ 20.38 <span class="text-white cronos-regular"  style="color:#8CC63F">Magna</span></span>
+                <span style="color:#FF0000" class="font-bold">$ 22.30 <span class="text-white cronos-regular"  style="color:#FF0000">Premium</span></span>
+                <span class="text-gray-300 font-bold">$ 21.30 <span class="text-gray-300 cronos-regular ">Diésel</span></span>
+                <span class="text-gray-300 font-bold">$ 20.85 <span class="text-gray-300 cronos-regular ">Dólar</span></span>
             </div>
 
             <!-- Barra de búsqueda ocupando toda la tercera columna -->
@@ -200,7 +200,7 @@
                             <div class="text-sm font-semibold text-center px-2 truncate capitalize cronos-bold" title="{{ Auth::user()->name }}">
                                 {{ Auth::user()->name }}
                             </div>
-                            <div class="text-xs text-center px-2 truncate cronos-bold" title="{{ Auth::user()->email }}">
+                            <div class="text-sm text-center px-2 truncate cronos-bold" title="{{ Auth::user()->email }}">
                                 {{ Auth::user()->email }}
                             </div>
                         </div>
@@ -208,90 +208,107 @@
                     
 
                     <!-- Sidebar Links -->
-                    <div class="space-y-2">
-                        <a  href="{{ route('dashboard') }}" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all cronos-bold duration-200 ease-in-out">
-                            <img src="{{ asset('img/icocno_panel.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
-                            <span class="break-words whitespace-normal flex-1" x-show="open" 
-                                x-transition:enter="transition-opacity ease-in-out duration-300" 
-                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
-                                x-transition:leave="transition-opacity ease-in-out duration-300" 
-                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
-                                Panel
-                            </span>
-                        </a>
-                        <a href="{{route('catalogos.estaciones')}}" class="flex items-center px-4 py-8 text-black hover:bg-white cronos-bold transition-all duration-200 ease-in-out">
-                            <img src="{{ asset('img/Icono_estación.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
-                            <span class="break-words whitespace-normal flex-1" x-show="open" 
-                                x-transition:enter="transition-opacity ease-in-out duration-300" 
-                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
-                                x-transition:leave="transition-opacity ease-in-out duration-300" 
-                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
-                                Estaciones
-                            </span>
-                        </a>
-                        <a href="#" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 cronos-bold ease-in-out">
-                            <img src="{{ asset('img/Icono_finanzas.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
-                            <span class="break-words whitespace-normal flex-1" x-show="open" 
-                                x-transition:enter="transition-opacity ease-in-out duration-300" 
-                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
-                                x-transition:leave="transition-opacity ease-in-out duration-300" 
-                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
-                                Finanzas
-                            </span>
-                        </a>
-                        <a href="{{route('cuentas.tesoreria')}}" class="flex items-center px-4 py-8 text-black hover:bg-white cronos-bold transition-all duration-200 ease-in-out">
-                       <img src="{{ asset('img/Icono_tesoreria.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
-                            <span class="break-words whitespace-normal flex-1" x-show="open" 
-                                x-transition:enter="transition-opacity ease-in-out duration-300" 
-                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
-                                x-transition:leave="transition-opacity ease-in-out duration-300" 
-                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
-                                Tesorería
-                            </span>
-                        </a>
-                        <a href="#" class="flex items-center px-4 py-8 text-black hover:bg-white transition-all duration-200 cronos-bold ease-in-out">
-                             <img src="{{ asset('img/Icono_administración.png') }}" class="mr-4 md:w-6 md:h-6 w-12 h-12 inline">
-                            <span class="break-words whitespace-normal flex-1" x-show="open" 
-                                x-transition:enter="transition-opacity ease-in-out duration-300" 
-                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
-                                x-transition:leave="transition-opacity ease-in-out duration-300" 
-                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
-                                Administración
-                            </span>
-                        </a>
-                        <a href="{{ route('profile.show') }}"  class="flex items-center px-4 py-8 text-black hover:bg-white cronos-bold transition-all duration-200 ease-in-out">
-                            <svg class="mr-2 h-12 w-12 md:h-6 md:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM12 14c-4.41 0-8 2.69-8 6v2h16v-2c0-3.31-3.59-6-8-6z"></path>
-                            </svg>
-                            <span class="break-words whitespace-normal flex-1" x-show="open" 
-                                x-transition:enter="transition-opacity ease-in-out duration-300" 
-                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
-                                x-transition:leave="transition-opacity ease-in-out duration-300" 
-                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
-                                Perfil
-                            </span>
-                        </a>
-                        <form method="POST" action="{{ route('logout') }}" x-data>
-                        @csrf
-                        <a href="{{ route('logout') }}"
-                                   @click.prevent="$root.submit();" class="flex items-center px-4 py-8 text-black cronos-bold hover:bg-white transition-all duration-200 ease-in-out">
-                            <svg class="h-12 w-12 mr-2 md:h-6 md:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H3M14 5v3h-4V5h4z"></path>
-                            </svg>
-                            <span class="break-words whitespace-normal flex-1" x-show="open" 
-                                x-transition:enter="transition-opacity ease-in-out duration-300" 
-                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" 
-                                x-transition:leave="transition-opacity ease-in-out duration-300" 
-                                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
-                               Cerrar Sesion
-                            </span>
-                        </a>
-                        </form>
-                        
+<div class="space-y-2">
+    <a href="{{ route('dashboard') }}" 
+    class="flex flex-col items-left px-4 py-4 text-black hover:bg-white transition-all cronos-bold duration-200 ease-in-out"
+    x-bind:class="{'justify-center': !open, 'justify-start': open}">
+    <img src="{{ asset('img/icocno_panel.png') }}" class="w-12 h-12 md:w-9 md:h-9">
+    <span x-show="open" class="whitespace-nowrap mt-2 text-left text-2xl"
+        x-transition:enter="transition-opacity ease-in-out duration-300"
+        x-transition:enter-start="opacity-0" 
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition-opacity ease-in-out duration-300"
+        x-transition:leave-start="opacity-100" 
+        x-transition:leave-end="opacity-0">
+        Panel
+    </span>
+</a>
 
+<a href="{{route('catalogos.estaciones')}}" 
+    class="flex flex-col items-left px-4 py-4 text-black hover:bg-white transition-all cronos-bold duration-200 ease-in-out"
+    x-bind:class="{'justify-center': !open, 'justify-start': open}">
+    <img src="{{ asset('img/Icono_estación.png') }}" class="w-12 h-12 md:w-9 md:h-9">
+    <span x-show="open" class="whitespace-nowrap mt-2 text-left text-2xl"
+        x-transition:enter="transition-opacity ease-in-out duration-300"
+        x-transition:enter-start="opacity-0" 
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition-opacity ease-in-out duration-300"
+        x-transition:leave-start="opacity-100" 
+        x-transition:leave-end="opacity-0">
+        Estaciones
+    </span>
+</a>
 
-                        
-                    </div>
+<a href="#" 
+    class="flex flex-col items-left px-4 py-4 text-black hover:bg-white transition-all cronos-bold duration-200 ease-in-out"
+    x-bind:class="{'justify-center': !open, 'justify-start': open}">
+    <img src="{{ asset('img/Icono_finanzas.png') }}" class="w-12 h-12 md:w-9 md:h-9">
+    <span x-show="open" class="whitespace-nowrap mt-2 text-left text-2xl"
+        x-transition:enter="transition-opacity ease-in-out duration-300"
+        x-transition:enter-start="opacity-0" 
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition-opacity ease-in-out duration-300"
+        x-transition:leave-start="opacity-100" 
+        x-transition:leave-end="opacity-0">
+        Finanzas
+    </span>
+</a>
+
+<a href="{{route('cuentas.tesoreria')}}" 
+    class="flex flex-col items-left px-4 py-4 text-black hover:bg-white transition-all cronos-bold duration-200 ease-in-out"
+    x-bind:class="{'justify-center': !open, 'justify-start': open}">
+    <img src="{{ asset('img/Icono_tesoreria.png') }}" class="w-12 h-12 md:w-9 md:h-9">
+    <span x-show="open" class="whitespace-nowrap mt-2 text-left text-2xl"
+        x-transition:enter="transition-opacity ease-in-out duration-300"
+        x-transition:enter-start="opacity-0" 
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition-opacity ease-in-out duration-300"
+        x-transition:leave-start="opacity-100" 
+        x-transition:leave-end="opacity-0">
+        Tesorería
+    </span>
+</a>
+
+<a href="{{ route('profile.show') }}"  
+    class="flex flex-col items-left px-4 py-4 text-black hover:bg-white transition-all cronos-bold duration-200 ease-in-out"
+    x-bind:class="{'justify-center': !open, 'justify-start': open}">
+    <svg class="w-12 h-12 md:w-9 md:h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM12 14c-4.41 0-8 2.69-8 6v2h16v-2c0-3.31-3.59-6-8-6z"></path>
+    </svg>
+    <span x-show="open" class="whitespace-nowrap mt-2 text-left text-2xl"
+        x-transition:enter="transition-opacity ease-in-out duration-300"
+        x-transition:enter-start="opacity-0" 
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition-opacity ease-in-out duration-300"
+        x-transition:leave-start="opacity-100" 
+        x-transition:leave-end="opacity-0">
+        Perfil
+    </span>
+</a>
+
+<form method="POST" action="{{ route('logout') }}" x-data>
+    @csrf
+    <a href="{{ route('logout') }}"
+        @click.prevent="$root.submit();"
+        class="flex flex-col items-left px-4 py-4 text-black cronos-bold hover:bg-white transition-all duration-200 ease-in-out"
+        x-bind:class="{'justify-center': !open, 'justify-start': open}">
+        <svg class="w-12 h-12 md:w-9 md:h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H3M14 5v3h-4V5h4z"></path>
+        </svg>
+        <span x-show="open" class="whitespace-nowrap mt-2 text-left text-2xl"
+            x-transition:enter="transition-opacity ease-in-out duration-300"
+            x-transition:enter-start="opacity-0" 
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition-opacity ease-in-out duration-300"
+            x-transition:leave-start="opacity-100" 
+            x-transition:leave-end="opacity-0">
+            Cerrar Sesión
+        </span>
+    </a>
+</form>
+
+</div>
+
                 </div>
 
                 <!-- Page Content -->
