@@ -12,6 +12,7 @@ use App\Livewire\UserCrud;
 use Livewire\Livewire;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Catalogos\Aceites;
+use App\Livewire\Catalogos\HomeCtg;
 
 // livewire
 Livewire::setUpdateRoute(function ($handle) {
@@ -38,6 +39,7 @@ Route::middleware([
     Route::get('cuentas/tesoreria', Tesoreria::class)->name('cuentas.tesoreria');
     Route::get('catalogos/aceites',Aceites::class)->name('ctg.aceites');
 
-    
+    Route::get('/catalogos', HomeCtg::class)->name('ctg.index');
+
 
 });

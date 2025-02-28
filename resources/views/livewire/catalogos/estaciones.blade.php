@@ -509,7 +509,7 @@
         @endslot
     </x-dialog-modal>
 
-    @once('js')
+    @pushOnce('scripts')
         <script>
             document.addEventListener('livewire:initialized', () => {
 
@@ -579,7 +579,7 @@
 
             });
         </script>
-    @endonce
+    @endPushOnce
 
 
 </div>

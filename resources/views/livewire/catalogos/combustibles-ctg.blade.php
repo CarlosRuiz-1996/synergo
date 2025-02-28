@@ -34,7 +34,7 @@
             <div class="mt-2 " wire:init='loadData'>
                 <div class="overflow-x-auto shadow-md rounded-lg">
 
-                    @if (count($aceites))
+                    @if (count($combustibles))
 
                         <table class="w-full divide-y divide-gray-200">
                             <thead class="bg-gray-100">
@@ -57,20 +57,19 @@
                                     </th>
                                     <th scope="col"
                                         class="px-3 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider
-                                        cursor-pointer"
-                                        wire:click="order('tipo')">
-                                        <p>Tipo
-                                            @if ($sort == 'tipo')
-                                                @if ($orderBy == 'asc')
-                                                    <i class="fas fa-sort-alpha-up-alt mt-1"></i>
-                                                @else
-                                                    <i class="fas fa-sort-alpha-down-alt mt-1"></i>
-                                                @endif
+                                    cursor-pointer"
+                                        wire:click="order('costo')">
+                                        Costo
+                                        @if ($sort == 'costo')
+                                            @if ($orderBy == 'asc')
+                                                <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
-                                                <i class="fas fa-sort float-right hover:float-left mt-1"></i>
-
+                                                <i class="fas fa-sort-alpha-down-alt mt-1"></i>
                                             @endif
-                                        </p>
+                                        @else
+                                            <i class="fas fa-sort float-right hover:float-left mt-1"></i>
+
+                                        @endif
                                     </th>
                                     <th scope="col"
                                         class="w-32 px-3 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider cursor-pointer"
@@ -91,7 +90,7 @@
 
                                     <th scope="col"
                                         class="px-3 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider
-                                        cursor-pointer"
+                            cursor-pointer"
                                         wire:click="order('description')">
                                         Descripción
                                         @if ($sort == 'description')
@@ -105,30 +104,35 @@
 
                                         @endif
                                     </th>
-
                                     <th scope="col"
                                         class="px-3 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider
                                         cursor-pointer"
-                                        wire:click="order('costo')">
-                                        Costo
-                                        @if ($sort == 'costo')
-                                            @if ($orderBy == 'asc')
-                                                <i class="fas fa-sort-alpha-up-alt mt-1"></i>
+                                        wire:click="order('flete')">
+                                        <p>Flete
+                                            @if ($sort == 'flete')
+                                                @if ($orderBy == 'asc')
+                                                    <i class="fas fa-sort-alpha-up-alt mt-1"></i>
+                                                @else
+                                                    <i class="fas fa-sort-alpha-down-alt mt-1"></i>
+                                                @endif
                                             @else
-                                                <i class="fas fa-sort-alpha-down-alt mt-1"></i>
-                                            @endif
-                                        @else
-                                            <i class="fas fa-sort float-right hover:float-left mt-1"></i>
+                                                <i class="fas fa-sort float-right hover:float-left mt-1"></i>
 
-                                        @endif
+                                            @endif
+                                        </p>
                                     </th>
+
+
+
+
+
 
                                     <th scope="col"
                                         class="px-3 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider
                                             cursor-pointer"
-                                        wire:click="order('existencia')">
-                                        Existencia
-                                        @if ($sort == 'existencia')
+                                        wire:click="order('clv_pemex')">
+                                        clv_pemex
+                                        @if ($sort == 'clv_pemex')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -142,9 +146,9 @@
                                     <th scope="col"
                                         class="px-3 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider
                                         cursor-pointer"
-                                        wire:click="order('status')">
-                                        Estatus
-                                        @if ($sort == 'status')
+                                        wire:click="order('color_tq')">
+                                        color_tq
+                                        @if ($sort == 'color_tq')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -155,6 +159,7 @@
 
                                         @endif
                                     </th>
+                                  
                                     <th scope="col"
                                         class="px-6 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider">
                                         Detalles
@@ -163,49 +168,49 @@
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
 
-                                @foreach ($aceites as $aceite)
+                                @foreach ($combustibles as $combustible)
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            {{ $aceite->id }}
+                                            {{ $combustible->id }}
 
                                         </td>
                                         <td class="px-3 py-4 w-10 whitespace-nowrap text-center text-sm text-gray-500">
-                                            {{ $aceite->tipo }}
+                                            {{ $combustible->costo }}
                                         </td>
                                         <td class="w-32 px-3 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                                            {{ $aceite->corta }}
+                                            {{ $combustible->corta }}
                                         </td>
 
                                         <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $aceite->description }}
+                                            {{ $combustible->description }}
                                         </td>
 
                                         <td class="px-3 py-4 text-sm text-gray-500">
-                                            {{ $aceite->costo }}
+                                            {{ $combustible->flete }}
 
                                         </td>
 
 
                                         <td class="px-3 py-4 text-sm text-gray-500">
-                                            {{ $aceite->existencia }}
+                                            {{ $combustible->clv_pemex }}
 
                                         </td>
 
                                         <td class="px-3 py-4 text-sm text-gray-500">
-                                            {{ $aceite->status }}
+                                            {{ $combustible->color_tq }}
 
                                         </td>
                                         <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-500">
 
-                                            {{-- <x-button title="Detalles" wire:click='detalles({{ $aceite->id }})'>
+                                            {{-- <x-button title="Detalles" wire:click='detalles({{ $combustible->id }})'>
                                         <i class="fa fa-info-circle" aria-hidden="true"></i>
 
                                     </x-button> --}}
-                                            <x-button title="Editar" wire:click='edit({{ $aceite->id }})'><i
+                                            <x-button title="Editar" wire:click='edit({{ $combustible->id }})'><i
                                                     class="fa fa-pencil" aria-hidden="true"></i>
                                             </x-button>
                                             <x-danger-button title="Eliminar"
-                                                wire:click="$dispatch('delete',{{ $aceite->id }})"><i
+                                                wire:click="$dispatch('delete-combustible',{{ $combustible->id }})"><i
                                                     class="fa fa-trash" aria-hidden="true"></i>
 
 
@@ -219,9 +224,9 @@
 
                         </table>
 
-                        @if ($aceites->hasPages())
+                        @if ($combustibles->hasPages())
                             <div class="px-6 py-3  bg-gray-200">
-                                {{ $aceites->links() }}
+                                {{ $combustibles->links() }}
                             </div>
                         @endif
                     @else
@@ -307,11 +312,11 @@
         @endslot
         @slot('footer')
             <x-secondary-button wire:click="clean">Cancelar</x-secondary-button>
-            <x-button wire:click="$dispatch('confirm',{{ $ctg_id }}) "
+            <x-button wire:click="$dispatch('confirm-combustible',{{ $ctg_id }}) "
                 class=" ml-3 disabled:opacity-25">Guardar</x-button>
         @endslot
     </x-dialog-modal-xl>
 
-  
+
 
 </div>

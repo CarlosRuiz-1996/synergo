@@ -32,7 +32,6 @@ Route::middleware([
 
     Route::get('/descargaComprobante', [descargarComprobateXmloPDF::class, 'descargarComprobateXmloPDF'])->name('reporte.descargarComprobateXmloPDF');
     Route::get('/login2', [login::class, 'index'])->name('login2.index');
-    Route::get('/catalogos', [CatalogosController::class, 'index'])->name('ctg.index');
 
 
     Route::get('administrador', [AdminController::class, 'index'])->name('admin.home');
