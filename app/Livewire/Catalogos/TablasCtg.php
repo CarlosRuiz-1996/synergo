@@ -15,7 +15,7 @@ class TablasCtg extends Component
     public $readyToLoad = false;
     public $entrada = array('5', '10', '15', '20', '50', '100');
     public $list = '5';
-    public $sort = "id";
+    public $sort_tabla = "id";
     public $orderBy = "asc";
     public $open = false;
     public $search="";
@@ -24,7 +24,7 @@ class TablasCtg extends Component
 
     protected $queryString = [
         'list' => ['except' => ['10']],
-        'sort' => ['except' => 'NumeroSistemaContable'],
+        'sort_tabla' => ['except' => 'id'],
         'orderBy' => ['except' => 'asc'],
         'search' => ['except' => ''],
     ];
@@ -40,17 +40,17 @@ class TablasCtg extends Component
         $this->resetPage();
     }
    
-    public function order($sort)
+    public function order($sort_tabla)
     {
 
-        if ($this->sort == $sort) {
+        if ($this->sort_tabla == $sort_tabla) {
             if ($this->orderBy == 'desc') {
                 $this->orderBy = 'asc';
             } else {
                 $this->orderBy = 'desc';
             }
         } else {
-            $this->sort = $sort;
+            $this->sort_tabla = $sort_tabla;
             $this->orderBy = 'desc';
         }
     }
@@ -97,7 +97,7 @@ class TablasCtg extends Component
             $catalogos = CtgTablas::where('nombre','like','%'.$this->search.'%')
             ->orWhere('bnd_catalogo','like','%'.$this->search.'%')
             ->orWhere('n_padre','like','%'.$this->search.'%')
-            ->orderBy($this->sort, $this->orderBy)->paginate(10);//->withTrashed()
+            ->orderBy($this->sort_tabla, $this->orderBy)->paginate(10);//->withTrashed()
 
         } else {
 
@@ -107,7 +107,7 @@ class TablasCtg extends Component
     }
 
 
-    #[On('save-ctg')]
+    #[On('save-tablas')]
     public function save()
     {
 
@@ -166,7 +166,7 @@ class TablasCtg extends Component
     }
 
 
-    #[On('delete-ctg')]
+    #[On('delete-tablas')]
     public function destroy(CtgTablas $ctg){
 
         CtgTablas::destroy($ctg->id);

@@ -44,7 +44,7 @@
                                         cursor-pointer"
                                         wire:click="order('id')">
                                         ID
-                                        @if ($sort == 'id')
+                                        @if ($sort_bancos == 'id')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -60,7 +60,7 @@
                                         cursor-pointer"
                                         wire:click="order('no_secuencial')">
                                         <p>No Secuencial
-                                            @if ($sort == 'no_secuencial')
+                                            @if ($sort_bancos == 'no_secuencial')
                                                 @if ($orderBy == 'asc')
                                                     <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                                 @else
@@ -77,7 +77,7 @@
                                         wire:click="order('saldo')">
                                         <div class="flex items-center">
                                             <span>Saldo</span>
-                                            @if ($sort == 'saldo')
+                                            @if ($sort_bancos == 'saldo')
                                                 @if ($orderBy == 'asc')
                                                     <i class="fas fa-sort-alpha-up-alt ml-2"></i>
                                                 @else
@@ -94,7 +94,7 @@
                                         cursor-pointer"
                                         wire:click="order('descripcion')">
                                         Descripción
-                                        @if ($sort == 'descripcion')
+                                        @if ($sort_bancos == 'descripcion')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -111,7 +111,7 @@
                                         cursor-pointer"
                                         wire:click="order('imprimir')">
                                         Imprimir
-                                        @if ($sort == 'imprimir')
+                                        @if ($sort_bancos == 'imprimir')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -164,7 +164,7 @@
                                                     class="fa fa-pencil" aria-hidden="true"></i>
                                             </x-button>
                                             <x-danger-button title="Eliminar"
-                                                wire:click="$dispatch('delete',{{ $catalogo->id }})"><i
+                                                wire:click="$dispatch('delete-bancos',{{ $catalogo->id }})"><i
                                                     class="fa fa-trash" aria-hidden="true"></i>
 
 
@@ -249,7 +249,7 @@
         @endslot
         @slot('footer')
             <x-secondary-button wire:click="clean">Cancelar</x-secondary-button>
-            <x-button wire:click="$dispatch('confirm',{{ $ctg_id }}) "
+            <x-button wire:click="$dispatch('confirm-bancos',{{ $ctg_id }}) "
                 class=" ml-3 disabled:opacity-25">Guardar</x-button>
         @endslot
     </x-dialog-modal-xl>

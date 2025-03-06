@@ -15,7 +15,7 @@ class GastosCtg extends Component
     public $readyToLoad = false;
     public $entrada = array('5', '10', '15', '20', '50', '100');
     public $list = '5';
-    public $sort = "id";
+    public $sort_gasto = "id";
     public $orderBy = "asc";
     public $open = false;
     public $search="";
@@ -24,7 +24,7 @@ class GastosCtg extends Component
 
     protected $queryString = [
         'list' => ['except' => ['10']],
-        'sort' => ['except' => 'NumeroSistemaContable'],
+        'sort_gasto' => ['except' => 'id'],
         'orderBy' => ['except' => 'asc'],
         'search' => ['except' => ''],
     ];
@@ -39,17 +39,17 @@ class GastosCtg extends Component
     {
         $this->resetPage();
     }
-    public function order($sort)
+    public function order($sort_gasto)
     {
 
-        if ($this->sort == $sort) {
+        if ($this->sort_gasto == $sort_gasto) {
             if ($this->orderBy == 'desc') {
                 $this->orderBy = 'asc';
             } else {
                 $this->orderBy = 'desc';
             }
         } else {
-            $this->sort = $sort;
+            $this->sort_gasto = $sort_gasto;
             $this->orderBy = 'desc';
         }
     }
@@ -87,7 +87,7 @@ class GastosCtg extends Component
 
         if ($this->readyToLoad) {
             $catalogos = CtgGastos::where('descripcion','like','%'.$this->search.'%')
-            ->orderBy($this->sort, $this->orderBy)->paginate(10);//->withTrashed()
+            ->orderBy($this->sort_gasto, $this->orderBy)->paginate(10);//->withTrashed()
 
             
                    } else {
@@ -98,7 +98,7 @@ class GastosCtg extends Component
     }
 
 
-    #[On('save-ctg')]
+    #[On('save-gastos')]
     public function save()
     {
 
@@ -141,7 +141,7 @@ class GastosCtg extends Component
     }
 
 
-    #[On('delete-ctg')]
+    #[On('delete-gastos')]
     public function destroy(CtgGastos $ctg){
 
         CtgGastos::destroy($ctg->id);

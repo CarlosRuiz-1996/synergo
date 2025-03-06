@@ -18,7 +18,7 @@ class CombustiblesCtg extends Component
     // public CatalogosForm $catalogos;
     public $entrada = array('5', '10', '15', '20', '50', '100');
     public $list = '5';
-    public $sort = "id";
+    public $sort_combustibles = "id";
     public $orderBy = "asc";
     public $open = false;
     public $search="";
@@ -27,7 +27,7 @@ class CombustiblesCtg extends Component
 
     protected $queryString = [
         'list' => ['except' => ['10']],
-        'sort' => ['except' => 'NumeroSistemaContable'],
+        'sort_combustibles' => ['except' => 'id'],
         'orderBy' => ['except' => 'asc'],
         'search' => ['except' => ''],
     ];
@@ -42,17 +42,17 @@ class CombustiblesCtg extends Component
     {
         $this->resetPage();
     }
-    public function order($sort)
+    public function order($sort_combustibles)
     {
 
-        if ($this->sort == $sort) {
+        if ($this->sort_combustibles == $sort_combustibles) {
             if ($this->orderBy == 'desc') {
                 $this->orderBy = 'asc';
             } else {
                 $this->orderBy = 'desc';
             }
         } else {
-            $this->sort = $sort;
+            $this->sort_combustibles = $sort_combustibles;
             $this->orderBy = 'desc';
         }
     }
@@ -109,7 +109,7 @@ class CombustiblesCtg extends Component
             // ->orWhere('color_tq','like','%'.$this->search.'%')
             // ->orWhere('costo','like','%'.$this->search.'%')
             // ->orWhere('venta','like','%'.$this->search.'%')
-            orderBy($this->sort, $this->orderBy)->paginate(10);//->withTrashed()
+            orderBy($this->sort_combustibles, $this->orderBy)->paginate(10);//->withTrashed()
 
         } else {
 

@@ -17,7 +17,7 @@ class ConGastosCtg extends Component
     public $readyToLoad = false;
     public $entrada = array('5', '10', '15', '20', '50', '100');
     public $list = '5';
-    public $sort = "id";
+    public $sort_congasto = "id";
     public $orderBy = "asc";
     public $open = false;
     public $search="";
@@ -26,7 +26,7 @@ class ConGastosCtg extends Component
 
     protected $queryString = [
         'list' => ['except' => ['10']],
-        'sort' => ['except' => 'NumeroSistemaContable'],
+        'sort_congasto' => ['except' => 'id'],
         'orderBy' => ['except' => 'asc'],
         'search' => ['except' => ''],
     ];
@@ -41,17 +41,17 @@ class ConGastosCtg extends Component
     {
         $this->resetPage();
     }
-    public function order($sort)
+    public function order($sort_congasto)
     {
 
-        if ($this->sort == $sort) {
+        if ($this->sort_congasto == $sort_congasto) {
             if ($this->orderBy == 'desc') {
                 $this->orderBy = 'asc';
             } else {
                 $this->orderBy = 'desc';
             }
         } else {
-            $this->sort = $sort;
+            $this->sort_congasto = $sort_congasto;
             $this->orderBy = 'desc';
         }
     }
@@ -107,7 +107,7 @@ class ConGastosCtg extends Component
             ->orWhere('concepto','like','%'.$this->search.'%')
             ->orWhere('tipo_gasto','like','%'.$this->search.'%')
             ->orWhere('relacion','like','%'.$this->search.'%')
-            ->orderBy($this->sort, $this->orderBy)->paginate(10);//->withTrashed()
+            ->orderBy($this->sort_congasto, $this->orderBy)->paginate(10);//->withTrashed()
 
         } else {
 
@@ -117,7 +117,7 @@ class ConGastosCtg extends Component
     }
 
 
-    #[On('save-ctg')]
+    #[On('save-congastos')]
     public function save()
     {
 
@@ -179,7 +179,7 @@ class ConGastosCtg extends Component
     }
 
 
-    #[On('delete-ctg')]
+    #[On('delete-congastos')]
     public function destroy(CtgConGastos $ctg){
 
         CtgConGastos::destroy($ctg->id);

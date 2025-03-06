@@ -44,7 +44,7 @@
                                         cursor-pointer"
                                         wire:click="order('id')">
                                         ID
-                                        @if ($sort == 'id')
+                                        @if ($sort_combustibles == 'id')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -60,7 +60,7 @@
                                     cursor-pointer"
                                         wire:click="order('costo')">
                                         Costo
-                                        @if ($sort == 'costo')
+                                        @if ($sort_combustibles == 'costo')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -76,7 +76,7 @@
                                         wire:click="order('corta')">
                                         <div class="flex items-center">
                                             <span>Corta</span>
-                                            @if ($sort == 'corta')
+                                            @if ($sort_combustibles == 'corta')
                                                 @if ($orderBy == 'asc')
                                                     <i class="fas fa-sort-alpha-up-alt ml-2"></i>
                                                 @else
@@ -93,7 +93,7 @@
                             cursor-pointer"
                                         wire:click="order('description')">
                                         Descripción
-                                        @if ($sort == 'description')
+                                        @if ($sort_combustibles == 'description')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -109,7 +109,7 @@
                                         cursor-pointer"
                                         wire:click="order('flete')">
                                         <p>Flete
-                                            @if ($sort == 'flete')
+                                            @if ($sort_combustibles == 'flete')
                                                 @if ($orderBy == 'asc')
                                                     <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                                 @else
@@ -132,7 +132,7 @@
                                             cursor-pointer"
                                         wire:click="order('clv_pemex')">
                                         clv_pemex
-                                        @if ($sort == 'clv_pemex')
+                                        @if ($sort_combustibles == 'clv_pemex')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -148,7 +148,7 @@
                                         cursor-pointer"
                                         wire:click="order('color_tq')">
                                         color_tq
-                                        @if ($sort == 'color_tq')
+                                        @if ($sort_combustibles == 'color_tq')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else

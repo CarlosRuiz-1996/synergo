@@ -15,7 +15,7 @@ class MangerasCtg extends Component
     public $readyToLoad = false;
     public $entrada = array('5', '10', '15', '20', '50', '100');
     public $list = '5';
-    public $sort = "id";
+    public $sort_manguera = "id";
     public $orderBy = "asc";
     public $open = false;
     public $search="";
@@ -24,7 +24,7 @@ class MangerasCtg extends Component
 
     protected $queryString = [
         'list' => ['except' => ['10']],
-        'sort' => ['except' => 'NumeroSistemaContable'],
+        'sort_manguera' => ['except' => 'id'],
         'orderBy' => ['except' => 'asc'],
         'search' => ['except' => ''],
     ];
@@ -40,17 +40,17 @@ class MangerasCtg extends Component
         $this->resetPage();
     }
    
-    public function order($sort)
+    public function order($sort_manguera)
     {
 
-        if ($this->sort == $sort) {
+        if ($this->sort_manguera == $sort_manguera) {
             if ($this->orderBy == 'desc') {
                 $this->orderBy = 'asc';
             } else {
                 $this->orderBy = 'desc';
             }
         } else {
-            $this->sort = $sort;
+            $this->sort_manguera = $sort_manguera;
             $this->orderBy = 'desc';
         }
     }
@@ -127,7 +127,7 @@ class MangerasCtg extends Component
             ->orWhere('nu_pistola','like','%'.$this->search.'%')
             ->orWhere('man_dt_alta','like','%'.$this->search.'%')
             ->orWhere('nu_cliente','like','%'.$this->search.'%')
-            ->orderBy($this->sort, $this->orderBy)->paginate(10);//->withTrashed()
+            ->orderBy($this->sort_manguera, $this->orderBy)->paginate(10);//->withTrashed()
 
         } else {
 
@@ -137,7 +137,7 @@ class MangerasCtg extends Component
     }
 
 
-    #[On('save-ctg')]
+    #[On('save-mangueras')]
     public function save()
     {
 
@@ -218,7 +218,7 @@ class MangerasCtg extends Component
     }
 
 
-    #[On('delete-ctg')]
+    #[On('delete-mangueras')]
     public function destroy(CtgMangueras $ctg){
 
         CtgMangueras::destroy($ctg->id);

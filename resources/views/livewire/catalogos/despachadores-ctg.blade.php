@@ -44,7 +44,7 @@
                                         cursor-pointer"
                                         wire:click="order('id')">
                                         ID
-                                        @if ($sort == 'id')
+                                        @if ($sort_despachador == 'id')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -60,7 +60,7 @@
                                         cursor-pointer"
                                         wire:click="order('nip')">
                                         <p>Nip
-                                            @if ($sort == 'nip')
+                                            @if ($sort_despachador == 'nip')
                                                 @if ($orderBy == 'asc')
                                                     <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                                 @else
@@ -77,7 +77,7 @@
                                         wire:click="order('nu_isla')">
                                         <div class="flex items-center">
                                             <span>Nu isla</span>
-                                            @if ($sort == 'nu_isla')
+                                            @if ($sort_despachador == 'nu_isla')
                                                 @if ($orderBy == 'asc')
                                                     <i class="fas fa-sort-alpha-up-alt ml-2"></i>
                                                 @else
@@ -94,7 +94,7 @@
                                         cursor-pointer"
                                         wire:click="order('descripcion')">
                                         Descripción
-                                        @if ($sort == 'descripcion')
+                                        @if ($sort_despachador == 'descripcion')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -111,7 +111,7 @@
                                         cursor-pointer"
                                         wire:click="order('turno')">
                                         Turno
-                                        @if ($sort == 'turno')
+                                        @if ($sort_despachador == 'turno')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -128,7 +128,7 @@
                                         cursor-pointer"
                                         wire:click="order('llavero')">
                                         Llavero
-                                        @if ($sort == 'llavero')
+                                        @if ($sort_despachador == 'llavero')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -182,7 +182,7 @@
                                                     class="fa fa-pencil" aria-hidden="true"></i>
                                             </x-button>
                                             <x-danger-button title="Eliminar"
-                                                wire:click="$dispatch('delete',{{ $catalogo->id }})"><i
+                                                wire:click="$dispatch('delete-despachadores',{{ $catalogo->id }})"><i
                                                     class="fa fa-trash" aria-hidden="true"></i>
 
 
@@ -273,7 +273,7 @@
         @endslot
         @slot('footer')
             <x-secondary-button wire:click="clean">Cancelar</x-secondary-button>
-            <x-button wire:click="$dispatch('confirm',{{ $ctg_id }}) "
+            <x-button wire:click="$dispatch('confirm-despachadores',{{ $ctg_id }}) "
                 class=" ml-3 disabled:opacity-25">Guardar</x-button>
         @endslot
     </x-dialog-modal-xl>

@@ -15,7 +15,7 @@ class TurnosCtg extends Component
     public $readyToLoad = false;
     public $entrada = array('5', '10', '15', '20', '50', '100');
     public $list = '5';
-    public $sort = "id";
+    public $sort_turno = "id";
     public $orderBy = "asc";
     public $open = false;
     public $search="";
@@ -24,7 +24,7 @@ class TurnosCtg extends Component
 
     protected $queryString = [
         'list' => ['except' => ['10']],
-        'sort' => ['except' => 'NumeroSistemaContable'],
+        'sort_turno' => ['except' => 'id'],
         'orderBy' => ['except' => 'asc'],
         'search' => ['except' => ''],
     ];
@@ -40,17 +40,17 @@ class TurnosCtg extends Component
         $this->resetPage();
     }
    
-    public function order($sort)
+    public function order($sort_turno)
     {
 
-        if ($this->sort == $sort) {
+        if ($this->sort_turno == $sort_turno) {
             if ($this->orderBy == 'desc') {
                 $this->orderBy = 'asc';
             } else {
                 $this->orderBy = 'desc';
             }
         } else {
-            $this->sort = $sort;
+            $this->sort_turno = $sort_turno;
             $this->orderBy = 'desc';
         }
     }
@@ -97,7 +97,7 @@ class TurnosCtg extends Component
             $catalogos = CtgTurnos::where('descripcion','like','%'.$this->search.'%')
             ->orWhere('inicio','like','%'.$this->search.'%')
             ->orWhere('duracion','like','%'.$this->search.'%')
-            ->orderBy($this->sort, $this->orderBy)->paginate(10);//->withTrashed()
+            ->orderBy($this->sort_turno, $this->orderBy)->paginate(10);//->withTrashed()
 
         } else {
 
@@ -107,7 +107,7 @@ class TurnosCtg extends Component
     }
 
 
-    #[On('save-ctg')]
+    #[On('save-turnos')]
     public function save()
     {
 
@@ -166,7 +166,7 @@ class TurnosCtg extends Component
     }
 
 
-    #[On('delete-ctg')]
+    #[On('delete-turnos')]
     public function destroy(CtgTurnos $ctg){
 
         CtgTurnos::destroy($ctg->id);

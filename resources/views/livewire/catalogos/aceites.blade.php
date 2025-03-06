@@ -44,7 +44,7 @@
                                         cursor-pointer"
                                         wire:click="order('id')">
                                         ID
-                                        @if ($sort == 'id')
+                                        @if ($sort_aceite == 'id')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -60,7 +60,7 @@
                                         cursor-pointer"
                                         wire:click="order('tipo')">
                                         <p>Tipo
-                                            @if ($sort == 'tipo')
+                                            @if ($sort_aceite == 'tipo')
                                                 @if ($orderBy == 'asc')
                                                     <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                                 @else
@@ -77,7 +77,7 @@
                                         wire:click="order('corta')">
                                         <div class="flex items-center">
                                             <span>Corta</span>
-                                            @if ($sort == 'corta')
+                                            @if ($sort_aceite == 'corta')
                                                 @if ($orderBy == 'asc')
                                                     <i class="fas fa-sort-alpha-up-alt ml-2"></i>
                                                 @else
@@ -94,7 +94,7 @@
                                         cursor-pointer"
                                         wire:click="order('description')">
                                         Descripción
-                                        @if ($sort == 'description')
+                                        @if ($sort_aceite == 'description')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -111,7 +111,7 @@
                                         cursor-pointer"
                                         wire:click="order('costo')">
                                         Costo
-                                        @if ($sort == 'costo')
+                                        @if ($sort_aceite == 'costo')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -128,7 +128,7 @@
                                             cursor-pointer"
                                         wire:click="order('existencia')">
                                         Existencia
-                                        @if ($sort == 'existencia')
+                                        @if ($sort_aceite == 'existencia')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -144,7 +144,7 @@
                                         cursor-pointer"
                                         wire:click="order('status')">
                                         Estatus
-                                        @if ($sort == 'status')
+                                        @if ($sort_aceite == 'status')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -265,9 +265,9 @@
                     <x-input-modal type="text" class="w-full" wire:model="tipo" /> --}}
                         <select class="w-full" wire:model="tipo">
                             <option value="" selected>Selecciona</option>
-                            <option value="1">Ac</option>
-                            <option value="2">Ad</option>
-                            <option value="3">Ot</option>
+                            <option value="Ac">Ac</option>
+                            <option value="Ad">Ad</option>
+                            <option value="Ot">Ot</option>
                         </select>
                         <x-input-error for="tipo" />
                 </div>

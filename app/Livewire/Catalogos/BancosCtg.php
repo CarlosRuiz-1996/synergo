@@ -15,7 +15,7 @@ class BancosCtg extends Component
     public $readyToLoad = false;
     public $entrada = array('5', '10', '15', '20', '50', '100');
     public $list = '5';
-    public $sort = "id";
+    public $sort_bancos  = "id";
     public $orderBy = "asc";
     public $open = false;
     public $search="";
@@ -24,7 +24,7 @@ class BancosCtg extends Component
 
     protected $queryString = [
         'list' => ['except' => ['10']],
-        'sort' => ['except' => 'NumeroSistemaContable'],
+        'sort_bancos ' => ['except' => 'id'],
         'orderBy' => ['except' => 'asc'],
         'search' => ['except' => ''],
     ];
@@ -39,17 +39,17 @@ class BancosCtg extends Component
     {
         $this->resetPage();
     }
-    public function order($sort)
+    public function order($sort_bancos )
     {
 
-        if ($this->sort == $sort) {
+        if ($this->sort_bancos  == $sort_bancos ) {
             if ($this->orderBy == 'desc') {
                 $this->orderBy = 'asc';
             } else {
                 $this->orderBy = 'desc';
             }
         } else {
-            $this->sort = $sort;
+            $this->sort_bancos  = $sort_bancos ;
             $this->orderBy = 'desc';
         }
     }
@@ -99,7 +99,7 @@ class BancosCtg extends Component
             ->orWhere('descripcion','like','%'.$this->search.'%')
             ->orWhere('saldo','like','%'.$this->search.'%')
             ->orWhere('imprimir','like','%'.$this->search.'%')
-            ->orderBy($this->sort, $this->orderBy)->paginate(10);//->withTrashed()
+            ->orderBy($this->sort_bancos , $this->orderBy)->paginate(10);//->withTrashed()
 
         } else {
 
@@ -109,7 +109,7 @@ class BancosCtg extends Component
     }
 
 
-    #[On('save-ctg')]
+    #[On('save-bancos')]
     public function save()
     {
 
@@ -166,7 +166,7 @@ class BancosCtg extends Component
     }
 
 
-    #[On('delete-ctg')]
+    #[On('delete-bancos')]
     public function destroy(CgtBancos $ctg){
 
         CgtBancos::destroy($ctg->id);

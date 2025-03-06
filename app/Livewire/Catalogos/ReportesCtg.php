@@ -15,7 +15,7 @@ class ReportesCtg extends Component
     public $readyToLoad = false;
     public $entrada = array('5', '10', '15', '20', '50', '100');
     public $list = '5';
-    public $sort = "id";
+    public $sort_repo = "id";
     public $orderBy = "asc";
     public $open = false;
     public $search="";
@@ -24,7 +24,7 @@ class ReportesCtg extends Component
 
     protected $queryString = [
         'list' => ['except' => ['10']],
-        'sort' => ['except' => 'NumeroSistemaContable'],
+        'sort_repo' => ['except' => 'id'],
         'orderBy' => ['except' => 'asc'],
         'search' => ['except' => ''],
     ];
@@ -40,17 +40,17 @@ class ReportesCtg extends Component
         $this->resetPage();
     }
    
-    public function order($sort)
+    public function order($sort_repo)
     {
 
-        if ($this->sort == $sort) {
+        if ($this->sort_repo == $sort_repo) {
             if ($this->orderBy == 'desc') {
                 $this->orderBy = 'asc';
             } else {
                 $this->orderBy = 'desc';
             }
         } else {
-            $this->sort = $sort;
+            $this->sort_repo = $sort_repo;
             $this->orderBy = 'desc';
         }
     }
@@ -97,7 +97,7 @@ class ReportesCtg extends Component
             $catalogos = CtgReportes::where('titulo','like','%'.$this->search.'%')
             ->orWhere('consulta','like','%'.$this->search.'%')
             ->orWhere('nivel','like','%'.$this->search.'%')
-            ->orderBy($this->sort, $this->orderBy)->paginate(10);//->withTrashed()
+            ->orderBy($this->sort_repo, $this->orderBy)->paginate(10);//->withTrashed()
 
         } else {
 
@@ -107,7 +107,7 @@ class ReportesCtg extends Component
     }
 
 
-    #[On('save-ctg')]
+    #[On('save-reportes')]
     public function save()
     {
 
@@ -166,7 +166,7 @@ class ReportesCtg extends Component
     }
 
 
-    #[On('delete-ctg')]
+    #[On('delete-reportes')]
     public function destroy(CtgReportes $ctg){
 
         CtgReportes::destroy($ctg->id);

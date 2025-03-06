@@ -16,7 +16,7 @@ class DespachadoresCtg extends Component
     public $readyToLoad = false;
     public $entrada = array('5', '10', '15', '20', '50', '100');
     public $list = '5';
-    public $sort = "id";
+    public $sort_despachador = "id";
     public $orderBy = "asc";
     public $open = false;
     public $search="";
@@ -25,7 +25,7 @@ class DespachadoresCtg extends Component
 
     protected $queryString = [
         'list' => ['except' => ['10']],
-        'sort' => ['except' => 'NumeroSistemaContable'],
+        'sort_despachador' => ['except' => 'id'],
         'orderBy' => ['except' => 'asc'],
         'search' => ['except' => ''],
     ];
@@ -40,17 +40,17 @@ class DespachadoresCtg extends Component
     {
         $this->resetPage();
     }
-    public function order($sort)
+    public function order($sort_despachador)
     {
 
-        if ($this->sort == $sort) {
+        if ($this->sort_despachador == $sort_despachador) {
             if ($this->orderBy == 'desc') {
                 $this->orderBy = 'asc';
             } else {
                 $this->orderBy = 'desc';
             }
         } else {
-            $this->sort = $sort;
+            $this->sort_despachador = $sort_despachador;
             $this->orderBy = 'desc';
         }
     }
@@ -106,7 +106,7 @@ class DespachadoresCtg extends Component
             ->orWhere('nu_isla','like','%'.$this->search.'%')
             ->orWhere('turno','like','%'.$this->search.'%')
             ->orWhere('llavero','like','%'.$this->search.'%')
-            ->orderBy($this->sort, $this->orderBy)->paginate(10);//->withTrashed()
+            ->orderBy($this->sort_despachador, $this->orderBy)->paginate(10);//->withTrashed()
 
         } else {
 
@@ -116,7 +116,7 @@ class DespachadoresCtg extends Component
     }
 
 
-    #[On('save-ctg')]
+    #[On('save-despachadores')]
     public function save()
     {
 
@@ -178,7 +178,7 @@ class DespachadoresCtg extends Component
     }
 
 
-    #[On('delete-ctg')]
+    #[On('delete-despachadores')]
     public function destroy(CtgDespachadores $ctg){
 
         CtgDespachadores::destroy($ctg->id);

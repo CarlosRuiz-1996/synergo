@@ -103,7 +103,7 @@
                                                     class="fa fa-pencil" aria-hidden="true"></i>
                                             </x-button>
                                             <x-danger-button title="Eliminar"
-                                                wire:click="$dispatch('delete',{{ $catalogo->id }})"><i
+                                                wire:click="$dispatch('delete-gastos',{{ $catalogo->id }})"><i
                                                     class="fa fa-trash" aria-hidden="true"></i>
 
 
@@ -171,7 +171,7 @@
         @endslot
         @slot('footer')
             <x-secondary-button wire:click="clean">Cancelar</x-secondary-button>
-            <x-button wire:click="$dispatch('confirm',{{ $ctg_id }}) "
+            <x-button wire:click="$dispatch('confirm-gastos',{{ $ctg_id }}) "
                 class=" ml-3 disabled:opacity-25">Guardar</x-button>
         @endslot
     </x-dialog-modal-xl>

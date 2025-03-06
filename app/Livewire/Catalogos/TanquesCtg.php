@@ -16,7 +16,7 @@ class TanquesCtg extends Component
     public $readyToLoad = false;
     public $entrada = array('5', '10', '15', '20', '50', '100');
     public $list = '5';
-    public $sort = "id";
+    public $sort_tanque = "id";
     public $orderBy = "asc";
     public $open = false;
     public $search="";
@@ -25,21 +25,21 @@ class TanquesCtg extends Component
 
     protected $queryString = [
         'list' => ['except' => ['10']],
-        'sort' => ['except' => 'NumeroSistemaContable'],
+        'sort_tanque' => ['except' => 'id'],
         'orderBy' => ['except' => 'asc'],
         'search' => ['except' => ''],
     ];
-    public function order($sort)
+    public function order($sort_tanque)
     {
 
-        if ($this->sort == $sort) {
+        if ($this->sort_tanque == $sort_tanque) {
             if ($this->orderBy == 'desc') {
                 $this->orderBy = 'asc';
             } else {
                 $this->orderBy = 'desc';
             }
         } else {
-            $this->sort = $sort;
+            $this->sort_tanque = $sort_tanque;
             $this->orderBy = 'desc';
         }
     }
@@ -114,7 +114,7 @@ class TanquesCtg extends Component
             ->orWhere('niv_op','like','%'.$this->search.'%')
             ->orWhere('edo','like','%'.$this->search.'%')
             ->orWhere('fondaje','like','%'.$this->search.'%')
-            ->orderBy($this->sort, $this->orderBy)->paginate(10);//->withTrashed()
+            ->orderBy($this->sort_tanque, $this->orderBy)->paginate(10);//->withTrashed()
         } else {
 
             $catalogos = [];
@@ -123,7 +123,7 @@ class TanquesCtg extends Component
     }
 
 
-    #[On('save-ctg')]
+    #[On('save-tanques')]
     public function save()
     {
 
@@ -195,7 +195,7 @@ class TanquesCtg extends Component
     }
 
 
-    #[On('delete-ctg')]
+    #[On('delete-tanques')]
     public function destroy(CtgTanques $ctg){
 
         CtgTanques::destroy($ctg->id);

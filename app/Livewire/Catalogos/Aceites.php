@@ -16,7 +16,7 @@ class Aceites extends Component
     // public CatalogosForm $catalogos;
     public $entrada = array('5', '10', '15', '20', '50', '100');
     public $list = '5';
-    public $sort = "id";
+    public $sort_aceite = "id";
     public $orderBy = "asc";
     public $open = false;
     public $search="";
@@ -25,7 +25,7 @@ class Aceites extends Component
 
     protected $queryString = [
         'list' => ['except' => ['10']],
-        'sort' => ['except' => 'NumeroSistemaContable'],
+        'sort_aceite' => ['except' => 'id'],
         'orderBy' => ['except' => 'asc'],
         'search' => ['except' => ''],
     ];
@@ -40,17 +40,17 @@ class Aceites extends Component
     {
         $this->resetPage();
     }
-    public function order($sort)
+    public function order($sort_aceite)
     {
 
-        if ($this->sort == $sort) {
+        if ($this->sort_aceite == $sort_aceite) {
             if ($this->orderBy == 'desc') {
                 $this->orderBy = 'asc';
             } else {
                 $this->orderBy = 'desc';
             }
         } else {
-            $this->sort = $sort;
+            $this->sort_aceite = $sort_aceite;
             $this->orderBy = 'desc';
         }
     }
@@ -106,7 +106,7 @@ class Aceites extends Component
             ->orWhere('corta','like','%'.$this->search.'%')
             ->orWhere('costo','like','%'.$this->search.'%')
             ->orWhere('existencia','like','%'.$this->search.'%')
-            ->orderBy($this->sort, $this->orderBy)->paginate(10);//->withTrashed()
+            ->orderBy($this->sort_aceite, $this->orderBy)->paginate(10);//->withTrashed()
 
         } else {
 

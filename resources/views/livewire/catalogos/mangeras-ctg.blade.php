@@ -44,7 +44,7 @@
                                         cursor-pointer"
                                         wire:click="order('id')">
                                         ID
-                                        @if ($sort == 'id')
+                                        @if ($sort_manguera == 'id')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -60,7 +60,7 @@
                                         cursor-pointer"
                                         wire:click="order('nu_isla')">
                                         <p>Nu isla
-                                            @if ($sort == 'nu_isla')
+                                            @if ($sort_manguera == 'nu_isla')
                                                 @if ($orderBy == 'asc')
                                                     <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                                 @else
@@ -77,7 +77,7 @@
                                         wire:click="order('nu_combustible')">
                                         <div class="flex items-center">
                                             <span>Nu factura</span>
-                                            @if ($sort == 'nu_combustible')
+                                            @if ($sort_manguera == 'nu_combustible')
                                                 @if ($orderBy == 'asc')
                                                     <i class="fas fa-sort-alpha-up-alt ml-2"></i>
                                                 @else
@@ -94,7 +94,7 @@
                                         cursor-pointer"
                                         wire:click="order('nu_pos_carga')">
                                         nu_pos_carga
-                                        @if ($sort == 'nu_pos_carga')
+                                        @if ($sort_manguera == 'nu_pos_carga')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -111,7 +111,7 @@
                                         cursor-pointer"
                                         wire:click="order('lec_ini')">
                                         lec_ini
-                                        @if ($sort == 'lec_ini')
+                                        @if ($sort_manguera == 'lec_ini')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -128,7 +128,7 @@
                                         cursor-pointer"
                                         wire:click="order('estado')">
                                         Estado
-                                        @if ($sort == 'estado')
+                                        @if ($sort_manguera == 'estado')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -144,7 +144,7 @@
                                         cursor-pointer"
                                         wire:click="order('nu_cliente')">
                                         Nu cliente
-                                        @if ($sort == 'nu_cliente')
+                                        @if ($sort_manguera == 'nu_cliente')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -160,7 +160,7 @@
                                 cursor-pointer"
                                         wire:click="order('nu_tarjeta')">
                                         Nu tarjeta
-                                        @if ($sort == 'nu_tarjeta')
+                                        @if ($sort_manguera == 'nu_tarjeta')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -176,7 +176,7 @@
                                     cursor-pointer"
                                         wire:click="order('bnd_miles')">
                                         bnd_miles
-                                        @if ($sort == 'bnd_miles')
+                                        @if ($sort_manguera == 'bnd_miles')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -192,7 +192,7 @@
                                         cursor-pointer"
                                         wire:click="order('nu_antena')">
                                         Nu antena
-                                        @if ($sort == 'nu_antena')
+                                        @if ($sort_manguera == 'nu_antena')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -208,7 +208,7 @@
                                     cursor-pointer"
                                         wire:click="order('nu_pistola')">
                                         Nu pistola
-                                        @if ($sort == 'nu_pistola')
+                                        @if ($sort_manguera == 'nu_pistola')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -224,7 +224,7 @@
                                 cursor-pointer"
                                         wire:click="order('man_dt_alta')">
                                         man_dt_alta
-                                        @if ($sort == 'man_dt_alta')
+                                        @if ($sort_manguera == 'man_dt_alta')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -297,7 +297,7 @@
                                                     class="fa fa-pencil" aria-hidden="true"></i>
                                             </x-button>
                                             <x-danger-button title="Eliminar"
-                                                wire:click="$dispatch('delete',{{ $catalogo->id }})"><i
+                                                wire:click="$dispatch('delete-mangueras',{{ $catalogo->id }})"><i
                                                     class="fa fa-trash" aria-hidden="true"></i>
 
 
@@ -425,7 +425,7 @@
         @endslot
         @slot('footer')
             <x-secondary-button wire:click="clean">Cancelar</x-secondary-button>
-            <x-button wire:click="$dispatch('confirm',{{ $ctg_id }}) "
+            <x-button wire:click="$dispatch('confirm-mangueras',{{ $ctg_id }}) "
                 class=" ml-3 disabled:opacity-25">Guardar</x-button>
         @endslot
     </x-dialog-modal-xl>

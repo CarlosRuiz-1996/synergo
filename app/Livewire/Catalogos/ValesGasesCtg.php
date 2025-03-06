@@ -16,7 +16,7 @@ class ValesGasesCtg extends Component
     public $readyToLoad = false;
     public $entrada = array('5', '10', '15', '20', '50', '100');
     public $list = '5';
-    public $sort = "id";
+    public $sort_vale = "id";
     public $orderBy = "asc";
     public $open = false;
     public $search = "";
@@ -25,7 +25,7 @@ class ValesGasesCtg extends Component
 
     protected $queryString = [
         'list' => ['except' => ['10']],
-        'sort' => ['except' => 'NumeroSistemaContable'],
+        'sort_vale' => ['except' => 'id'],
         'orderBy' => ['except' => 'asc'],
         'search' => ['except' => ''],
     ];
@@ -40,17 +40,17 @@ class ValesGasesCtg extends Component
     {
         $this->resetPage();
     }
-    public function order($sort)
+    public function order($sort_vale)
     {
 
-        if ($this->sort == $sort) {
+        if ($this->sort_vale == $sort_vale) {
             if ($this->orderBy == 'desc') {
                 $this->orderBy = 'asc';
             } else {
                 $this->orderBy = 'desc';
             }
         } else {
-            $this->sort = $sort;
+            $this->sort_vale = $sort_vale;
             $this->orderBy = 'desc';
         }
     }
@@ -88,7 +88,7 @@ class ValesGasesCtg extends Component
 
         if ($this->readyToLoad) {
             $catalogos = CtgValeGas::where('descripcion', 'like', '%' . $this->search . '%')
-            ->orderBy($this->sort, $this->orderBy)->paginate(10);//->withTrashed()
+            ->orderBy($this->sort_vale, $this->orderBy)->paginate(10);//->withTrashed()
 
         } else {
 
@@ -98,7 +98,7 @@ class ValesGasesCtg extends Component
     }
 
 
-    #[On('save-ctg')]
+    #[On('save-vales')]
     public function save()
     {
 
@@ -141,7 +141,7 @@ class ValesGasesCtg extends Component
     }
 
 
-    #[On('delete-ctg')]
+    #[On('delete-vales')]
     public function destroy(CtgValeGas $ctg)
     {
 

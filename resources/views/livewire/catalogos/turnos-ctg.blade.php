@@ -44,7 +44,7 @@
                                         cursor-pointer"
                                         wire:click="order('id')">
                                         ID
-                                        @if ($sort == 'id')
+                                        @if ($sort_turno == 'id')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -60,7 +60,7 @@
                                         cursor-pointer"
                                         wire:click="order('descripcion')">
                                         <p>Descripcion
-                                            @if ($sort == 'descripcion')
+                                            @if ($sort_turno == 'descripcion')
                                                 @if ($orderBy == 'asc')
                                                     <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                                 @else
@@ -77,7 +77,7 @@
                                         wire:click="order('inicio')">
                                         <div class="flex items-center">
                                             <span>Inicio</span>
-                                            @if ($sort == 'inicio')
+                                            @if ($sort_turno == 'inicio')
                                                 @if ($orderBy == 'asc')
                                                     <i class="fas fa-sort-alpha-up-alt ml-2"></i>
                                                 @else
@@ -94,7 +94,7 @@
                                         cursor-pointer"
                                         wire:click="order('duracion')">
                                         Duración
-                                        @if ($sort == 'duracion')
+                                        @if ($sort_turno == 'duracion')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -141,7 +141,7 @@
                                                     class="fa fa-pencil" aria-hidden="true"></i>
                                             </x-button>
                                             <x-danger-button title="Eliminar"
-                                                wire:click="$dispatch('delete',{{ $catalogo->id }})"><i
+                                                wire:click="$dispatch('delete-turnos',{{ $catalogo->id }})"><i
                                                     class="fa fa-trash" aria-hidden="true"></i>
 
 
@@ -220,7 +220,7 @@
         @endslot
         @slot('footer')
             <x-secondary-button wire:click="clean">Cancelar</x-secondary-button>
-            <x-button wire:click="$dispatch('confirm',{{ $ctg_id }}) "
+            <x-button wire:click="$dispatch('confirm-turnos',{{ $ctg_id }}) "
                 class=" ml-3 disabled:opacity-25">Guardar</x-button>
         @endslot
     </x-dialog-modal-xl>

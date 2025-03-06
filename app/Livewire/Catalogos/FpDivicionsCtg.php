@@ -17,7 +17,7 @@ class FpDivicionsCtg extends Component
     public $readyToLoad = false;
     public $entrada = array('5', '10', '15', '20', '50', '100');
     public $list = '5';
-    public $sort = "id";
+    public $sort_fpdiv = "id";
     public $orderBy = "asc";
     public $open = false;
     public $search="";
@@ -26,7 +26,7 @@ class FpDivicionsCtg extends Component
 
     protected $queryString = [
         'list' => ['except' => ['10']],
-        'sort' => ['except' => 'NumeroSistemaContable'],
+        'sort_fpdiv' => ['except' => 'id'],
         'orderBy' => ['except' => 'asc'],
         'search' => ['except' => ''],
     ];
@@ -41,17 +41,17 @@ class FpDivicionsCtg extends Component
     {
         $this->resetPage();
     }
-    public function order($sort)
+    public function order($sort_fpdiv)
     {
 
-        if ($this->sort == $sort) {
+        if ($this->sort_fpdiv == $sort_fpdiv) {
             if ($this->orderBy == 'desc') {
                 $this->orderBy = 'asc';
             } else {
                 $this->orderBy = 'desc';
             }
         } else {
-            $this->sort = $sort;
+            $this->sort_fpdiv = $sort_fpdiv;
             $this->orderBy = 'desc';
         }
     }
@@ -94,7 +94,7 @@ class FpDivicionsCtg extends Component
         if ($this->readyToLoad) {
             $catalogos = CtgFPDivision::where('division','like','%'.$this->search.'%')
             ->orWhere('descripcion','like','%'.$this->search.'%')
-            ->orderBy($this->sort, $this->orderBy)->paginate(10);//->withTrashed()
+            ->orderBy($this->sort_fpdiv, $this->orderBy)->paginate(10);//->withTrashed()
 
                    } else {
 
@@ -104,7 +104,7 @@ class FpDivicionsCtg extends Component
     }
 
 
-    #[On('save-ctg')]
+    #[On('save-fpdivisions')]
     public function save()
     {
 
@@ -156,7 +156,7 @@ class FpDivicionsCtg extends Component
     }
 
 
-    #[On('delete-ctg')]
+    #[On('delete-fpdivisions')]
     public function destroy(CtgFPDivision $ctg){
 
         CtgFPDivision::destroy($ctg->id);

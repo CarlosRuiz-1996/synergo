@@ -44,7 +44,7 @@
                                         cursor-pointer"
                                         wire:click="order('id')">
                                         ID
-                                        @if ($sort == 'id')
+                                        @if ($sort_tanque == 'id')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -60,7 +60,7 @@
                                         cursor-pointer"
                                         wire:click="order('capacidad')">
                                         <p>Capacidad
-                                            @if ($sort == 'capacidad')
+                                            @if ($sort_tanque == 'capacidad')
                                                 @if ($orderBy == 'asc')
                                                     <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                                 @else
@@ -77,7 +77,7 @@
                                         wire:click="order('diametro')">
                                         <div class="flex items-center">
                                             <span>Diametro</span>
-                                            @if ($sort == 'diametro')
+                                            @if ($sort_tanque == 'diametro')
                                                 @if ($orderBy == 'asc')
                                                     <i class="fas fa-sort-alpha-up-alt ml-2"></i>
                                                 @else
@@ -94,7 +94,7 @@
                                         cursor-pointer"
                                         wire:click="order('niv_seg')">
                                         niv_seg
-                                        @if ($sort == 'niv_seg')
+                                        @if ($sort_tanque == 'niv_seg')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -111,7 +111,7 @@
                                         cursor-pointer"
                                         wire:click="order('niv_op')">
                                         niv_op
-                                        @if ($sort == 'niv_op')
+                                        @if ($sort_tanque == 'niv_op')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -128,7 +128,7 @@
                                         cursor-pointer"
                                         wire:click="order('edo')">
                                         Estado
-                                        @if ($sort == 'edo')
+                                        @if ($sort_tanque == 'edo')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -144,7 +144,7 @@
                                     cursor-pointer"
                                         wire:click="order('fondaje')">
                                         Fondaje
-                                        @if ($sort == 'fondaje')
+                                        @if ($sort_tanque == 'fondaje')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -160,7 +160,7 @@
                                             cursor-pointer"
                                         wire:click="order('capa_oper')">
                                         capa_oper
-                                        @if ($sort == 'capa_oper')
+                                        @if ($sort_tanque == 'capa_oper')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -176,7 +176,7 @@
                                             cursor-pointer"
                                         wire:click="order('tan_dt_alta')">
                                         tan_dt_alta
-                                        @if ($sort == 'tan_dt_alta')
+                                        @if ($sort_tanque == 'tan_dt_alta')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -240,7 +240,7 @@
                                                     class="fa fa-pencil" aria-hidden="true"></i>
                                             </x-button>
                                             <x-danger-button title="Eliminar"
-                                                wire:click="$dispatch('delete',{{ $catalogo->id }})"><i
+                                                wire:click="$dispatch('delete-tanques',{{ $catalogo->id }})"><i
                                                     class="fa fa-trash" aria-hidden="true"></i>
 
 
@@ -349,7 +349,7 @@
         @endslot
         @slot('footer')
             <x-secondary-button wire:click="clean">Cancelar</x-secondary-button>
-            <x-button wire:click="$dispatch('confirm',{{ $ctg_id }}) "
+            <x-button wire:click="$dispatch('confirm-tanques',{{ $ctg_id }}) "
                 class=" ml-3 disabled:opacity-25">Guardar</x-button>
         @endslot
     </x-dialog-modal-xl>
