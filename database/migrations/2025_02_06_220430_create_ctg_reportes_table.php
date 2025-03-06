@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::connection('sqlsrv_synergo')->create('ctg_reportes', function (Blueprint $table) {
             $table->id();
-            $table->integer('nu_reporte'); // ID principal
-            $table->string('titulo', 255);
-            $table->text('consulta');
+            $table->integer('nu_reporte')->nullable(); // ID principal
+            $table->string('titulo', 255)->nullable();
+            $table->text('consulta')->nullable();
             $table->integer('nivel')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

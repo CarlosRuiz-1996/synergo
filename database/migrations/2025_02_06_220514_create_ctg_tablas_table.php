@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::connection('sqlsrv_synergo')->create('ctg_tablas', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 255);
+            $table->string('nombre', 255)->nullable();
             $table->boolean('bnd_catalogo')->default(false);
             $table->unsignedBigInteger('n_padre')->nullable();
             $table->dateTime('fecha')->nullable();
+            $table->softDeletes();
+
             $table->timestamps();
         });
     }

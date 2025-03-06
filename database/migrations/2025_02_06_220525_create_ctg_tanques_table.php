@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::connection('sqlsrv_synergo')->create('ctg_tanques', function (Blueprint $table) {
             $table->id();
-            $table->integer('nu_tanque'); // ID principal
+            $table->integer('nu_tanque')->nullable(); // ID principal
             // $table->unsignedBigInteger('nu_combustible'); // Relación con combustible
             $table->decimal('capacidad', 10, 2)->nullable();
             $table->decimal('diametro', 10, 2)->nullable();
@@ -23,6 +23,8 @@ return new class extends Migration
             $table->decimal('fondaje', 10, 2)->nullable();
             $table->decimal('capa_oper', 10, 2)->nullable();
             $table->timestamp('tan_dt_alta')->nullable();
+            $table->softDeletes();
+
             $table->timestamps();
         });
     }

@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::connection('sqlsrv_synergo')->create('ctg_fpdivisions', function (Blueprint $table) {
             $table->id();
-            $table->integer('nu_forma_pago'); // ID principal
+            $table->integer('nu_forma_pago')->nullable(); // ID principal
             $table->string('division', 255);
             $table->string('descripcion', 255);
+            $table->softDeletes();
+
             $table->timestamps();
         });
     }

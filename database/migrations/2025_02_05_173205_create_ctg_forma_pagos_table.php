@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::connection('sqlsrv_synergo')->create('ctg_forma_pagos', function (Blueprint $table) {
             $table->id();
-            $table->string('nu_forma_pago'); // ID principal
-            $table->string('descripcion', 255);
+            $table->string('nu_forma_pago')->nullable(); // ID principal
+            $table->string('descripcion', 255)->nullable();
             $table->string('consulta', 255)->nullable();
             $table->boolean('bnd_factura')->default(false);
             $table->integer('nu_copias')->nullable();
             $table->boolean('bnd_autorizacion')->default(false);
             $table->boolean('bnd_puntada')->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

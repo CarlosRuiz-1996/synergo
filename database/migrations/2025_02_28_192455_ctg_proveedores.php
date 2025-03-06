@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('fax', 20)->nullable();
             $table->string('contacto', 255)->nullable();
             $table->decimal('credito', 10, 2)->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

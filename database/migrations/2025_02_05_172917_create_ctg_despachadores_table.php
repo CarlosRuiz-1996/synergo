@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('nu_isla')->nullable();
             $table->integer('turno')->nullable();
             $table->string('llavero')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

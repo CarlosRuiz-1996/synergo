@@ -16,6 +16,7 @@ return new class extends Migration
            
             $table->integer('nu_gasto')->nullable();
             $table->string('descripcion')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

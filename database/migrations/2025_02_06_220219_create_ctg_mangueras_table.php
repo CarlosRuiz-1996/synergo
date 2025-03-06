@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::connection('sqlsrv_synergo')->create('ctg_mangueras', function (Blueprint $table) {
             $table->id();
-            $table->integer('nu_manguera'); // ID principal
-            $table->integer('nu_isla');
-            $table->integer('nu_combustible');
+            $table->integer('nu_manguera')->nullable(); // ID principal
+            $table->integer('nu_isla')->nullable();
+            $table->integer('nu_combustible')->nullable();
             $table->integer('nu_pos_carga')->nullable();
             $table->decimal('lec_ini', 15, 2)->nullable();
             $table->string('estado', 50)->nullable();
@@ -25,6 +25,7 @@ return new class extends Migration
             $table->integer('nu_antena')->nullable();
             $table->integer('nu_pistola')->nullable();
             $table->timestamp('man_dt_alta')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

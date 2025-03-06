@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::connection('sqlsrv_synergo')->create('ctg_turnos', function (Blueprint $table) {
             $table->id();
-            $table->integer('nu_turno'); 
+            $table->integer('nu_turno')->nullable(); 
             $table->string('descripcion', 255);
             $table->time('inicio'); // Hora de inicio del turno
             $table->integer('duracion');
+            $table->softDeletes();
+
             $table->timestamps();
         });
     }

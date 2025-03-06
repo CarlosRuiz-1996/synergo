@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::connection('sqlsrv_synergo')->create('ctg_combustibles', function (Blueprint $table) {
             $table->id();
-            $table->integer('nu_combustible')->nullable();; // ID principal
-            $table->string('descripcion', 255);
+            $table->integer('nu_combustible')->nullable(); // ID principal
+            $table->string('descripcion', 255)->nullable();
             $table->decimal('costo', 10, 2)->nullable();
             $table->decimal('merma', 10, 2)->nullable();
             $table->decimal('flete', 10, 2)->nullable();
@@ -24,6 +24,7 @@ return new class extends Migration
             $table->integer('ptos_venta')->nullable();
             $table->string('clv_pemex', 50)->nullable();
             $table->string('color_tq', 50)->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

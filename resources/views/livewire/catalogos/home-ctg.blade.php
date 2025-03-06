@@ -105,7 +105,7 @@
                         @livewire('catalogos.aceites')
                     </template>
                     <template x-if="win.name === 'catalogos.bancos-ctg'">
-                        @livewire('catalogos.estaciones')
+                        @livewire('catalogos.bancos-ctg')
                     </template>
                     <template x-if="win.name === 'catalogos.combustibles-ctg'">
                         @livewire('catalogos.combustibles-ctg')

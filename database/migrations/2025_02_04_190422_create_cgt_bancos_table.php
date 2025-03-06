@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::connection('sqlsrv_synergo')->create('cgt_bancos', function (Blueprint $table) {
             $table->id();
-            $table->string('descripcion');
+            $table->string('descripcion')->nullable();
             $table->integer('no_secuencial')->default(0);
             $table->float('saldo')->default(0);
             $table->integer('imprimir')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

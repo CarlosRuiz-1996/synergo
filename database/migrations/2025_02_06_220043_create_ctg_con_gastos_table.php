@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('descripcion')->nullable();
             $table->integer('tipo_gasto')->default(0);
             $table->integer('relacion')->default(0);
+            $table->softDeletes();
+
             $table->timestamps();
         });
     }

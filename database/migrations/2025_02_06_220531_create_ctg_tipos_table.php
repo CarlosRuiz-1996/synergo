@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::connection('sqlsrv_synergo')->create('ctg_tipos', function (Blueprint $table) {
             $table->id();
-            $table->integer('tipo'); // ID principal
+            $table->string('tipo')->nullable(); // ID principal
             $table->string('descripcion', 255);
+            $table->softDeletes();
+
             $table->timestamps();
         });
     }
