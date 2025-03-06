@@ -44,7 +44,7 @@
                                         cursor-pointer"
                                         wire:click="order('id')">
                                         ID
-                                        @if ($sort == 'id')
+                                        @if ($sort_gasto== 'id')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
@@ -63,7 +63,7 @@
                                         cursor-pointer"
                                         wire:click="order('descripcion')">
                                         Descripción
-                                        @if ($sort == 'descripcion')
+                                        @if ($sort_gasto== 'descripcion')
                                             @if ($orderBy == 'asc')
                                                 <i class="fas fa-sort-alpha-up-alt mt-1"></i>
                                             @else
