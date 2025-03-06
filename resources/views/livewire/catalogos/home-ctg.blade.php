@@ -123,6 +123,51 @@
                     <template x-if="win.name === 'catalogos.aceites'">
                         @livewire('catalogos.aceites')
                     </template>
+                    <template x-if="win.name === 'catalogos.bancos-ctg'">
+                        @livewire('catalogos.bancos-ctg')
+                    </template>
+                    <template x-if="win.name === 'catalogos.combustibles-ctg'">
+                        @livewire('catalogos.combustibles-ctg')
+                    </template>
+                    <template x-if="win.name === 'catalogos.con-gastos-ctg'">
+                        @livewire('catalogos.con-gastos-ctg')
+                    </template>
+                    <template x-if="win.name === 'catalogos.despachadores-ctg'">
+                        @livewire('catalogos.despachadores-ctg')
+                    </template>
+                    <template x-if="win.name === 'catalogos.formas-pago-ctg'">
+                        @livewire('catalogos.formas-pago-ctg')
+                    </template>
+                    <template x-if="win.name === 'catalogos.fp-divicions-ctg'">
+                        @livewire('catalogos.fp-divicions-ctg')
+                    </template>
+                    <template x-if="win.name === 'catalogos.gastos-ctg'">
+                        @livewire('catalogos.gastos-ctg')
+                    </template>
+                    <template x-if="win.name === 'catalogos.mangueras-ctg'">
+                        @livewire('catalogos.mangeras-ctg')
+                    </template>
+                    <template x-if="win.name === 'catalogos.provedores-ctg'">
+                        @livewire('catalogos.provedores-ctg')
+                    </template>
+                    <template x-if="win.name === 'catalogos.reportes-ctg'">
+                        @livewire('catalogos.reportes-ctg')
+                    </template>
+                    <template x-if="win.name === 'catalogos.tablas-ctg'">
+                        @livewire('catalogos.tablas-ctg')
+                    </template>
+                    <template x-if="win.name === 'catalogos.tanques-ctg'">
+                        @livewire('catalogos.tanques-ctg')
+                    </template>
+                    <template x-if="win.name === 'catalogos.tipos-ctg'">
+                        @livewire('catalogos.tipos-ctg')
+                    </template>
+                    <template x-if="win.name === 'catalogos.turnos-ctg'">
+                        @livewire('catalogos.turnos-ctg')
+                    </template>
+                    <template x-if="win.name === 'catalogos.vales-gases-ctg'">
+                        @livewire('catalogos.vales-gases-ctg')
+                    </template>
                 </div>
 
             </div>
